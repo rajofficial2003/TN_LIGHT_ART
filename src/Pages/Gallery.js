@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import SingleFooter from '../Components/Footer';
 import Header from '../Components/Header';
 
-import one from '../Images/Neon-lights/one.jpg'
-import two from '../Images/Neon-lights/two.jpg'
-import three from '../Images/Neon-lights/three.jpg'
+import two from '../Images/Neon-lights/ice 4.jpeg';
+import one from '../Images/Neon-lights/alisha 1.jpeg';
+import four from '../Images/Neon-lights/vsv 4.jpeg';
+import three from '../Images/Neon-lights/mani 2.jpeg';
+import five from '../Images/Neon-lights/sheela 1.jpeg';
 
 const fadeIn = keyframes`
   from {
@@ -20,7 +23,7 @@ const fadeIn = keyframes`
 `;
 
 const PageContainer = styled.div`
-  padding-top: 100px; // Account for fixed header
+  padding-top: 100px;
   min-height: 100vh;
   background: #ffffff;
 `;
@@ -98,6 +101,7 @@ const GalleryItem = styled(motion.div)`
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   animation: ${fadeIn} 0.6s ease-out forwards;
   transition: all 0.3s ease;
+  cursor: pointer;
 
   &:hover {
     transform: translateY(-5px);
@@ -142,22 +146,6 @@ const ItemCategory = styled.span`
   margin-bottom: 1rem;
 `;
 
-const ViewButton = styled.button`
-  width: 100%;
-  padding: 0.75rem 1.5rem;
-  background: #40E0D0;
-  border: none;
-  border-radius: 25px;
-  color: white;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background: #2CC1B1;
-  }
-`;
-
 const Gallery = () => {
   const [filter, setFilter] = useState('all');
   const [items, setItems] = useState([]);
@@ -167,59 +155,58 @@ const Gallery = () => {
       id: 1,
       title: "Custom Business Logo",
       category: "business",
-      price: "$299",
-      image: "../Images/Neon-lights/one.jpg"
+      price: "₹299",
+      image: one
     },
     {
       id: 2,
       title: "Wedding Name Sign",
       category: "wedding",
-      price: "$249",
-      image: "/placeholder.svg?height=300&width=300"
+      price: "₹249",
+      image: two
     },
     {
       id: 3,
       title: "Bar Neon Sign",
       category: "business",
-      price: "$399",
-      image: "/placeholder.svg?height=300&width=300"
+      price: "₹399",
+      image: three
     },
     {
       id: 4,
       title: "Birthday Message",
       category: "personal",
-      price: "$199",
-      image: "/placeholder.svg?height=300&width=300"
+      price: "₹199",
+      image: four
     },
     {
       id: 5,
       title: "Restaurant Menu",
       category: "business",
-      price: "$449",
-      image: "/placeholder.svg?height=300&width=300"
+      price: "₹449",
+      image: five
     },
     {
       id: 6,
       title: "Home Decor Quote",
       category: "personal",
-      price: "$179",
-      image: "/placeholder.svg?height=300&width=300"
+      price: "₹179",
+      image: five
     },
     {
       id: 7,
       title: "Event Backdrop",
       category: "event",
-      price: "$599",
-      image: "/placeholder.svg?height=300&width=300"
+      price: "₹599",
+      image: five
     },
     {
       id: 8,
       title: "Gaming Room Sign",
       category: "personal",
-      price: "$229",
-      image: "/placeholder.svg?height=300&width=300"
+      price: "₹229",
+      image: five
     },
-    // Add more items as needed
   ];
 
   useEffect(() => {
@@ -231,71 +218,71 @@ const Gallery = () => {
   }, [filter]);
 
   return (
-  <div className="">
-    <Header/>
+    <div className="">
+      <Header/>
       <PageContainer className='p-lg-5 mt-lg-4 ' >
-      <GalleryHeader>
-        <Title>Neon Sign Gallery</Title>
-        <Subtitle>
-          Explore our collection of custom-made neon signs. From business logos to personal messages,
-          each piece is handcrafted with precision and care to create stunning illuminated art.
-        </Subtitle>
-      </GalleryHeader>
+        <GalleryHeader>
+          <Title>Neon Sign Gallery</Title>
+          <Subtitle>
+            Explore our collection of custom-made neon signs. From business logos to personal messages,
+            each piece is handcrafted with precision and care to create stunning illuminated art.
+          </Subtitle>
+        </GalleryHeader>
 
-      <FilterContainer>
-        <FilterButton 
-          active={filter === 'all'} 
-          onClick={() => setFilter('all')}
-        >
-          All Signs
-        </FilterButton>
-        <FilterButton 
-          active={filter === 'business'} 
-          onClick={() => setFilter('business')}
-        >
-          Business
-        </FilterButton>
-        <FilterButton 
-          active={filter === 'personal'} 
-          onClick={() => setFilter('personal')}
-        >
-          Personal
-        </FilterButton>
-        <FilterButton 
-          active={filter === 'wedding'} 
-          onClick={() => setFilter('wedding')}
-        >
-          Wedding
-        </FilterButton>
-        <FilterButton 
-          active={filter === 'event'} 
-          onClick={() => setFilter('event')}
-        >
-          Events
-        </FilterButton>
-      </FilterContainer>
-
-      <GalleryGrid>
-        {items.map((item) => (
-          <GalleryItem
-            key={item.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+        <FilterContainer>
+          <FilterButton 
+            active={filter === 'all'} 
+            onClick={() => setFilter('all')}
           >
-            <ItemImage src={item.image} alt={item.title} />
-            <ItemContent>
-              <ItemTitle>{item.title}</ItemTitle>
-              <ItemPrice>{item.price}</ItemPrice>
-              <ItemCategory>Category: {item.category}</ItemCategory>
-              <ViewButton>View Details</ViewButton>
-            </ItemContent>
-          </GalleryItem>
-        ))}
-      </GalleryGrid>
-    </PageContainer>
-    <SingleFooter/>
-  </div>
+            All Signs
+          </FilterButton>
+          <FilterButton 
+            active={filter === 'business'} 
+            onClick={() => setFilter('business')}
+          >
+            Business
+          </FilterButton>
+          <FilterButton 
+            active={filter === 'personal'} 
+            onClick={() => setFilter('personal')}
+          >
+            Personal
+          </FilterButton>
+          <FilterButton 
+            active={filter === 'wedding'} 
+            onClick={() => setFilter('wedding')}
+          >
+            Wedding
+          </FilterButton>
+          <FilterButton 
+            active={filter === 'event'} 
+            onClick={() => setFilter('event')}
+          >
+            Events
+          </FilterButton>
+        </FilterContainer>
+
+        <GalleryGrid>
+          {items.map((item) => (
+            <Link to="/product-details" key={item.id} style={{ textDecoration: 'none' }}>
+              <GalleryItem
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <ItemImage src={item.image} alt={item.title} />
+                <ItemContent>
+                  <ItemTitle>{item.title}</ItemTitle>
+                  <ItemPrice>{item.price}</ItemPrice>
+                  <ItemCategory>Category: {item.category}</ItemCategory>
+                </ItemContent>
+              </GalleryItem>
+            </Link>
+          ))}
+        </GalleryGrid>
+      </PageContainer>
+      <SingleFooter/>
+    </div>
   );
 };
 

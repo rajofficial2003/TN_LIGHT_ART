@@ -7,6 +7,8 @@ import UploadLogo from './Pages/UploadYourLogo';
 import SingleFooter from './Components/Footer';
 import Gallery from './Pages/Gallery';
 import CustomNeonPage from './Pages/CustomNeon';
+import ProductDetails from './Pages/productdetails';
+import ContactPage from './Pages/Contact';
 
 
 function App() {
@@ -17,8 +19,11 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/upload-logo" element={<UploadLogo />} />
-          <Route path="/custom-signs" element={<Gallery />} />
+          <Route path="/gallery" element={<Gallery />} />
           <Route path="/custom-neon" element={<CustomNeonPage />} />
+          <Route path="/product-details" element={<ProductDetails />} />
+          <Route path="/contact" element={<ContactPage />} />
+        
         
         </Routes>
       

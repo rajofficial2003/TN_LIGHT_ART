@@ -245,7 +245,7 @@ const Header = () => {
   const navItems = [
     { title: 'Home', link: '/' },
     { title: 'Upload Your Logo', link: '/upload-logo' },
-    { title: 'Gallery', link: '/custom-signs' },
+    { title: 'Gallery', link: '/gallery' },
     { title: 'Custom Neon', link: '/custom-neon' },
     { title: 'Contact', link: '/contact' }
   ];
@@ -254,7 +254,7 @@ const Header = () => {
     <HeaderContainer>
       <Nav>
         <div to="/">
-          <img className='img-fluid col-12 col-lg-2'  src={logo} alt="TN Light Arts Logo" />
+          <img className='img-fluid col-9 col-lg-2'  src={logo} alt="TN Light Arts Logo" />
         </div>
         
         <DesktopNav>
@@ -277,13 +277,14 @@ const Header = () => {
 
       <MobileMenu isOpen={isOpen}>
         <MobileHeader>
-          <BackButton onClick={toggleMenu}>←</BackButton>
-          <img src={logo} alt="TN Light Arts Logo" />
+        
+        <img className='img-fluid col-9 col-lg-2'  src={logo} alt="TN Light Arts Logo" />
           <MobileIconsContainer>
             <Icon>🔍</Icon>
             <Icon>♡</Icon>
             <Icon>🛒</Icon>
           </MobileIconsContainer>
+          <BackButton onClick={toggleMenu}>←</BackButton>
         </MobileHeader>
 
         <WelcomeSection>

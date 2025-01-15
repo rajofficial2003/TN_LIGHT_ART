@@ -7,7 +7,7 @@ import Footer from '../Components/Footer';
 
 import one from '../Images/Neon-lights/alisha 5.jpeg'
 import two from '../Images/Neon-lights/ice 2.jpeg'
-import three from '../Images/Neon-lights/three.jpg'
+import three from '../Images/Neon-lights/sheela 1.jpeg'
 
 const GalleryItem = styled(motion.div)`
   background: white;

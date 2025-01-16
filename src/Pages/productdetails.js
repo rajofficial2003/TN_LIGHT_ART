@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { Star, ShoppingCart, Heart, Share2, ChevronRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import SingleFooter from '../Components/Footer';
 import Header from '../Components/Header';
 
@@ -249,18 +249,200 @@ const RatingText = styled.span`
 `;
 
 const ProductDetails = () => {
-  const [images, setImages] = useState([
-    'https://picsum.photos/600/400?random=1',
-    'https://picsum.photos/600/400?random=2',
-    'https://picsum.photos/600/400?random=3',
-    'https://picsum.photos/600/400?random=4',
-    'https://picsum.photos/600/400?random=5'
-  ]);
-  const [selectedImage, setSelectedImage] = useState(images[0]);
+  const { id } = useParams();
+  const [product, setProduct] = useState(null);
+  const [selectedImage, setSelectedImage] = useState('');
+
+  useEffect(() => {
+    // Simulated product data - replace this with actual data fetching logic
+    const products = [
+      {
+        id: 1,
+        title: "Custom Business Logo",
+        category: "business",
+        price: "₹299",
+        originalPrice: "₹349",
+        discount: "14% OFF",
+        description: "Illuminate your business with our custom neon sign. This high-quality LED neon sign is perfect for creating a unique and eye-catching display of your business logo. Energy-efficient, durable, and designed to make a lasting impression.",
+        features: [
+          "Customizable design",
+          "Energy-efficient LED technology",
+          "Durable acrylic backing",
+          "Easy to install",
+          "1-year warranty"
+        ],
+        images: [
+          '../Images/Neon-lights/alisha 1.jpeg',
+          '../Images/Neon-lights/alisha 2.jpeg',
+          '../Images/Neon-lights/alisha 4.jpeg',
+          '../Images/Neon-lights/alisha 5.jpeg',
+        ],
+        rating: 4,
+        reviews: 24
+      },
+      {
+        id: 2,
+        title: "Wedding Name Sign",
+        category: "wedding",
+        price: "₹249",
+        originalPrice: "₹299",
+        discount: "17% OFF",
+        description: "Make your special day even more memorable with our custom wedding name sign. This elegant neon sign adds a touch of romance and personalization to your wedding venue.",
+        features: [
+          "Personalized design",
+          "Soft, warm glow",
+          "Lightweight and portable",
+          "Battery-powered option available",
+          "Perfect photo backdrop"
+        ],
+        images: [
+          '../Images/Neon-lights/ice 4.jpeg',
+          '../Images/Neon-lights/ice 2.jpeg',
+          '../Images/Neon-lights/ice 3.jpeg',
+
+          '../Images/Neon-lights/ice 2.jpeg',
+        ],
+        rating: 5,
+        reviews: 36
+      },
+      {
+        id: 3,
+        title: "Bar Neon Sign",
+        category: "business",
+        price: "₹399",
+        originalPrice: "₹449",
+        discount: "11% OFF",
+        description: "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
+        features: [
+          "Multiple design options",
+          "Bright, attention-grabbing display",
+          "Durable construction for long-lasting use",
+          "Easy wall mounting",
+          "Low power consumption"
+        ],
+        images: [
+          '../Images/Neon-lights/mani 2.jpeg',
+          '../Images/Neon-lights/mani 1.jpeg',
+          '../Images/Neon-lights/mani 3.jpeg',
+          '../Images/Neon-lights/mani 4.jpeg',
+        ],
+        rating: 4,
+        reviews: 18
+      },
+      {
+        id: 4,
+        title: "Bar Neon Sign",
+        category: "business",
+        price: "₹399",
+        originalPrice: "₹449",
+        discount: "11% OFF",
+        description: "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
+        features: [
+          "Multiple design options",
+          "Bright, attention-grabbing display",
+          "Durable construction for long-lasting use",
+          "Easy wall mounting",
+          "Low power consumption"
+        ],
+        images: [
+          '../Images/Neon-lights/vsv 1.jpeg',
+          '../Images/Neon-lights/vsv 2.jpeg',
+          '../Images/Neon-lights/vsv 3.jpeg',
+          '../Images/Neon-lights/vsv 4.jpeg',
+        ],
+        rating: 4,
+        reviews: 18
+      },
+      {
+        id: 5,
+        title: "Bar Neon Sign",
+        category: "business",
+        price: "₹399",
+        originalPrice: "₹449",
+        discount: "11% OFF",
+        description: "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
+        features: [
+          "Multiple design options",
+          "Bright, attention-grabbing display",
+          "Durable construction for long-lasting use",
+          "Easy wall mounting",
+          "Low power consumption"
+        ],
+        images: [
+          '../Images/Neon-lights/sheela 1.jpeg',
+          '../Images/Neon-lights/Sheela 2.jpeg',
+          '../Images/Neon-lights/Sheela 3.jpeg',
+          '../Images/Neon-lights/Sheela 5.jpeg',
+        ],
+        rating: 4,
+        reviews: 18
+      },
+      {
+        id: 6,
+        title: "maasani",
+        category: "business",
+        price: "₹399",
+        originalPrice: "₹449",
+        discount: "11% OFF",
+        description: "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
+        features: [
+          "Multiple design options",
+          "Bright, attention-grabbing display",
+          "Durable construction for long-lasting use",
+          "Easy wall mounting",
+          "Low power consumption"
+        ],
+        images: [
+          '../Images/Neon-lights/maasani 1.jpeg',
+          '../Images/Neon-lights/maasani 2.jpeg',
+          '../Images/Neon-lights/maasani 3.jpeg',
+          '../Images/Neon-lights/maasani 4.jpeg',
+          '../Images/Neon-lights/maasani 5.jpeg',
+        ],
+        rating: 4,
+        reviews: 18
+      },
+      {
+        id: 7,
+        title: "maasani",
+        category: "business",
+        price: "₹399",
+        originalPrice: "₹449",
+        discount: "11% OFF",
+        description: "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
+        features: [
+          "Multiple design options",
+          "Bright, attention-grabbing display",
+          "Durable construction for long-lasting use",
+          "Easy wall mounting",
+          "Low power consumption"
+        ],
+        images: [
+          '../Images/Neon-lights/sara 1.jpeg',
+          '../Images/Neon-lights/sara 2.jpeg',
+          '../Images/Neon-lights/sara 3.jpeg',
+          '../Images/Neon-lights/sara 4.jpeg',
+          '../Images/Neon-lights/sara 5.jpeg',
+        ],
+        rating: 4,
+        reviews: 18
+      },
+    ];
+
+    const foundProduct = products.find(p => p.id === parseInt(id));
+    setProduct(foundProduct);
+    if (foundProduct) {
+      setSelectedImage(foundProduct.images[0]);
+    }
+  }, [id]);
 
   const handleThumbnailClick = (image) => {
     setSelectedImage(image);
   };
+
+  if (!product) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
@@ -271,51 +453,46 @@ const ProductDetails = () => {
           <Breadcrumb>
             <BreadcrumbLink to="/gallery">Gallery</BreadcrumbLink>
             <ChevronRight size={16} />
-            <span>Product Details</span>
+            <span>{product.title}</span>
           </Breadcrumb>
         </div>
         <ProductContainer>
           <ImageGallery>
-            <MainImage src={selectedImage || "/placeholder.svg"} alt="Custom Neon Sign" />
+            <MainImage src={selectedImage || "/placeholder.svg"} alt={product.title} className="img-fluid" />
             <ThumbnailContainer>
-              {images.map((img, index) => (
+              {product.images.map((img, index) => (
                 <Thumbnail 
                   key={index} 
                   src={img} 
-                  alt={`Product ${index + 1}`} 
+                  alt={`${product.title} ${index + 1}`} 
                   onClick={() => handleThumbnailClick(img)}
                   selected={selectedImage === img}
+                  className="img-thumbnail"
                 />
               ))}
             </ThumbnailContainer>
           </ImageGallery>
           <ProductInfo>
-            <Title>Custom Neon Sign - Business Logo</Title>
+            <Title>{product.title}</Title>
             <RatingContainer>
               <StarContainer>
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} fill={i < 4 ? "#ffc107" : "none"} stroke={i < 4 ? "#ffc107" : "#ffc107"} size={20} />
+                  <Star key={i} fill={i < product.rating ? "#ffc107" : "none"} stroke={i < product.rating ? "#ffc107" : "#ffc107"} size={20} />
                 ))}
               </StarContainer>
-              <RatingText>4.0 (24 reviews)</RatingText>
+              <RatingText>{product.rating}.0 ({product.reviews} reviews)</RatingText>
             </RatingContainer>
             <PriceContainer>
-              <Price>₹249</Price>
-              <OriginalPrice>₹299</OriginalPrice>
-              <Discount>17% OFF</Discount>
+              <Price>{product.price}</Price>
+              <OriginalPrice>{product.originalPrice}</OriginalPrice>
+              <Discount>{product.discount}</Discount>
             </PriceContainer>
-            <Category>Category: Business</Category>
-            <Description>
-              Illuminate your business with our custom neon sign. This high-quality LED neon sign 
-              is perfect for creating a unique and eye-catching display of your business logo. 
-              Energy-efficient, durable, and designed to make a lasting impression.
-            </Description>
+            <Category>Category: {product.category}</Category>
+            <Description>{product.description}</Description>
             <FeatureList>
-              <FeatureItem>Customizable design</FeatureItem>
-              <FeatureItem>Energy-efficient LED technology</FeatureItem>
-              <FeatureItem>Durable acrylic backing</FeatureItem>
-              <FeatureItem>Easy to install</FeatureItem>
-              <FeatureItem>1-year warranty</FeatureItem>
+              {product.features.map((feature, index) => (
+                <FeatureItem key={index}>{feature}</FeatureItem>
+              ))}
             </FeatureList>
             <ButtonContainer>
               <AddToCartButton>

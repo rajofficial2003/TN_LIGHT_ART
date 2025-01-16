@@ -10,6 +10,8 @@ import one from '../Images/Neon-lights/alisha 1.jpeg';
 import four from '../Images/Neon-lights/vsv 4.jpeg';
 import three from '../Images/Neon-lights/mani 2.jpeg';
 import five from '../Images/Neon-lights/sheela 1.jpeg';
+import six from '../Images/Neon-lights/maasani 1.jpeg';
+import seven from '../Images/Neon-lights/sara 1.jpeg';
 
 const fadeIn = keyframes`
   from {
@@ -191,22 +193,22 @@ const Gallery = () => {
       title: "Home Decor Quote",
       category: "personal",
       price: "₹179",
-      image: five
+      image: six
     },
     {
       id: 7,
       title: "Event Backdrop",
       category: "event",
       price: "₹599",
-      image: five
+      image: seven
     },
-    {
-      id: 8,
-      title: "Gaming Room Sign",
-      category: "personal",
-      price: "₹229",
-      image: five
-    },
+    // {
+    //   id: 8,
+    //   title: "Gaming Room Sign",
+    //   category: "personal",
+    //   price: "₹229",
+    //   image: five
+    // },
   ];
 
   useEffect(() => {
@@ -264,7 +266,7 @@ const Gallery = () => {
 
         <GalleryGrid>
           {items.map((item) => (
-            <Link to="/product-details" key={item.id} style={{ textDecoration: 'none' }}>
+            <Link to={`/product-details/${item.id}`} key={item.id} style={{ textDecoration: 'none' }}>
               <GalleryItem
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -287,4 +289,3 @@ const Gallery = () => {
 };
 
 export default Gallery;
-

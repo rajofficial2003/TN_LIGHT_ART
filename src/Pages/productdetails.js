@@ -379,7 +379,7 @@ const ProductDetails = () => {
       },
       {
         id: 6,
-        title: "maasani",
+        title: "Neon Light",
         category: "business",
         price: "₹399",
         originalPrice: "₹449",
@@ -427,6 +427,80 @@ const ProductDetails = () => {
         rating: 4,
         reviews: 18
       },
+      {
+        id: 50,
+        title: "maasani",
+        category: "business",
+        price: "₹399",
+        originalPrice: "₹449",
+        discount: "11% OFF",
+        description: "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
+        features: [
+          "Multiple design options",
+          "Bright, attention-grabbing display",
+          "Durable construction for long-lasting use",
+          "Easy wall mounting",
+          "Low power consumption"
+        ],
+        images: [
+          '../Images/Neon-lights/alisha 1.jpeg',
+          '../Images/Neon-lights/alisha 2.jpeg',
+          '../Images/Neon-lights/alisha 4.jpeg',
+          '../Images/Neon-lights/alisha 5.jpeg',
+        ],
+        rating: 4,
+        reviews: 18
+      },   
+       {
+        id: 51,
+        title: "maasani",
+        category: "business",
+        price: "₹399",
+        originalPrice: "₹449",
+        discount: "11% OFF",
+        description: "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
+        features: [
+          "Multiple design options",
+          "Bright, attention-grabbing display",
+          "Durable construction for long-lasting use",
+          "Easy wall mounting",
+          "Low power consumption"
+        ],
+        images: [
+          '../Images/Neon-lights/ice 4.jpeg',
+          '../Images/Neon-lights/ice 2.jpeg',
+          '../Images/Neon-lights/ice 3.jpeg',
+
+          '../Images/Neon-lights/ice 2.jpeg',
+        ],
+        rating: 4,
+        reviews: 18
+      },
+       {
+        id: 52,
+        title: "maasani",
+        category: "business",
+        price: "₹399",
+        originalPrice: "₹449",
+        discount: "11% OFF",
+        description: "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
+        features: [
+          "Multiple design options",
+          "Bright, attention-grabbing display",
+          "Durable construction for long-lasting use",
+          "Easy wall mounting",
+          "Low power consumption"
+        ],
+        images: [
+          '../Images/Neon-lights/sheela 1.jpeg',
+          '../Images/Neon-lights/Sheela 2.jpeg',
+          '../Images/Neon-lights/Sheela 3.jpeg',
+          '../Images/Neon-lights/Sheela 5.jpeg',
+        ],
+        rating: 4,
+        reviews: 18
+      },
+  
     ];
 
     const foundProduct = products.find(p => p.id === parseInt(id));

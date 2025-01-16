@@ -5,7 +5,7 @@ import { motion, useInView } from 'framer-motion';
 import Header from '../Components/Header';
 import Footer from '../Components/Footer';
 
-import one from '../Images/Neon-lights/alisha 5.jpeg'
+import one from '../Images/Neon-lights/alisha 4.jpeg'
 import two from '../Images/Neon-lights/ice 2.jpeg'
 import three from '../Images/Neon-lights/sheela 1.jpeg'
 
@@ -162,9 +162,9 @@ const HomePage = () => {
   const [email, setEmail] = useState('');
 
   const popularItems = [
-    { id: 1, title: "Custom Text Neon Sign", category: "personal", price: "From ₹299", image: one },
-    { id: 2, title: "Heart Neon Sign", category: "wedding", price: "From ₹249", image: two },
-    { id: 3, title: "Business Logo Neon Sign", category: "business", price: "From ₹399", image: three },
+    { id: 50, title: "Custom Text Neon Sign", category: "personal", price: "From ₹299", image: one },
+    { id: 51, title: "Heart Neon Sign", category: "wedding", price: "From ₹249", image: two },
+    { id: 52, title: "Business Logo Neon Sign", category: "business", price: "From ₹399", image: three },
   ];
 
   const handleNewsletterSubmit = (e) => {
@@ -233,7 +233,7 @@ const HomePage = () => {
             <div className="row">
               {popularItems.map((item) => (
                 <div className="col-md-4 mb-4" key={item.id}>
-                  <Link to="/product-details" style={{ textDecoration: 'none' }}>
+                  <Link to={`/product-details/${item.id}`} style={{ textDecoration: 'none' }}>
                     <GalleryItem
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}

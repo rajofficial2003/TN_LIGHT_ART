@@ -404,7 +404,7 @@ const ProductDetails = () => {
       },
       {
         id: 7,
-        title: "maasani",
+        title: "Neon Light",
         category: "business",
         price: "₹399",
         originalPrice: "₹449",
@@ -429,7 +429,7 @@ const ProductDetails = () => {
       },
       {
         id: 50,
-        title: "maasani",
+        title: "Neon Light",
         category: "business",
         price: "₹399",
         originalPrice: "₹449",
@@ -453,7 +453,7 @@ const ProductDetails = () => {
       },   
        {
         id: 51,
-        title: "maasani",
+        title: "Neon Light",
         category: "business",
         price: "₹399",
         originalPrice: "₹449",
@@ -478,7 +478,7 @@ const ProductDetails = () => {
       },
        {
         id: 52,
-        title: "maasani",
+        title: "Neon Light",
         category: "business",
         price: "₹399",
         originalPrice: "₹449",

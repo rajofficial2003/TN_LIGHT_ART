@@ -3,6 +3,7 @@ import styled, { createGlobalStyle, keyframes } from 'styled-components';
 import { motion } from 'framer-motion';
 import Header from '../Components/Header';
 import SingleFooter from '../Components/Footer';
+import { FaInstagram, FaWhatsapp, FaEnvelope, FaYoutube } from 'react-icons/fa';
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -209,9 +210,9 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log('Form submitted:', formData);
-    // Reset form after submission
+    const whatsappMessage = `Name: ${formData.name}%0AEmail: ${formData.email}%0AMessage: ${formData.message}`;
+    const whatsappUrl = `https://wa.me/918807488021?text=${whatsappMessage}`;
+    window.open(whatsappUrl, '_blank');
     setFormData({ name: '', email: '', message: '' });
   };
 
@@ -282,7 +283,7 @@ const Contact = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  Send Message
+                  Send Message via WhatsApp
                 </SubmitButton>
               </ContactForm>
               <ContactInfo
@@ -293,40 +294,40 @@ const Contact = () => {
                 <InfoItem>
                   <InfoTitle>Our Office</InfoTitle>
                   <InfoContent>
-                    123 Neon Street, Glow City<br />
-                    Luminous State, 12345<br />
-                    United States
+                    Coimbatore<br />
+                    Tamil Nadu<br />
+                    India
                   </InfoContent>
                 </InfoItem>
                 <InfoItem>
                   <InfoTitle>Contact Information</InfoTitle>
                   <InfoContent>
-                    Phone: +1 (555) 123-4567<br />
-                    Email: info@neonglow.com
+                    Phone: +91 8807488021<br />
+                    Email: tnlightart@gmail.com
                   </InfoContent>
                 </InfoItem>
                 <InfoItem>
                   <InfoTitle>Business Hours</InfoTitle>
                   <InfoContent>
-                    Monday - Friday: 9:00 AM - 6:00 PM<br />
-                    Saturday: 10:00 AM - 4:00 PM<br />
-                    Sunday: Closed
+                    <span style={{ backgroundColor: '#40E0D0', color: '#000310', padding: '2px 5px', borderRadius: '3px' }}>
+                      Open 24/7
+                    </span>
                   </InfoContent>
                 </InfoItem>
                 <InfoItem>
                   <InfoTitle>Follow Us</InfoTitle>
                   <SocialLinks>
-                    <SocialLink href="#" target="_blank" rel="noopener noreferrer">
-                      <i className="fab fa-facebook-f"></i>
+                    <SocialLink href="mailto:tnlightart@gmail.com" target="_blank" rel="noopener noreferrer">
+                      <FaEnvelope />
                     </SocialLink>
-                    <SocialLink href="#" target="_blank" rel="noopener noreferrer">
-                      <i className="fab fa-twitter"></i>
+                    <SocialLink href="https://www.instagram.com/tn_light_art" target="_blank" rel="noopener noreferrer">
+                      <FaInstagram />
                     </SocialLink>
-                    <SocialLink href="#" target="_blank" rel="noopener noreferrer">
-                      <i className="fab fa-instagram"></i>
+                    <SocialLink href="https://wa.me/918807488021" target="_blank" rel="noopener noreferrer">
+                      <FaWhatsapp />
                     </SocialLink>
-                    <SocialLink href="#" target="_blank" rel="noopener noreferrer">
-                      <i className="fab fa-pinterest"></i>
+                    <SocialLink href="https://www.youtube.com/@tn_light_art" target="_blank" rel="noopener noreferrer">
+                      <FaYoutube />
                     </SocialLink>
                   </SocialLinks>
                 </InfoItem>
@@ -338,7 +339,7 @@ const Contact = () => {
               transition={{ duration: 0.5, delay: 0.8 }}
             >
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.215707164965!2d-73.98784368459377!3d40.74844097932847!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1629794293527!5m2!1sen!2sus"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d125322.51346879014!2d76.8848334354658!3d11.013957788123168!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba859af2f971cb5%3A0x2fc1c81e183ed282!2sCoimbatore%2C%20Tamil%20Nadu!5e0!3m2!1sen!2sin!4v1737169490744!5m2!1sen!2sin"
                 width="100%"
                 height="450"
                 style={{ border: 0 }}

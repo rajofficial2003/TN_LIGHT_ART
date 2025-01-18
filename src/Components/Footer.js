@@ -31,7 +31,7 @@ const SingleFooter = () => {
   ];
 
   return (
-    <footer className="bg-dark text-white" style={{ background: 'linear-gradient(to bottom, #1a1a1a, #000000)' }}>
+    <footer className="bg-dark text-white" style={{ background: 'linear-gradient(to right, #0A0F10, #1a1a1a)' }}>
       <div className="container py-5">
         <div className="row">
           <div className="col-lg-4 mb-4">
@@ -78,7 +78,7 @@ const SingleFooter = () => {
         </div>
       </div>
       <div className="bg-black text-center py-3">
-        <p className="mb-0 text-muted">&copy; {new Date().getFullYear()} Neon Signs. All rights reserved.</p>
+        <p className="mb-0 text-secondary">&copy; {new Date().getFullYear()} Neon Signs. All rights reserved.</p>
       </div>
     </footer>
   );

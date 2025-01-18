@@ -20,7 +20,7 @@ const fadeIn = keyframes`
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0);-=-=-=-=-=-=-=-3
   }
 `;
 

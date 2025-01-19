@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import styled, { createGlobalStyle, keyframes } from 'styled-components';
-import { motion } from 'framer-motion';
-import Header from '../Components/Header';
-import SingleFooter from '../Components/Footer';
-import { FaInstagram, FaWhatsapp, FaEnvelope, FaYoutube } from 'react-icons/fa';
+import React, { useState } from "react";
+import styled, { createGlobalStyle, keyframes } from "styled-components";
+import { motion } from "framer-motion";
+import Header from "../Components/Header";
+import SingleFooter from "../Components/Footer";
+import { FaInstagram, FaWhatsapp, FaEnvelope, FaYoutube } from "react-icons/fa";
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -15,8 +15,8 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #0a0a0a;
-    color: #ffffff;
+    background-color: #ffffff;
+    color: #000000;
   }
 `;
 
@@ -38,7 +38,7 @@ const PageContainer = styled.div`
 
 const ContactSection = styled.section`
   padding: 100px 0;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  background: #ffffff;
 `;
 
 const Container = styled.div`
@@ -54,10 +54,10 @@ const ContactHeader = styled.div`
 
 const Title = styled(motion.h1)`
   font-size: 3.5rem;
-  color: #40E0D0;
+  color: #40e0d0;
   margin-bottom: 1rem;
-  font-family: 'NeonGlow', 'Arial', sans-serif;
-  text-shadow: 0 0 10px #40E0D0, 0 0 20px #40E0D0, 0 0 30px #40E0D0;
+  font-family: "NeonGlow", "Arial", sans-serif;
+  text-shadow: 0 0 10px #40e0d0, 0 0 20px #40e0d0, 0 0 30px #40e0d0;
 
   @media (max-width: 768px) {
     font-size: 2.5rem;
@@ -66,7 +66,7 @@ const Title = styled(motion.h1)`
 
 const Subtitle = styled(motion.p)`
   font-size: 1.2rem;
-  color: #cccccc;
+  color: #333333;
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.6;
@@ -84,7 +84,7 @@ const ContactContent = styled.div`
 
 const ContactForm = styled(motion.form)`
   flex: 1;
-  background: rgba(26, 26, 26, 0.8);
+  background: rgba(64, 224, 208, 0.1);
   padding: 2rem;
   border-radius: 15px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -97,23 +97,23 @@ const FormGroup = styled.div`
 const Label = styled.label`
   display: block;
   margin-bottom: 0.5rem;
-  color: #ffffff;
+  color: #333333;
   font-weight: 600;
 `;
 
 const Input = styled.input`
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid #40E0D0;
+  border: 1px solid #40e0d0;
   border-radius: 5px;
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #333333;
   font-size: 1rem;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 
   &:focus {
     outline: none;
-    border-color: #40E0D0;
+    border-color: #40e0d0;
     box-shadow: 0 0 0 2px rgba(64, 224, 208, 0.2);
   }
 `;
@@ -121,10 +121,10 @@ const Input = styled.input`
 const TextArea = styled.textarea`
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid #40E0D0;
+  border: 1px solid #40e0d0;
   border-radius: 5px;
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #333333;
   font-size: 1rem;
   resize: vertical;
   min-height: 150px;
@@ -132,14 +132,14 @@ const TextArea = styled.textarea`
 
   &:focus {
     outline: none;
-    border-color: #40E0D0;
+    border-color: #40e0d0;
     box-shadow: 0 0 0 2px rgba(64, 224, 208, 0.2);
   }
 `;
 
 const SubmitButton = styled(motion.button)`
-  background-color: #40E0D0;
-  color: #000310;
+  background-color: #40e0d0;
+  color: #ffffff;
   border: none;
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
@@ -149,7 +149,7 @@ const SubmitButton = styled(motion.button)`
   transition: background-color 0.3s ease, transform 0.3s ease;
 
   &:hover {
-    background-color: #2CC1B1;
+    background-color: #2cc1b1;
     transform: translateY(-2px);
   }
 `;
@@ -164,13 +164,13 @@ const InfoItem = styled.div`
 
 const InfoTitle = styled.h3`
   font-size: 1.5rem;
-  color: #40E0D0;
+  color: #40e0d0;
   margin-bottom: 1rem;
 `;
 
 const InfoContent = styled.p`
   font-size: 1.1rem;
-  color: #cccccc;
+  color: #333333;
   line-height: 1.6;
 `;
 
@@ -181,12 +181,12 @@ const SocialLinks = styled.div`
 `;
 
 const SocialLink = styled.a`
-  color: #40E0D0;
+  color: #40e0d0;
   font-size: 1.5rem;
   transition: color 0.3s ease;
 
   &:hover {
-    color: #2CC1B1;
+    color: #2cc1b1;
   }
 `;
 
@@ -199,9 +199,9 @@ const MapContainer = styled(motion.div)`
 
 const Contact = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
+    name: "",
+    email: "",
+    message: "",
   });
 
   const handleChange = (e) => {
@@ -212,8 +212,8 @@ const Contact = () => {
     e.preventDefault();
     const whatsappMessage = `Name: ${formData.name}%0AEmail: ${formData.email}%0AMessage: ${formData.message}`;
     const whatsappUrl = `https://wa.me/918807488021?text=${whatsappMessage}`;
-    window.open(whatsappUrl, '_blank');
-    setFormData({ name: '', email: '', message: '' });
+    window.open(whatsappUrl, "_blank");
+    setFormData({ name: "", email: "", message: "" });
   };
 
   return (
@@ -229,14 +229,15 @@ const Contact = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                Get in Touch
+                <span style={{ color: "white" }}> Get in Touch</span>
               </Title>
               <Subtitle
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
-                Have a question or want to create a custom neon sign? We're here to help!
+                Have a question or want to create a custom neon sign? We're here
+                to help!
               </Subtitle>
             </ContactHeader>
             <ContactContent>
@@ -294,22 +295,31 @@ const Contact = () => {
                 <InfoItem>
                   <InfoTitle>Our Office</InfoTitle>
                   <InfoContent>
-                    Coimbatore<br />
-                    Tamil Nadu<br />
+                    Coimbatore
+                    <br />
+                    Tamil Nadu
+                    <br />
                     India
                   </InfoContent>
                 </InfoItem>
                 <InfoItem>
                   <InfoTitle>Contact Information</InfoTitle>
                   <InfoContent>
-                    Phone: +91 8807488021<br />
-                    Email: tnlightart@gmail.com
+                    Ragavendra complex , subramanian Nagar , Cinnavedanpatti
+                    Coimbatore 641049
                   </InfoContent>
                 </InfoItem>
                 <InfoItem>
                   <InfoTitle>Business Hours</InfoTitle>
                   <InfoContent>
-                    <span style={{ backgroundColor: '#40E0D0', color: '#000310', padding: '2px 5px', borderRadius: '3px' }}>
+                    <span
+                      style={{
+                        backgroundColor: "#40E0D0",
+                        color: "#ffffff",
+                        padding: "2px 5px",
+                        borderRadius: "3px",
+                      }}
+                    >
                       Open 24/7
                     </span>
                   </InfoContent>
@@ -317,16 +327,32 @@ const Contact = () => {
                 <InfoItem>
                   <InfoTitle>Follow Us</InfoTitle>
                   <SocialLinks>
-                    <SocialLink href="mailto:tnlightart@gmail.com" target="_blank" rel="noopener noreferrer">
+                    <SocialLink
+                      href="mailto:tnlightart@gmail.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <FaEnvelope />
                     </SocialLink>
-                    <SocialLink href="https://www.instagram.com/tn_light_art" target="_blank" rel="noopener noreferrer">
+                    <SocialLink
+                      href="https://www.instagram.com/tn_light_art"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <FaInstagram />
                     </SocialLink>
-                    <SocialLink href="https://wa.me/918807488021" target="_blank" rel="noopener noreferrer">
+                    <SocialLink
+                      href="https://wa.me/918807488021"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <FaWhatsapp />
                     </SocialLink>
-                    <SocialLink href="https://www.youtube.com/@tn_light_art" target="_blank" rel="noopener noreferrer">
+                    <SocialLink
+                      href="https://www.youtube.com/@tn_light_art"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <FaYoutube />
                     </SocialLink>
                   </SocialLinks>
@@ -357,4 +383,3 @@ const Contact = () => {
 };
 
 export default Contact;
-

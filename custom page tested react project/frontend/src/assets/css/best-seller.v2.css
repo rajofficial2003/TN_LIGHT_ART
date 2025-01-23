@@ -1,0 +1,74 @@
+.bestseller-search {
+    border-radius: 30px;
+    background-color: #F6F6F6;
+    height: 59px;
+}
+
+h2 {
+    font-size: 17rem;
+}
+
+.search-con-best-seller {
+    padding: 0rem 6rem;
+    width: 90%;
+    margin-inline: auto;
+}
+
+.bestseller-search .columns {
+    padding: 0 10px;
+    border-right: 1px solid #B8B8B8 !important;
+    font-size: 15rem;
+}
+
+.bestseller-search .columns:last-child {
+    border-right: none !important;
+}
+
+.bestseller-search .columns.search {
+    width: 50%;
+}
+
+.bestseller-search .columns.popularity {
+    width: 30%;
+}
+
+.bestseller-search .columns.price {
+    width: 20%;
+}
+
+.sub-title {
+    height: max-content !important;
+}
+
+.fa-magnifying-glass {
+    font-size: 26px;
+}
+
+.search-input {
+    outline: none;
+    border: none;
+    margin-left: 10rem;
+    background-color: transparent;
+}
+
+input {
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 0px;
+    color: #000000;
+}
+
+select {
+    outline: none;
+    border: none;
+    background-color: transparent;
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 0px;
+    /* identical to box height, or 0% */
+    display: flex;
+    align-items: center;
+    text-align: left;
+    cursor: pointer;
+    color: #000000;
+}

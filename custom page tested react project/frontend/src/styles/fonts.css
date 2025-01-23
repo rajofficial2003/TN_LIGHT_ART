@@ -1,0 +1,20 @@
+/* The 2021 Custom Neon Fonts */
+
+@font-face {
+    font-family: "Alexa";
+    src: url("fonts/custom/Alexa.ttf") format("truetype");
+  }
+  
+  @font-face {
+    font-family: "Amanda";
+    src: url("fonts/custom/Amanda.ttf") format("truetype");
+  }
+  
+  @font-face {
+    font-family: "Amsterdam";
+    src: url("fonts/custom/Amsterdam.ttf") format("truetype");
+  }
+  
+  /* Add more custom font declarations here */
+  
+  

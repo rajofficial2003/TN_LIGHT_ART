@@ -1,0 +1,91 @@
+.designer-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 460px;
+    height: 90px;
+    margin: 25px;
+    background: #F9F8F8;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.25);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    border-radius: 68px;
+    border: solid 1px transparent;
+    line-height: 29px;
+    cursor: pointer;
+}
+
+section.page1 .name .sub-title {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 60rem;
+    line-height: 75rem;
+    text-align: center;
+    color: #000000;
+    width: 11em !important;
+    height: 183rem;
+}
+
+.page1 {
+    height: max-content !important;
+}
+
+.persons {
+    position: absolute;
+    top: 30%;
+    width: 500px;
+    height: 621.17px;
+    transform: translateX(20px);
+    right: -29px;
+    z-index: 100;
+}
+
+.featureHire {
+    background-color: #f6f6f6;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 0px;
+    margin-top: 126rem;
+}
+
+.featureContent {
+    margin: 0 20rem;
+}
+
+.featureContent h1 {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 48px;
+    line-height: 60px;
+    text-align: left;
+    margin: 30rem 0;
+    color: #000000;
+}
+
+.featureContent p {
+    padding-left: 15px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 21px;
+    line-height: 26px;
+    text-align: left;
+    color: #000000;
+}
+
+.page2 div {
+    font-weight: 700 !important;
+}
+
+section.tabs {
+    position: relative;
+    margin-top: 105rem !important;
+}
+
+.page2 {
+    margin-top: 25rem;
+}
+
+.page6 {
+    min-height: 60vh;
+}

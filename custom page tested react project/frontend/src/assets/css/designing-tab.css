@@ -1,0 +1,407 @@
+section.main-content {
+    margin-top: 20px;
+    background-image: none;
+    height: max-content !important;
+    padding: 5px 0;
+}
+
+section.main-content .product-container {
+    justify-content: center;
+    align-items: flex-start;
+}
+
+section.main-content .product-container .images-section {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+section.main-content .product-container .preview-container.images-section {
+    position: relative;
+    display: flex;
+    width: 55%;
+    height: 94vh;
+    background-image: url(../images/background/background1.jpg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+}
+
+section.main-content .product-container .preview-container .text-preview {
+    position: absolute;
+    /* margin: 15px 0 180px 0; */
+    top: 16%;
+    font-size: 4rem;
+    /* height: max-content !important; */
+    width: auto !important;
+    transition: none;
+    text-align: center;
+    color: #ffffff;
+    /* background-color: red; */
+    font-family: unset;
+    font-family: Alexa;
+    font-variant-ligatures: no-common-ligatures;
+    cursor: pointer;
+    white-space: nowrap;
+    line-height: 100%;
+    text-shadow: rgb(255 255 255) 0px 0px 5px, rgb(255 255 255) 0px 0px 10px, rgb(255 253 207) 0px 0px 20px, rgb(255 253 207) 0px 0px 30px, rgb(255 253 207) 0px 0px 40px, rgb(255 253 207) 0px 0px 55px, rgb(255 253 207) 0px 0px 75px;
+}
+
+.size-handler.vertical {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    width: 10px;
+    height: 0;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+}
+
+.size-handler.vertical .first {
+    height: 100%;
+    width: 3px;
+    background-color: white;
+}
+
+.size-handler.vertical .first::before {
+    content: "";
+    position: absolute;
+    transform: translateX(-6px);
+    width: 15px;
+    height: 3px;
+    background-color: white;
+}
+
+.size-handler.vertical .text {
+    color: white;
+    font-weight: 600;
+    line-height: 1.5em;
+}
+
+.size-handler.vertical .last {
+    height: 100%;
+    width: 3px;
+    background-color: white;
+}
+
+.size-handler.vertical .last::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    transform: translateX(-6px);
+    width: 15px;
+    height: 3px;
+    background-color: white;
+}
+
+.size-handler.horizontal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    width: 0;
+    height: 10px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+}
+
+.size-handler.horizontal .first {
+    height: 3px;
+    width: 100%;
+    background-color: white;
+}
+
+.size-handler.horizontal .first::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    transform: translateY(-5px);
+    width: 3px;
+    height: 15px;
+    background-color: white;
+}
+
+.size-handler.horizontal .text {
+    color: white;
+    font-weight: 600;
+    margin: 0px 4px;
+}
+
+.size-handler.horizontal .last {
+    height: 3px;
+    width: 100%;
+    background-color: white;
+}
+
+.size-handler.horizontal .last::before {
+    content: "";
+    position: absolute;
+    right: 0;
+    transform: translateY(-5px);
+    width: 3px;
+    height: 15px;
+    background-color: white;
+}
+
+.horizontal-scale span {
+    width: max-content;
+    height: max-content;
+    font-size: 12px;
+    color: black;
+    padding: 3px;
+    background: #404046 !important;
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: black;
+    border-radius: 5px;
+}
+
+.horizontal-scale {
+    display: flex;
+    position: absolute;
+    top: 57%;
+    width: 188px;
+    height: 4px;
+    background-color: red;
+    text-align: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.vertical-scale span {
+    width: max-content;
+    height: max-content;
+    font-size: 12px;
+    padding: 2px;
+    color: black;
+    background: #404046 !important;
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: black;
+    border-radius: 5px;
+}
+
+.vertical-scale {
+    display: flex;
+    position: absolute;
+    left: 67%;
+    width: 4px;
+    height: 54px;
+    background-color: red;
+    text-align: center;
+    text-align: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+section.main-content .product-container .edit-container.images-section {
+    padding: 10px 15px;
+    width: 33%;
+    height: 94vh;
+    overflow-y: auto;
+}
+
+main section.main-content .product-container .edit-container .name {
+    font-size: 30px;
+    font-weight: 500;
+}
+
+main section.main-content .product-container .edit-container p {
+    font-size: 18px;
+    margin: 10px;
+    margin-left: 0 !important;
+    color: rgb(113, 108, 108);
+}
+
+main section.main-content .product-container .edit-container .size-image {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.delhiveryExpected {
+    margin: 20px;
+    margin-left: 0;
+}
+
+main section.main-content .product-container .edit-container .price {
+    font-size: 23px;
+    margin-top: 20px;
+    font-weight: 400;
+}
+
+main section.main-content .product-container .edit-container .text-input textarea {
+    padding: 5px;
+    width: 90%;
+    border-radius: 5px;
+    font-size: 15px;
+    font-family: cursive;
+    background-color: #f5f5f5;
+    border: 1px solid rgb(180, 171, 171);
+    outline: none;
+    resize: vertical;
+    text-align: center;
+}
+
+main section.main-content .product-container .edit-container .text-input textarea:focus-visible {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.fluid-horizontal {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.box {
+    margin: 5px 5px;
+    width: max-content;
+    height: max-content;
+    border: 2px solid rgba(213, 202, 202, 0.995);
+    border-radius: 6px;
+    background-color: white;
+    text-align: center;
+    cursor: pointer;
+}
+
+.box.active {
+    border: 3px solid rgb(52, 223, 83);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+main section.main-content .product-container .edit-container .size-container .size {
+    padding: 5px 20px;
+    font-size: 20px;
+}
+
+main section.main-content .product-container .edit-container .background-option .box {
+    width: 50px;
+    height: 100px;
+}
+
+main section.main-content .product-container .edit-container .background-option .background {
+    width: 124px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+main section.main-content .product-container .edit-container .font-container {
+    height: 30vh;
+    overflow-y: auto;
+}
+
+main section.main-content .product-container .edit-container .font-container .font {
+    display: flex;
+    width: 80px;
+    height: 35px;
+    padding: 1px;
+    align-items: center;
+}
+
+main section.main-content .product-container .edit-container .color-option .color {
+    padding: 15px;
+    border-radius: 50%;
+    font-size: 35px;
+    border: none;
+}
+
+main section.main-content .product-container .edit-container .background-option {
+    position: relative;
+    height: 30vh;
+    overflow: hidden;
+}
+
+main section.main-content .product-container .edit-container .background-option .controller {
+    position: absolute;
+    top: 0;
+    cursor: pointer;
+    font-size: 35px;
+    margin-top: 12vh;
+    color: white;
+    background-color: red;
+    padding: 0 2px;
+}
+
+main section.main-content .product-container .edit-container .background-option .controller.left:active {
+    transform: translateX(-5px);
+}
+
+main section.main-content .product-container .edit-container .background-option .controller.left {
+    left: 0;
+}
+
+main section.main-content .product-container .edit-container .background-option .controller.right:active {
+    transform: translateX(5px);
+}
+
+main section.main-content .product-container .edit-container .background-option .controller.right {
+    right: 0;
+}
+
+main section.main-content .product-container .edit-container .background-option #bgscont {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+main section.main-content .product-container .edit-container .background-option .fluid-horizontal {
+    flex-wrap: nowrap;
+    width: max-content;
+}
+
+main section.main-content .product-container .edit-container .additional-checkbox {
+    align-items: center;
+    justify-content: center;
+    height: 20vh;
+    width: 100%;
+}
+
+main section.main-content .product-container .edit-container .additional-checkbox .box {
+    width: 45%;
+    height: 90%;
+    text-align: center;
+    font-size: 25px;
+    display: flex;
+    border: none;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    align-items: center;
+}
+
+main section.main-content .product-container .edit-container .additional-checkbox .box.active {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border: 1px solid blue;
+}
+
+main section.main-content .product-container .edit-container .buttons .button-action {
+    width: 100%;
+    height: 50px;
+    border-radius: 15px;
+    margin: 5px 0;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: white;
+    border: 1.5px solid;
+    outline: none;
+    cursor: pointer;
+}
+
+main section.main-content .product-container .edit-container .buttons .button-action:hover {
+    background-color: black;
+}

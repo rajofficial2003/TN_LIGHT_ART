@@ -1,0 +1,30 @@
+@media screen and (min-width: 300px) and (max-width: 450px) {
+    html {
+      font-size: 0.2vw;
+    }
+  
+    main {
+      width: calc(100vw) !important;
+    }
+  
+    header {
+      display: none !important;
+    }
+  
+    .maxine-title {
+      font-family: maxine;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 50px;
+      line-height: 129px;
+      background: linear-gradient(264.14deg, #ef19f3 2.71%, #971bf8 54.65%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+    }
+  
+    /* Add more responsive styles from the provided CSS here */
+  }
+  
+  

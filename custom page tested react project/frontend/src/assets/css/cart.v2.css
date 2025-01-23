@@ -1,0 +1,77 @@
+th {
+    font-weight: 700;
+    font-size: 21px;
+    line-height: 31px;
+    text-align: center;
+    color: #CF1AF5;
+    border: none !important;
+}
+
+h5 {
+    font-size: 18rem !important;
+}
+
+td {
+    padding: 25px 0 !important;
+    font-weight: 500;
+    font-size: 21px;
+    line-height: 31px;
+    color: #000000;
+    border-top: 1.5px solid #7f7f7f !important;
+}
+
+.salebtn {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 25px;
+    color: #FD08B6;
+}
+
+.oldPrice {
+    text-decoration: line-through;
+}
+
+.btn {
+    font-size: 15rem !important;
+}
+
+.action-btns {
+    padding: 5rem 15rem !important;
+    border-radius: 5rem !important;
+}
+
+.close-btn {
+    padding: 5rem 15rem !important;
+}
+
+.previewImage {
+    width: 105px;
+    height: 97px;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url(../images/neons/e33ba54f339302b1a6b8ac3c68ef86f0.jpg);
+}
+
+#checkout {
+    width: 270px;
+    height: 58px;
+    background: #FD08B6;
+    border-radius: 16px;
+    font-size: 25rem !important;
+}
+
+.subtotal {
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 38px;
+}
+
+.sub-title {
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 19px;
+    /* identical to box height */
+    color: #000000;
+}

@@ -1,0 +1,201 @@
+/* The 2021 Custom Neon Fonts */
+
+@font-face {
+    font-family: 'Alexa';
+    src: url('../assets/css/fonts/custom/Alexa.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Amanda';
+    src: url('../assets/css/fonts/custom/Amanda.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Amsterdam';
+    src: url('../assets/css/fonts/custom/Amsterdam.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Austin';
+    src: url('../assets/css/fonts/custom/Austin.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Avante';
+    src: url('../assets/css/fonts/custom/Avante.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Barcelona';
+    src: url('../assets/css/fonts/custom/Barcelona.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Bayview';
+    src: url('../assets/css/fonts/custom/Bayview.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Beachfront';
+    src: url('../assets/css/fonts/custom/Beachfront.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Bellview';
+    src: url('../assets/css/fonts/custom/Bellview.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Buttercup';
+    src: url('../assets/css/fonts/custom/Buttercup.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Chelsea';
+    src: url('../assets/css/fonts/custom/Chelsea.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'ClassicType';
+    src: url('../assets/css/fonts/custom/ClassicType.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Freehand';
+    src: url('../assets/css/fonts/custom/Freehand.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Freespirit';
+    src: url('../assets/css/fonts/custom/Freespirit.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Greenworld';
+    src: url('../assets/css/fonts/custom/Greenworld.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'LoveNeon';
+    src: url('../assets/css/fonts/custom/LoveNeon.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'LoveNote';
+    src: url('../assets/css/fonts/custom/LoveNote.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Marquee';
+    src: url('../assets/css/fonts/custom/Marquee.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Mayfair';
+    src: url('../assets/css/fonts/custom/Mayfair.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Melbourne';
+    src: url('../assets/css/fonts/custom/Melbourne.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Monaco';
+    src: url('../assets/css/fonts/custom/Monaco.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'NeonGlow';
+    src: url('../assets/css/fonts/custom/NeonGlow.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'NeonLite';
+    src: url('../assets/css/fonts/custom/NeonLite.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Neonscript';
+    src: url('../assets/css/fonts/custom/Neonscript.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Neontrace';
+    src: url('../assets/css/fonts/custom/Neontrace.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'NeoTokyo';
+    src: url('../assets/css/fonts/custom/NeoTokyo.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Nevada';
+    src: url('../assets/css/fonts/custom/Nevada.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'NewCursive';
+    src: url('../assets/css/fonts/custom/NewCursive.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Northshore';
+    src: url('../assets/css/fonts/custom/Northshore.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Photogenic';
+    src: url('../assets/css/fonts/custom/Photogenic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Rocket';
+    src: url('../assets/css/fonts/custom/Rocket.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Royalty';
+    src: url('../assets/css/fonts/custom/Royalty.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'SciFi';
+    src: url('../assets/css/fonts/custom/SciFi.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Signature';
+    src: url('../assets/css/fonts/custom/Signature.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Sorrento';
+    src: url('../assets/css/fonts/custom/Sorrento.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Typewriter';
+    src: url('../assets/css/fonts/custom/Typewriter.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Venetian';
+    src: url('../assets/css/fonts/custom/Venetian.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Vintage';
+    src: url('../assets/css/fonts/custom/Vintage.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Waikiki';
+    src: url('../assets/css/fonts/custom/Waikiki.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'WildScript';
+    src: url('../assets/css/fonts/custom/WildScript.ttf') format('truetype');
+}

@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { motion } from 'framer-motion';
-import { Star, ShoppingCart, Heart, Share2, ChevronRight } from 'lucide-react';
-import { Link, useParams } from 'react-router-dom';
-import SingleFooter from '../Components/Footer';
-import Header from '../Components/Header';
+"use client"
+
+import { useState, useEffect } from "react"
+import styled from "styled-components"
+import { Star, ShoppingCart, Heart, Share2, ChevronRight } from "lucide-react"
+import { Link, useParams } from "react-router-dom"
+import SingleFooter from "../Components/Footer"
+import Header from "../Components/Header"
 
 const PageContainer = styled.div`
   padding-top: 100px;
   min-height: 100vh;
   background: #f8f9fa;
-`;
+`
 
 const ProductContainer = styled.div`
   max-width: 1200px;
@@ -27,7 +28,7 @@ const ProductContainer = styled.div`
     padding: 1rem;
     gap: 1rem;
   }
-`;
+`
 
 const Breadcrumb = styled.div`
   display: flex;
@@ -35,7 +36,7 @@ const Breadcrumb = styled.div`
   font-size: 0.9rem;
   color: #666;
   margin-bottom: 1rem;
-`;
+`
 
 const BreadcrumbLink = styled(Link)`
   color: #40E0D0;
@@ -43,7 +44,7 @@ const BreadcrumbLink = styled(Link)`
   &:hover {
     text-decoration: underline;
   }
-`;
+`
 
 const ImageGallery = styled.div`
   flex: 1;
@@ -52,7 +53,7 @@ const ImageGallery = styled.div`
   @media (max-width: 768px) {
     min-width: 100%;
   }
-`;
+`
 
 const MainImage = styled.img`
   width: 100%;
@@ -64,14 +65,14 @@ const MainImage = styled.img`
   @media (max-width: 768px) {
     height: 300px;
   }
-`;
+`
 
 const ThumbnailContainer = styled.div`
   display: flex;
   gap: 1rem;
   overflow-x: auto;
   padding-bottom: 1rem;
-`;
+`
 
 const Thumbnail = styled.img`
   width: 80px;
@@ -80,7 +81,7 @@ const Thumbnail = styled.img`
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
-  border: 2px solid ${props => props.selected ? '#40E0D0' : 'transparent'};
+  border: 2px solid ${(props) => (props.selected ? "#40E0D0" : "transparent")};
 
   &:hover {
     transform: scale(1.05);
@@ -90,7 +91,7 @@ const Thumbnail = styled.img`
     width: 60px;
     height: 60px;
   }
-`;
+`
 
 const ProductInfo = styled.div`
   flex: 1;
@@ -99,7 +100,7 @@ const ProductInfo = styled.div`
   @media (max-width: 768px) {
     min-width: 100%;
   }
-`;
+`
 
 const Title = styled.h1`
   font-size: 2.5rem;
@@ -109,45 +110,45 @@ const Title = styled.h1`
   @media (max-width: 768px) {
     font-size: 2rem;
   }
-`;
+`
 
 const PriceContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
   margin-bottom: 1rem;
-`;
+`
 
 const Price = styled.p`
   font-size: 1.5rem;
   color: #40E0D0;
   font-weight: 500;
-`;
+`
 
 const OriginalPrice = styled.p`
   font-size: 1.2rem;
   color: #999;
   text-decoration: line-through;
-`;
+`
 
 const Discount = styled.span`
   font-size: 1rem;
   color: #ff6b6b;
   font-weight: 500;
-`;
+`
 
 const Category = styled.p`
   font-size: 1rem;
   color: #666;
   margin-bottom: 1rem;
-`;
+`
 
 const Description = styled.p`
   font-size: 1rem;
   color: #333;
   line-height: 1.6;
   margin-bottom: 2rem;
-`;
+`
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -158,7 +159,7 @@ const ButtonContainer = styled.div`
   @media (max-width: 768px) {
     flex-direction: column;
   }
-`;
+`
 
 const Button = styled.button`
   padding: 0.75rem 1.5rem;
@@ -176,7 +177,7 @@ const Button = styled.button`
   @media (max-width: 768px) {
     width: 100%;
   }
-`;
+`
 
 const AddToCartButton = styled(Button)`
   background: #40E0D0;
@@ -186,7 +187,7 @@ const AddToCartButton = styled(Button)`
   &:hover {
     background: #2CC1B1;
   }
-`;
+`
 
 const WishlistButton = styled(Button)`
   background: white;
@@ -197,7 +198,7 @@ const WishlistButton = styled(Button)`
   &:hover {
     background: #f8f9fa;
   }
-`;
+`
 
 const ShareButton = styled(Button)`
   background: white;
@@ -208,13 +209,13 @@ const ShareButton = styled(Button)`
   &:hover {
     background: #f8f9fa;
   }
-`;
+`
 
 const FeatureList = styled.ul`
   list-style-type: none;
   padding: 0;
   margin-bottom: 2rem;
-`;
+`
 
 const FeatureItem = styled.li`
   font-size: 1rem;
@@ -229,299 +230,308 @@ const FeatureItem = styled.li`
     color: #40E0D0;
     font-weight: bold;
   }
-`;
+`
 
 const RatingContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 1rem;
-`;
+`
 
 const StarContainer = styled.div`
   display: flex;
   color: #ffc107;
-`;
+`
 
 const RatingText = styled.span`
   font-size: 1rem;
   color: #666;
-`;
+`
 
 const ProductDetails = () => {
-  const { id } = useParams();
-  const [product, setProduct] = useState(null);
-  const [selectedImage, setSelectedImage] = useState('');
+  const { id } = useParams()
+  const [product, setProduct] = useState(null)
+  const [selectedImage, setSelectedImage] = useState("")
 
   useEffect(() => {
     // Simulated product data - replace this with actual data fetching logic
     const products = [
       {
         id: 1,
-        title: "Custom Business Logo",
+        title: "Kids Name Light",
         category: "business",
-        price: "₹299",
-        originalPrice: "₹349",
+        price: "₹9000",
+        originalPrice: "₹1100",
         discount: "14% OFF",
-        description: "Illuminate your business with our custom neon sign. This high-quality LED neon sign is perfect for creating a unique and eye-catching display of your business logo. Energy-efficient, durable, and designed to make a lasting impression.",
+        description:
+          "Illuminate your business with our custom neon sign. This high-quality LED neon sign is perfect for creating a unique and eye-catching display of your business logo. Energy-efficient, durable, and designed to make a lasting impression.",
         features: [
           "Customizable design",
           "Energy-efficient LED technology",
           "Durable acrylic backing",
           "Easy to install",
-          "1-year warranty"
+          "1-year warranty",
         ],
         images: [
-          '../Images/Neon-lights/alisha 1.jpeg',
-          '../Images/Neon-lights/alisha 2.jpeg',
-          '../Images/Neon-lights/alisha 4.jpeg',
-          '../Images/Neon-lights/alisha 5.jpeg',
+          "../Images/Neon-lights/alisha 1.jpeg",
+          "../Images/Neon-lights/alisha 2.jpeg",
+          "../Images/Neon-lights/alisha 4.jpeg",
+          "../Images/Neon-lights/alisha 5.jpeg",
         ],
         rating: 4,
-        reviews: 24
+        reviews: 24,
       },
       {
         id: 2,
-        title: "Wedding Name Sign",
+        title: "ஐஸ்வரியம்",
         category: "wedding",
-        price: "₹249",
-        originalPrice: "₹299",
+        price: "₹7500",
+        originalPrice: "₹9000",
         discount: "17% OFF",
-        description: "Make your special day even more memorable with our custom wedding name sign. This elegant neon sign adds a touch of romance and personalization to your wedding venue.",
+        description:
+          "Make your special day even more memorable with our custom wedding name sign. This elegant neon sign adds a touch of romance and personalization to your wedding venue.",
         features: [
           "Personalized design",
           "Soft, warm glow",
           "Lightweight and portable",
           "Battery-powered option available",
-          "Perfect photo backdrop"
+          "Perfect photo backdrop",
         ],
         images: [
-          '../Images/Neon-lights/ice 4.jpeg',
-          '../Images/Neon-lights/ice 2.jpeg',
-          '../Images/Neon-lights/ice 3.jpeg',
+          "../Images/Neon-lights/ice 4.jpeg",
+          "../Images/Neon-lights/ice 2.jpeg",
+          "../Images/Neon-lights/ice 3.jpeg",
 
-          '../Images/Neon-lights/ice 2.jpeg',
+          "../Images/Neon-lights/ice 2.jpeg",
         ],
         rating: 5,
-        reviews: 36
+        reviews: 36,
       },
       {
         id: 3,
-        title: "Bar Neon Sign",
+        title: "மணிவண்ணன் இல்லம்",
         category: "business",
-        price: "₹399",
-        originalPrice: "₹449",
+        price: "₹12000",
+        originalPrice: "₹13500",
         discount: "11% OFF",
-        description: "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
+        description:
+          "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
         features: [
           "Multiple design options",
           "Bright, attention-grabbing display",
           "Durable construction for long-lasting use",
           "Easy wall mounting",
-          "Low power consumption"
+          "Low power consumption",
         ],
         images: [
-          '../Images/Neon-lights/mani 2.jpeg',
-          '../Images/Neon-lights/mani 1.jpeg',
-          '../Images/Neon-lights/mani 3.jpeg',
-          '../Images/Neon-lights/mani 4.jpeg',
+          "../Images/Neon-lights/mani 2.jpeg",
+          "../Images/Neon-lights/mani 1.jpeg",
+          "../Images/Neon-lights/mani 3.jpeg",
+          "../Images/Neon-lights/mani 4.jpeg",
         ],
         rating: 4,
-        reviews: 18
+        reviews: 18,
       },
       {
         id: 4,
-        title: "Bar Neon Sign",
+        title: "VSV Sweet Home",
         category: "business",
-        price: "₹399",
-        originalPrice: "₹449",
+        price: "₹9600",
+        originalPrice: "₹10600",
         discount: "11% OFF",
-        description: "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
+        description:
+          "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
         features: [
           "Multiple design options",
           "Bright, attention-grabbing display",
           "Durable construction for long-lasting use",
           "Easy wall mounting",
-          "Low power consumption"
+          "Low power consumption",
         ],
         images: [
-          '../Images/Neon-lights/vsv 1.jpeg',
-          '../Images/Neon-lights/vsv 2.jpeg',
-          '../Images/Neon-lights/vsv 3.jpeg',
-          '../Images/Neon-lights/vsv 4.jpeg',
+          "../Images/Neon-lights/vsv 1.jpeg",
+          "../Images/Neon-lights/vsv 2.jpeg",
+          "../Images/Neon-lights/vsv 3.jpeg",
+          "../Images/Neon-lights/vsv 4.jpeg",
         ],
         rating: 4,
-        reviews: 18
+        reviews: 18,
       },
       {
         id: 5,
-        title: "Bar Neon Sign",
+        title: "Sheela Dental Clinic",
         category: "business",
-        price: "₹399",
-        originalPrice: "₹449",
+        price: "₹14400",
+        originalPrice: "₹16000",
         discount: "11% OFF",
-        description: "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
+        description:
+          "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
         features: [
           "Multiple design options",
           "Bright, attention-grabbing display",
           "Durable construction for long-lasting use",
           "Easy wall mounting",
-          "Low power consumption"
+          "Low power consumption",
         ],
         images: [
-          '../Images/Neon-lights/sheela 1.jpeg',
-          '../Images/Neon-lights/Sheela 2.jpeg',
-          '../Images/Neon-lights/Sheela 3.jpeg',
-          '../Images/Neon-lights/Sheela 5.jpeg',
+          "../Images/Neon-lights/sheela 1.jpeg",
+          "../Images/Neon-lights/Sheela 2.jpeg",
+          "../Images/Neon-lights/Sheela 3.jpeg",
+          "../Images/Neon-lights/Sheela 5.jpeg",
         ],
         rating: 4,
-        reviews: 18
+        reviews: 18,
       },
       {
         id: 6,
-        title: "Neon Light",
+        title: "மாசாணி அம்மன் இல்லம்",
         category: "business",
-        price: "₹399",
-        originalPrice: "₹449",
+        price: "₹12000",
+        originalPrice: "₹13500",
         discount: "11% OFF",
-        description: "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
+        description:
+          "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
         features: [
           "Multiple design options",
           "Bright, attention-grabbing display",
           "Durable construction for long-lasting use",
           "Easy wall mounting",
-          "Low power consumption"
+          "Low power consumption",
         ],
         images: [
-          '../Images/Neon-lights/maasani 1.jpeg',
-          '../Images/Neon-lights/maasani 2.jpeg',
-          '../Images/Neon-lights/maasani 3.jpeg',
-          '../Images/Neon-lights/maasani 4.jpeg',
-          '../Images/Neon-lights/maasani 5.jpeg',
+          "../Images/Neon-lights/maasani 1.jpeg",
+          "../Images/Neon-lights/maasani 2.jpeg",
+          "../Images/Neon-lights/maasani 3.jpeg",
+          "../Images/Neon-lights/maasani 4.jpeg",
+          "../Images/Neon-lights/maasani 5.jpeg",
         ],
         rating: 4,
-        reviews: 18
+        reviews: 18,
       },
       {
         id: 7,
-        title: "Neon Light",
+        title: "சரணாலயம்",
         category: "business",
-        price: "₹399",
-        originalPrice: "₹449",
+        price: "₹9900",
+        originalPrice: "₹11000",
         discount: "11% OFF",
-        description: "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
+        description:
+          "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
         features: [
           "Multiple design options",
           "Bright, attention-grabbing display",
           "Durable construction for long-lasting use",
           "Easy wall mounting",
-          "Low power consumption"
+          "Low power consumption",
         ],
         images: [
-          '../Images/Neon-lights/sara 1.jpeg',
-          '../Images/Neon-lights/sara 2.jpeg',
-          '../Images/Neon-lights/sara 3.jpeg',
-          '../Images/Neon-lights/sara 4.jpeg',
-          '../Images/Neon-lights/sara 5.jpeg',
+          "../Images/Neon-lights/sara 1.jpeg",
+          "../Images/Neon-lights/sara 2.jpeg",
+          "../Images/Neon-lights/sara 3.jpeg",
+          "../Images/Neon-lights/sara 4.jpeg",
+          "../Images/Neon-lights/sara 5.jpeg",
         ],
         rating: 4,
-        reviews: 18
+        reviews: 18,
       },
       {
         id: 50,
         title: "Neon Light",
         category: "business",
-        price: "₹399",
-        originalPrice: "₹449",
+        price: "₹9000",
+        originalPrice: "₹11000",
         discount: "11% OFF",
-        description: "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
+        description:
+          "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
         features: [
           "Multiple design options",
           "Bright, attention-grabbing display",
           "Durable construction for long-lasting use",
           "Easy wall mounting",
-          "Low power consumption"
+          "Low power consumption",
         ],
         images: [
-          '../Images/Neon-lights/alisha 1.jpeg',
-          '../Images/Neon-lights/alisha 2.jpeg',
-          '../Images/Neon-lights/alisha 4.jpeg',
-          '../Images/Neon-lights/alisha 5.jpeg',
+          "../Images/Neon-lights/alisha 1.jpeg",
+          "../Images/Neon-lights/alisha 2.jpeg",
+          "../Images/Neon-lights/alisha 4.jpeg",
+          "../Images/Neon-lights/alisha 5.jpeg",
         ],
         rating: 4,
-        reviews: 18
-      },   
-       {
+        reviews: 18,
+      },
+      {
         id: 51,
         title: "Neon Light",
         category: "business",
         price: "₹399",
         originalPrice: "₹449",
         discount: "11% OFF",
-        description: "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
+        description:
+          "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
         features: [
           "Multiple design options",
           "Bright, attention-grabbing display",
           "Durable construction for long-lasting use",
           "Easy wall mounting",
-          "Low power consumption"
+          "Low power consumption",
         ],
         images: [
-          '../Images/Neon-lights/ice 4.jpeg',
-          '../Images/Neon-lights/ice 2.jpeg',
-          '../Images/Neon-lights/ice 3.jpeg',
+          "../Images/Neon-lights/ice 4.jpeg",
+          "../Images/Neon-lights/ice 2.jpeg",
+          "../Images/Neon-lights/ice 3.jpeg",
 
-          '../Images/Neon-lights/ice 2.jpeg',
+          "../Images/Neon-lights/ice 2.jpeg",
         ],
         rating: 4,
-        reviews: 18
+        reviews: 18,
       },
-       {
+      {
         id: 52,
         title: "Neon Light",
         category: "business",
         price: "₹399",
         originalPrice: "₹449",
         discount: "11% OFF",
-        description: "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
+        description:
+          "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
         features: [
           "Multiple design options",
           "Bright, attention-grabbing display",
           "Durable construction for long-lasting use",
           "Easy wall mounting",
-          "Low power consumption"
+          "Low power consumption",
         ],
         images: [
-          '../Images/Neon-lights/sheela 1.jpeg',
-          '../Images/Neon-lights/Sheela 2.jpeg',
-          '../Images/Neon-lights/Sheela 3.jpeg',
-          '../Images/Neon-lights/Sheela 5.jpeg',
+          "../Images/Neon-lights/sheela 1.jpeg",
+          "../Images/Neon-lights/Sheela 2.jpeg",
+          "../Images/Neon-lights/Sheela 3.jpeg",
+          "../Images/Neon-lights/Sheela 5.jpeg",
         ],
         rating: 4,
-        reviews: 18
+        reviews: 18,
       },
-  
-    ];
+    ]
 
-    const foundProduct = products.find(p => p.id === parseInt(id));
-    setProduct(foundProduct);
+    const foundProduct = products.find((p) => p.id === Number.parseInt(id))
+    setProduct(foundProduct)
     if (foundProduct) {
-      setSelectedImage(foundProduct.images[0]);
+      setSelectedImage(foundProduct.images[0])
     }
-  }, [id]);
+  }, [id])
 
   const handleThumbnailClick = (image) => {
-    setSelectedImage(image);
-  };
+    setSelectedImage(image)
+  }
 
   if (!product) {
-    return <div>Loading...</div>;
+    return <div>Loading...</div>
   }
 
   return (
     <div>
       <Header />
-      
+
       <PageContainer>
         <div className="container">
           <Breadcrumb>
@@ -535,10 +545,10 @@ const ProductDetails = () => {
             <MainImage src={selectedImage || "/placeholder.svg"} alt={product.title} className="img-fluid" />
             <ThumbnailContainer>
               {product.images.map((img, index) => (
-                <Thumbnail 
-                  key={index} 
-                  src={img} 
-                  alt={`${product.title} ${index + 1}`} 
+                <Thumbnail
+                  key={index}
+                  src={img}
+                  alt={`${product.title} ${index + 1}`}
                   onClick={() => handleThumbnailClick(img)}
                   selected={selectedImage === img}
                   className="img-thumbnail"
@@ -551,10 +561,17 @@ const ProductDetails = () => {
             <RatingContainer>
               <StarContainer>
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} fill={i < product.rating ? "#ffc107" : "none"} stroke={i < product.rating ? "#ffc107" : "#ffc107"} size={20} />
+                  <Star
+                    key={i}
+                    fill={i < product.rating ? "#ffc107" : "none"}
+                    stroke={i < product.rating ? "#ffc107" : "#ffc107"}
+                    size={20}
+                  />
                 ))}
               </StarContainer>
-              <RatingText>{product.rating}.0 ({product.reviews} reviews)</RatingText>
+              <RatingText>
+                {product.rating}.0 ({product.reviews} reviews)
+              </RatingText>
             </RatingContainer>
             <PriceContainer>
               <Price>{product.price}</Price>
@@ -569,10 +586,12 @@ const ProductDetails = () => {
               ))}
             </FeatureList>
             <ButtonContainer>
-              <AddToCartButton>
-                <ShoppingCart size={16} />
-                Add to Cart
-              </AddToCartButton>
+              <Link style={{ textDecoration: "none" }} to="/cart">
+                <AddToCartButton>
+                  <ShoppingCart size={16} />
+                  Add to Cart
+                </AddToCartButton>
+              </Link>
               <WishlistButton>
                 <Heart size={16} />
                 Wishlist
@@ -587,8 +606,8 @@ const ProductDetails = () => {
       </PageContainer>
       <SingleFooter />
     </div>
-  );
-};
+  )
+}
 
-export default ProductDetails;
+export default ProductDetails
 

@@ -8,6 +8,7 @@ import CustomNeonPage from './Pages/CustomNeon';
 import ProductDetails from './Pages/productdetails';
 import ContactPage from './Pages/Contact';
 import NeonDesigner from './Pages/NeonDesigner';
+import AddToCartForm from './Pages/AddToCart';
 
 
 
@@ -22,6 +23,7 @@ function App() {
           <Route path="/product-details/:id" element={<ProductDetails />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/custom-neon" element={<NeonDesigner />} />
+          <Route path="/cart" element={<AddToCartForm />} />
         </Routes>
       </div>
     </Router>

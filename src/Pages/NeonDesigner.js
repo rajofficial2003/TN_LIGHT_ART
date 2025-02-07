@@ -1,513 +1,10 @@
-import React, { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef } from "react"
 import Draggable from "react-draggable"
 import Header from "../Components/Header"
 import SingleFooter from "../Components/Footer"
+import "./NeonDesigner.css"
+import styled, { keyframes } from "styled-components"
 
-// Inline CSS styles
-const styles = `
-* {
-    box-sizing: border-box;
-    user-select: none;
-    -webkit-user-drag: none;
-}
-
-body, html {
-    margin: 0;
-    padding: 0;
-    font-family: 'Gothic A1', sans-serif;
-    font-size: 16px;
-}
-
-.neonDesigner {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    margin-top:80px;
-}
-
-.maxine-title {
-    font-family: maxine, sans-serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 85px;
-    line-height: 129px;
-    background: linear-gradient(264.14deg, #EF19F3 2.71%, #971BF8 54.65%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-align: center;
-}
-
-.sub-title {
-    font-style: normal;
-    font-weight: 500;
-    font-size: 54px;
-    line-height: 65px;
-    text-align: center;
-    color: #000000;
-    margin-bottom: 30px;
-}
-
-.editing {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-bottom: 40px;
-}
-
-.imagePreview {
-    width: 65%;
-    height: 500px;
-    background-color: #F9F9F9;
-    border-radius: 33px;
-    overflow: hidden;
-    position: relative;
-}
-
-.mover {
-    width: 100%;
-    height: 100%;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-
-#typed_text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 3em;
-    text-align: center;
-    color: #ffffff;
-    cursor: move;
-    white-space: nowrap;
-}
-
-.editor-container {
-    width: 33%;
-    background-image: linear-gradient(180deg, #FBF225 0%, #86F21B 16.98%, #17FEFE 33.65%, #6B1CED 50.31%, #C024F7 67.5%, #FC1D95 83.65%, #F72424 100%);
-    border-radius: 33px;
-    padding: 2px;
-}
-
-.content-editor {
-    background-color: #F9F9F9;
-    border-radius: 30px;
-    overflow: hidden;
-}
-
-.header {
-    display: flex;
-    justify-content: space-around;
-    background-color: #ffffff;
-    border-bottom: 1px solid #efefef;
-}
-
-.items {
-    padding: 15px;
-    cursor: pointer;
-    font-weight: 500;
-    font-size: 16px;
-}
-
-.items.active {
-    background-color: #C746F8;
-    color: white;
-}
-
-.all-content {
-    padding: 20px;
-}
-
-.text-container textarea {
-    width: 100%;
-    height: 100px;
-    border-radius: 15px;
-    resize: none;
-    background: #EFEFEF;
-    border: none;
-    font-size: 18px;
-    padding: 15px;
-    text-align: center;
-}
-
-.font-container,
-.color-container {
-    margin-top: 20px;
-}
-
-.font-container h5,
-.color-container h5 {
-    margin-bottom: 10px;
-}
-
-.font-grid,
-.color-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-    gap: 10px;
-}
-
-.cont.font,
-.color.cont {
-    width: 80px;
-    height: 80px;
-    background-color: #EFEFEF;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-}
-
-.cont.font img {
-    max-width: 100%;
-    max-height: 100%;
-}
-
-.color.cont i {
-    font-size: 40px;
-}
-
-.size-selector {
-    margin-top: 20px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 10px;
-}
-
-.cont.size {
-    background-color: #EFEFEF;
-    border-radius: 10px;
-    padding: 10px;
-    text-align: center;
-    cursor: pointer;
-}
-
-.cont.size.active {
-    border: 1px solid #D930F4;
-    background: white;
-}
-
-.options-selector {
-    margin-top: 20px;
-}
-
-.options-selector select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    border: 1px solid #EF19F3;
-}
-
-.checkboxes {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.customcb {
-    width: 25px;
-    height: 25px;
-    border: 2px solid black;
-    border-radius: 50%;
-    margin-right: 10px;
-    position: relative;
-}
-
-.customcb input {
-    opacity: 0;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-}
-
-.customcb label.inner {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    display: block;
-    cursor: pointer;
-}
-
-.customcb input:checked + label.inner {
-    background: #FD95FF;
-}
-
-.cont.total-amount {
-    margin-top: 20px;
-    background-color: #EFEFEF;
-    border-radius: 20px;
-    padding: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.cart-btn {
-    margin-top: 20px;
-    width: 100%;
-}
-
-.cart-btn button {
-    width: 100%;
-    padding: 15px;
-    background: #F36AB4;
-    border: none;
-    border-radius: 30px;
-    color: white;
-    font-weight: 900;
-    font-size: 21px;
-    cursor: pointer;
-}
-
-.background-slider-container {
-    display: flex;
-    overflow-x: auto;
-    padding: 10px 0;
-    margin-top: 20px;
-}
-
-.background-slider-container img {
-    width: 100px;
-    height: 60px;
-    object-fit: cover;
-    margin-right: 10px;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.background-slider-container img.active {
-    border: 2px solid #C746F8;
-}
-
-@media (max-width: 768px) {
-    .editing {
-        flex-direction: column;
-    }
-
-    .imagePreview,
-    .editor-container {
-        width: 100%;
-        margin-bottom: 20px;
-    }
-
-    .header {
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-
-    .items {
-        display: inline-block;
-    }
-}
-
-@font-face {
-    font-family: 'Alexa';
-    src: url('../assets/css/fonts/custom/Alexa.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Amanda';
-    src: url('../assets/css/fonts/custom/Amanda.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Amsterdam';
-    src: url('../assets/css/fonts/custom/Amsterdam.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Austin';
-    src: url('../assets/css/fonts/custom/Austin.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Avante';
-    src: url('../assets/css/fonts/custom/Avante.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Barcelona';
-    src: url('../assets/css/fonts/custom/Barcelona.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Bayview';
-    src: url('../assets/css/fonts/custom/Bayview.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Beachfront';
-    src: url('../assets/css/fonts/custom/Beachfront.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Bellview';
-    src: url('../assets/css/fonts/custom/Bellview.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Buttercup';
-    src: url('../assets/css/fonts/custom/Buttercup.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Chelsea';
-    src: url('../assets/css/fonts/custom/Chelsea.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'ClassicType';
-    src: url('../assets/css/fonts/custom/ClassicType.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Freehand';
-    src: url('../assets/css/fonts/custom/Freehand.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Freespirit';
-    src: url('../assets/css/fonts/custom/Freespirit.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Greenworld';
-    src: url('../assets/css/fonts/custom/Greenworld.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'LoveNeon';
-    src: url('../assets/css/fonts/custom/LoveNeon.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'LoveNote';
-    src: url('../assets/css/fonts/custom/LoveNote.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Marquee';
-    src: url('../assets/css/fonts/custom/Marquee.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Mayfair';
-    src: url('../assets/css/fonts/custom/Mayfair.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Melbourne';
-    src: url('../assets/css/fonts/custom/Melbourne.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Monaco';
-    src: url('../assets/css/fonts/custom/Monaco.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'NeonGlow';
-    src: url('../assets/css/fonts/custom/NeonGlow.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'NeonLite';
-    src: url('../assets/css/fonts/custom/NeonLite.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Neonscript';
-    src: url('../assets/css/fonts/custom/Neonscript.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Neontrace';
-    src: url('../assets/css/fonts/custom/Neontrace.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'NeoTokyo';
-    src: url('../assets/css/fonts/custom/NeoTokyo.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Nevada';
-    src: url('../assets/css/fonts/custom/Nevada.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'NewCursive';
-    src: url('../assets/css/fonts/custom/NewCursive.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Northshore';
-    src: url('../assets/css/fonts/custom/Northshore.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Photogenic';
-    src: url('../assets/css/fonts/custom/Photogenic.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Rocket';
-    src: url('../assets/css/fonts/custom/Rocket.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Royalty';
-    src: url('../assets/css/fonts/custom/Royalty.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'SciFi';
-    src: url('../assets/css/fonts/custom/SciFi.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Signature';
-    src: url('../assets/css/fonts/custom/Signature.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Sorrento';
-    src: url('../assets/css/fonts/custom/Sorrento.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Typewriter';
-    src: url('../assets/css/fonts/custom/Typewriter.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Venetian';
-    src: url('../assets/css/fonts/custom/Venetian.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Vintage';
-    src: url('../assets/css/fonts/custom/Vintage.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Waikiki';
-    src: url('../assets/css/fonts/custom/Waikiki.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'WildScript';
-    src: url('../assets/css/fonts/custom/WildScript.ttf') format('truetype');
-}
-`;
-
-// Data that was previously in a separate file
 const fonts = [
   { name: "Alexa", size: "80px", lineHeight: "94%", image: "/assets/images/fonts/alexa.svg" },
   { name: "Amanda", size: "80px", lineHeight: "125%", image: "/assets/images/fonts/amanda.svg" },
@@ -549,6 +46,35 @@ const fonts = [
   { name: "Waikiki", size: "70px", lineHeight: "87%", image: "/assets/images/fonts/waikiki.svg" },
   { name: "Wildscript", size: "105px", lineHeight: "105%", image: "/assets/images/fonts/wildscript.svg" },
 ]
+
+const shimmerAnimation = keyframes`
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+`
+
+const MainTitle = styled.h1`
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(
+    90deg,
+    #000000 0%,
+    #40e0d0 50%,
+    #000000 100%
+  );
+  background-size: 1000px 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: ${shimmerAnimation} 8s linear infinite;
+
+  @media (max-width: 768px) {
+    font-size: 2.5rem;
+  }
+`
 
 const colors = [
   {
@@ -615,7 +141,7 @@ const colors = [
     name: "Lime Green",
     color: "rgb(255, 255, 255)",
     iconColor: "rgb(0, 255, 0)",
-    neon: "rgb(255 255 255) 0px 0px 5px, rgb(255 255 255) 0px 0px 10px, rgb(0 255 0) 0px 0px 20px, rgb(0 255 0) 0px 0px 30px, rgb(0 255 0) 0px 0px 40px, rgb(0 255 0) 0px 0px 55px, rgb(0 255 0) 0px 0px 75px",
+    neon: "rgb(255 255 255) 0px 0px 5px, rgb(255 255 255) 0px 10px, rgb(0 255 0) 0px 0px 20px, rgb(0 255 0) 0px 0px 30px, rgb(0 255 0) 0px 0px 40px, rgb(0 255 0) 0px 0px 55px, rgb(0 255 0) 0px 0px 75px",
   },
   {
     name: "Purple",
@@ -645,53 +171,90 @@ const backgrounds = [
   "/assets/images/background/background10.jpg",
 ]
 
-const BackgroundSelector = ({ background, setBackground }) => {
-  return (
-    <div className="background-slider-container">
-      {backgrounds.map((bg, index) => (
-        <img
-          key={index}
-          className={`bgs ${bg === background ? "active" : ""}`}
-          src={bg || "/placeholder.svg"}
-          alt={`Background ${index + 1}`}
-          onClick={() => setBackground(bg)}
-        />
-      ))}
-    </div>
-  )
-}
+const NeonDesigner = () => {
+  const [text, setText] = useState("")
+  const [font, setFont] = useState(fonts[0])
+  const [color, setColor] = useState(colors[0])
+  const [size, setSize] = useState(sizes[0])
+  const [background, setBackground] = useState(backgrounds[0])
+  const [options, setOptions] = useState({
+    powerAdapter: "UK / IRELAND 230V",
+    backboardShape: "1",
+    bumperSale: true,
+    hanging: false,
+    wallMounting: false,
+  })
+  const [totalPrice, setTotalPrice] = useState(99)
+  const [isMobile, setIsMobile] = useState(false)
+  const previewRef = useRef(null)
 
-const ColorSelector = ({ colors, setColor }) => {
-  return (
-    <div className="color-container">
-      <h5>Select your Color</h5>
-      <div className="color-grid">
-        {colors.map((color, index) => (
-          <div
-            key={index}
-            className="color cont"
-            style={{ color: color.iconColor }}
-            onClick={() => setColor(color)}
-          >
-            <i className="material-icons">highlight</i>
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
+  useEffect(() => {
+    updatePrice()
+  }, [size, options]) //This line remains unchanged as it is not the target of the update.
 
-const FontSelector = ({ fonts, setFont }) => {
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+
+    window.addEventListener("resize", handleResize)
+    handleResize()
+
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
+  const updatePrice = () => {
+    let price = size.price
+    if (options.backboardShape === "3") price += 21
+    if (options.hanging) price += 15
+    if (options.wallMounting) price += 15
+    setTotalPrice(price)
+  }
+
+  const handleAddToCart = () => {
+    const message = encodeURIComponent(`I'd like to order a custom neon sign:
+Text: ${text}
+Font: ${font.name}
+Color: ${color.name}
+Size: ${size.name}
+Options: ${JSON.stringify(options)}
+Total Price: $${totalPrice}`)
+    window.open(`https://wa.me/7806844491?text=${message}`, "_blank")
+  }
+
   return (
-    <div className="font-container">
-      <h5>Select your Font</h5>
-      <div className="font-grid">
-        {fonts.map((font, index) => (
-          <div key={index} className="cont font" onClick={() => setFont(font)}>
-            <img src={font.image || "/placeholder.svg"} alt={font.name} />
+    <div className="neon-designer-wrapper">
+      <Header />
+      <div className="neon-designer-container mt-5">
+        <div className="neonDesigner">
+          <MainTitle className="text-center mt-5">Design your slang!</MainTitle>
+          <div className={`editing ${isMobile ? "mobile-view" : ""}`}>
+            <div className={`preview-column ${isMobile ? "mobile-preview" : ""}`} ref={previewRef}>
+              <NeonPreview text={text} font={font} color={color} background={background} />
+              <BackgroundSelector background={background} setBackground={setBackground} />
+            </div>
+            <div className="editor-column">
+              <div className="editor-container">
+                <div className="content-editor">
+                  <TextEditor text={text} setText={setText} />
+                  <FontSelector fonts={fonts} setFont={setFont} />
+                  <ColorSelector colors={colors} color={color} setColor={setColor} />
+                  <SizeSelector sizes={sizes} size={size} setSize={setSize} />
+                  <OptionsSelector options={options} setOptions={setOptions} />
+                  <div className="total-amount">
+                    <div>Total Amount :</div>
+                    <div>${totalPrice}</div>
+                  </div>
+                  <button className="cart-btn" >
+                    Add to Cart
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-        ))}
+        </div>
       </div>
+      <SingleFooter />
     </div>
   )
 }
@@ -720,6 +283,96 @@ const NeonPreview = ({ text, font, color, background }) => {
   )
 }
 
+const BackgroundSelector = ({ background, setBackground }) => {
+  return (
+    <div className="background-slider-container">
+      {backgrounds.map((bg, index) => (
+        <img
+          key={index}
+          className={`bgs ${bg === background ? "active" : ""}`}
+          src={bg || "/placeholder.svg"}
+          alt={`Background ${index + 1}`}
+          onClick={() => setBackground(bg)}
+        />
+      ))}
+    </div>
+  )
+}
+
+const TextEditor = ({ text, setText }) => {
+  return (
+    <div className="text-container">
+      <h5>Enter Your Text</h5>
+      <textarea
+        id="type_text"
+        rows="5"
+        placeholder="Enter Text Here.. Press Enter for a new Line"
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+      />
+    </div>
+  )
+}
+
+const FontSelector = ({ fonts, setFont }) => {
+  return (
+    <div className="font-container">
+      <h5>Select your Font</h5>
+      <div className="font-grid">
+        {fonts.map((font, index) => (
+          <div key={index} className="cont font" onClick={() => setFont(font)}>
+            <img src={font.image || "/placeholder.svg"} alt={font.name} />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+const ColorSelector = ({ colors, color, setColor }) => {
+  return (
+    <div className="color-container">
+      <h5>Select your Color</h5>
+      <div className="color-grid">
+        {colors.map((c, index) => (
+          <div
+            key={index}
+            className={`color cont ${c.name === color.name ? "active" : ""}`}
+            style={{ backgroundColor: c.iconColor }}
+            onClick={() => setColor(c)}
+          >
+            <i className="material-icons"></i>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+const SizeSelector = ({ sizes, size, setSize }) => {
+  return (
+    <div className="size-selector">
+      <h5>Select your Size</h5>
+      {sizes.map((sizeOption, index) => (
+        <div
+          key={index}
+          className={`cont size ${size.name === sizeOption.name ? "active" : ""}`}
+          onClick={() => setSize(sizeOption)}
+        >
+          <div>
+            <div className="text-lg">{sizeOption.name}</div>
+            <div className="text-lg">${sizeOption.price}</div>
+          </div>
+          <div>
+            <div className="text-sm">Length: {sizeOption.length}"</div>
+            <div className="text-sm">Height: {sizeOption.height}"</div>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 const OptionsSelector = ({ options, setOptions }) => {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
@@ -731,6 +384,7 @@ const OptionsSelector = ({ options, setOptions }) => {
 
   return (
     <div className="options-selector">
+      <h5>Additional Options</h5>
       <select name="powerAdapter" value={options.powerAdapter} onChange={handleChange}>
         <option value="UK / IRELAND 230V">UK / IRELAND 230V</option>
         <option value="EUROPE 230V">EUROPE 230V</option>
@@ -763,7 +417,9 @@ const OptionsSelector = ({ options, setOptions }) => {
           <input type="checkbox" checked={options.hanging} id="hanging" name="hanging" onChange={handleChange} />
           <label htmlFor="hanging" className="inner"></label>
         </div>
-        <label htmlFor="hanging" className="outer">Sign Hanging chain Kit $15</label>
+        <label htmlFor="hanging" className="outer">
+          Sign Hanging chain Kit $15
+        </label>
       </div>
       <div className="checkboxes">
         <div className="customcb check">
@@ -776,146 +432,11 @@ const OptionsSelector = ({ options, setOptions }) => {
           />
           <label htmlFor="wall_mounting" className="inner"></label>
         </div>
-        <label htmlFor="wall_mounting" className="outer">Sign Wall Mounting Kit $15</label>
+        <label htmlFor="wall_mounting" className="outer">
+          Sign Wall Mounting Kit $15
+        </label>
       </div>
     </div>
-  )
-}
-
-const SizeSelector = ({ sizes, size, setSize }) => {
-  return (
-    <div className="size-selector">
-      {sizes.map((sizeOption, index) => (
-        <div
-          key={index}
-          className={`cont size ${size.name === sizeOption.name ? "active" : ""}`}
-          onClick={() => setSize(sizeOption)}
-        >
-          <div>
-            <div className="text-lg">{sizeOption.name}</div>
-            <div className="text-lg">${sizeOption.price}</div>
-          </div>
-          <div>
-            <div className="text-sm">Length: {sizeOption.length}"</div>
-            <div className="text-sm">Height: {sizeOption.height}"</div>
-          </div>
-        </div>
-      ))}
-    </div>
-  )
-}
-
-const TextEditor = ({ text, setText }) => {
-  return (
-    <div className="text-container">
-      <textarea
-        id="type_text"
-        rows="5"
-        placeholder="Enter Text Here.. Press Enter for a new Line"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-      />
-    </div>
-  )
-}
-
-const NeonDesigner = () => {
-  const [text, setText] = useState("")
-  const [font, setFont] = useState(fonts[0])
-  const [color, setColor] = useState(colors[0])
-  const [size, setSize] = useState(sizes[0])
-  const [background, setBackground] = useState(backgrounds[0])
-  const [options, setOptions] = useState({
-    powerAdapter: "UK / IRELAND 230V",
-    backboardShape: "1",
-    bumperSale: true,
-    hanging: false,
-    wallMounting: false,
-  })
-  const [totalPrice, setTotalPrice] = useState(99)
-  const [activeTab, setActiveTab] = useState("text")
-
-  useEffect(() => {
-    updatePrice()
-  }, [size, options])
-
-  const updatePrice = () => {
-    let price = size.price
-    if (options.backboardShape === "3") price += 21
-    if (options.hanging) price += 15
-    if (options.wallMounting) price += 15
-    setTotalPrice(price)
-  }
-
-  const handleAddToCart = () => {
-    const message = encodeURIComponent(`I'd like to order a custom neon sign:
-Text: ${text}
-Font: ${font.name}
-Color: ${color.name}
-Size: ${size.name}
-Options: ${JSON.stringify(options)}
-Total Price: $${totalPrice}`)
-    window.open(`https://wa.me/7806844491?text=${message}`, "_blank")
-  }
-
-  return (
-   <div className="">
-       <Header />
-     <div className="neonDesigner">
-      <style>{styles}</style>
-   
-      <section className="tabs">
-        <div className="maxine-title">Custom NeonZ</div>
-        <div className="sub-title">Design your slang!</div>
-        <div className="editing">
-          <NeonPreview text={text} font={font} color={color} background={background} />
-          <div className="editor-container">
-            <div className="content-editor">
-              <div className="header">
-                <div
-                  className={`items ${activeTab === "text" ? "active" : ""}`}
-                  onClick={() => setActiveTab("text")}
-                >
-                  Text
-                </div>
-                <div
-                  className={`items ${activeTab === "font" ? "active" : ""}`}
-                  onClick={() => setActiveTab("font")}
-                >
-                  Font
-                </div>
-                <div
-                  className={`items ${activeTab === "color" ? "active" : ""}`}
-                  onClick={() => setActiveTab("color")}
-                >
-                  Color
-                </div>
-              </div>
-              <div className="all-content">
-                {activeTab === "text" && <TextEditor text={text} setText={setText} />}
-                {activeTab === "font" && <FontSelector fonts={fonts} setFont={setFont} />}
-                {activeTab === "color" && <ColorSelector colors={colors} setColor={setColor} />}
-                <SizeSelector sizes={sizes} size={size} setSize={setSize} />
-                <OptionsSelector options={options} setOptions={setOptions} />
-                <BackgroundSelector background={background} setBackground={setBackground} />
-                <div className="cont total-amount">
-                  <div className="h">Total Amount :</div>
-                  <div className="h">${totalPrice}</div>
-                </div>
-                <div className="cart-btn">
-                  <button className="btn a2" onClick={handleAddToCart}>
-                    <div className="cart">Add to Cart</div>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    
-    </div>
-    <SingleFooter />
-   </div>
   )
 }
 

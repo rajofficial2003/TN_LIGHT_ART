@@ -155,51 +155,51 @@ const Gallery = () => {
   const galleryItems = [
     {
       id: 1,
-      title: "Custom Business Logo",
+      title: "Kids Name light",
       category: "business",
-      price: "₹299",
+      price: "₹9000",
       image: one
     },
     {
       id: 2,
-      title: "Wedding Name Sign",
+      title: "ஐஸ்வரியம்",
       category: "wedding",
-      price: "₹249",
+      price: "₹7500",
       image: two
     },
     {
       id: 3,
-      title: "Bar Neon Sign",
+      title: "மணிவண்ணன் இல்லம்",
       category: "business",
-      price: "₹399",
+      price: "₹12000",
       image: three
     },
     {
       id: 4,
-      title: "Birthday Message",
+      title: "VSV Sweet Home",
       category: "personal",
-      price: "₹199",
+      price: "₹9600",
       image: four
     },
     {
       id: 5,
-      title: "Restaurant Menu",
+      title: "Sheela Dental Clinic",
       category: "business",
-      price: "₹449",
+      price: "₹14400",
       image: five
     },
     {
       id: 6,
-      title: "Home Decor Quote",
+      title: "மாசாணி அம்மன் இல்லம்",
       category: "personal",
-      price: "₹179",
+      price: "₹12000",
       image: six
     },
     {
       id: 7,
-      title: "Event Backdrop",
+      title: "சரணாலயம்",
       category: "event",
-      price: "₹599",
+      price: "₹9900",
       image: seven
     },
     // {

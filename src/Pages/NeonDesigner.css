@@ -1,0 +1,529 @@
+* {
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  font-family: "Gothic A1", sans-serif;
+  font-size: 16px;
+  color: black;
+}
+
+.neon-designer-wrapper {
+  position: relative;
+  min-height: 100vh;
+}
+
+.neon-designer-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  padding-bottom: 100px;
+}
+
+.main-title {
+  font-family: maxine, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 3rem;
+  background: linear-gradient(264.14deg, #ef19f3 2.71%, #971bf8 54.65%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.subtitle {
+  display: block;
+  font-size: 1.5rem;
+  color: black;
+  -webkit-text-fill-color: black;
+}
+
+.editing {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.preview-column {
+  flex: 1;
+  position: sticky;
+  top: 20px;
+  height: calc(100vh - 40px);
+  overflow-y: auto;
+}
+
+.editor-column {
+  flex: 1;
+  overflow-y: auto;
+  height: calc(100vh - 40px);
+}
+
+.imagePreview {
+  width: 100%;
+  height: 400px;
+  background-color: #f9f9f9;
+  border-radius: 15px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.mover {
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#typed_text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3em;
+  text-align: center;
+  color: #ffffff;
+  cursor: move;
+  white-space: nowrap;
+}
+
+.editor-container {
+  background-image: linear-gradient(
+    180deg,
+    #fbf225 0%,
+    #86f21b 16.98%,
+    #17fefe 33.65%,
+    #6b1ced 50.31%,
+    #c024f7 67.5%,
+    #fc1d95 83.65%,
+    #f72424 100%
+  );
+  border-radius: 15px;
+  padding: 2px;
+}
+
+.content-editor {
+  background-color: #f9f9f9;
+  border-radius: 13px;
+  overflow: hidden;
+  padding: 20px;
+}
+
+.text-container,
+.font-container,
+.color-container,
+.size-selector,
+.options-selector {
+  margin-bottom: 20px;
+}
+
+.text-container textarea {
+  width: 100%;
+  height: 100px;
+  border-radius: 10px;
+  resize: none;
+  background: #efefef;
+  border: none;
+  font-size: 18px;
+  padding: 15px;
+  text-align: center;
+  color: black;
+}
+
+h5 {
+  margin-bottom: 10px;
+  color: black;
+}
+
+.font-grid,
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  gap: 10px;
+}
+
+.cont.font,
+.color.cont {
+  width: 60px;
+  height: 60px;
+  background-color: #efefef;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.cont.font img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.color.cont {
+  border: 2px solid transparent;
+}
+
+.color.cont.active {
+  border-color: #d930f4;
+}
+
+.color.cont i {
+  font-size: 30px;
+  color: white;
+}
+
+.size-selector {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+.cont.size {
+  background-color: #efefef;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  color: black;
+}
+
+.cont.size.active {
+  border: 1px solid #d930f4;
+  background: white;
+}
+
+.options-selector select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: 1px solid #ef19f3;
+  color: black;
+}
+
+.checkboxes {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.customcb {
+  width: 20px;
+  height: 20px;
+  border: 2px solid black;
+  border-radius: 50%;
+  margin-right: 10px;
+  position: relative;
+}
+
+.customcb input {
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.customcb label.inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: block;
+  cursor: pointer;
+}
+
+.customcb input:checked + label.inner {
+  background: #fd95ff;
+}
+
+.total-amount {
+  margin-top: 20px;
+  background-color: #efefef;
+  border-radius: 10px;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: black;
+}
+
+.cart-btn {
+  margin-top: 20px;
+  width: 100%;
+  padding: 15px;
+  background: #40e0d0;
+  border: none;
+  border-radius: 25px;
+  color: white;
+  font-weight: 700;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.background-slider-container {
+  display: flex;
+  overflow-x: auto;
+  padding: 10px 0;
+  margin-top: 20px;
+}
+
+.background-slider-container img {
+  width: 80px;
+  height: 50px;
+  object-fit: cover;
+  margin-right: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.background-slider-container img.active {
+  border: 2px solid #c746f8;
+}
+
+@media (max-width: 768px) {
+  .editing {
+    flex-direction: column;
+  }
+
+  .preview-column,
+  .editor-column {
+    width: 100%;
+    height: auto;
+    position: static;
+    overflow-y: visible;
+  }
+
+  .mobile-view {
+    flex-direction: column;
+  }
+
+  .mobile-preview {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #f9f9f9;
+    padding-bottom: 10px;
+  }
+
+  .mobile-preview .imagePreview {
+    height: 300px;
+  }
+
+  .mobile-preview .background-slider-container {
+    margin-top: 10px;
+  }
+
+  .mobile-view .editor-column {
+    margin-top: 20px;
+  }
+}
+
+@font-face {
+  font-family: 'Alexa';
+  src: url('../assets/css/fonts/custom/Alexa.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Amanda';
+  src: url('../assets/css/fonts/custom/Amanda.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Amsterdam';
+  src: url('../assets/css/fonts/custom/Amsterdam.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Austin';
+  src: url('../assets/css/fonts/custom/Austin.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Avante';
+  src: url('../assets/css/fonts/custom/Avante.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Barcelona';
+  src: url('../assets/css/fonts/custom/Barcelona.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Bayview';
+  src: url('../assets/css/fonts/custom/Bayview.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Beachfront';
+  src: url('../assets/css/fonts/custom/Beachfront.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Bellview';
+  src: url('../assets/css/fonts/custom/Bellview.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Buttercup';
+  src: url('../assets/css/fonts/custom/Buttercup.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Chelsea';
+  src: url('../assets/css/fonts/custom/Chelsea.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'ClassicType';
+  src: url('../assets/css/fonts/custom/ClassicType.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Freehand';
+  src: url('../assets/css/fonts/custom/Freehand.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Freespirit';
+  src: url('../assets/css/fonts/custom/Freespirit.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Greenworld';
+  src: url('../assets/css/fonts/custom/Greenworld.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'LoveNeon';
+  src: url('../assets/css/fonts/custom/LoveNeon.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'LoveNote';
+  src: url('../assets/css/fonts/custom/LoveNote.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Marquee';
+  src: url('../assets/css/fonts/custom/Marquee.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Mayfair';
+  src: url('../assets/css/fonts/custom/Mayfair.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Melbourne';
+  src: url('../assets/css/fonts/custom/Melbourne.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Monaco';
+  src: url('../assets/css/fonts/custom/Monaco.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'NeonGlow';
+  src: url('../assets/css/fonts/custom/NeonGlow.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'NeonLite';
+  src: url('../assets/css/fonts/custom/NeonLite.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Neonscript';
+  src: url('../assets/css/fonts/custom/Neonscript.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Neontrace';
+  src: url('../assets/css/fonts/custom/Neontrace.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'NeoTokyo';
+  src: url('../assets/css/fonts/custom/NeoTokyo.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Nevada';
+  src: url('../assets/css/fonts/custom/Nevada.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'NewCursive';
+  src: url('../assets/css/fonts/custom/NewCursive.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Northshore';
+  src: url('../assets/css/fonts/custom/Northshore.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Photogenic';
+  src: url('../assets/css/fonts/custom/Photogenic.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Rocket';
+  src: url('../assets/css/fonts/custom/Rocket.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Royalty';
+  src: url('../assets/css/fonts/custom/Royalty.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'SciFi';
+  src: url('../assets/css/fonts/custom/SciFi.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Signature';
+  src: url('../assets/css/fonts/custom/Signature.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Sorrento';
+  src: url('../assets/css/fonts/custom/Sorrento.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Typewriter';
+  src: url('../assets/css/fonts/custom/Typewriter.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Venetian';
+  src: url('../assets/css/fonts/custom/Venetian.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Vintage';
+  src: url('../assets/css/fonts/custom/Vintage.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Waikiki';
+  src: url('../assets/css/fonts/custom/Waikiki.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'WildScript';
+  src: url('../assets/css/fonts/custom/WildScript.ttf') format('truetype');
+}
+

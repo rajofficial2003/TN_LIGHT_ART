@@ -1,5 +1,5 @@
 import React from "react"
-import NeonDesigner from "./components/NeonDesigner"
+import NeonDesigner from "./pages/NeonDesigner"
 import "./assets/css/style.v2.css"
 import "./assets/css/design-own.v2.css"
 import "./assets/css/responsive.v2.css"

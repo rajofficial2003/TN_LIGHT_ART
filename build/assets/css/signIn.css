@@ -1,0 +1,121 @@
+.container {
+    width: 100vw;
+    align-items: center;
+    height: 100vh;
+    background-color: #000000;
+}
+
+.container .logo {
+    height: 70px;
+    font-size: 58px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    font-family: alexa;
+}
+
+.container .login-box {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    margin: auto;
+    margin-top: 10px;
+    height: calc(100% - 120px);
+    width: 70%;
+    background-color: white;
+}
+
+.container .login-box div {}
+
+.container .login-box div.img {
+    height: 100%;
+    width: 50%;
+    background-color: rgb(255, 255, 255);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url(../images/login.png);
+}
+
+.container .login-box div.content {
+    height: 100%;
+    width: 50%;
+    background-color: #333333;
+    padding: 0 10px;
+}
+
+.container .login-box div.content .item-login {
+    margin: auto;
+    width: 80%;
+    /* background: red; */
+}
+
+.container .login-box div.content .item-login .header {
+    margin-top: 50px;
+}
+
+.container .login-box div.content .item-login .header * {
+    margin: 25px 0;
+    color: white;
+}
+
+.container .login-box div.content .item-login .form-control {
+    display: flex;
+    height: auto;
+    color: #333333;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    flex-wrap: nowrap;
+    width: 100%;
+}
+
+.container .login-box div.content .item-login .form-control .form-element {
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    margin: 10px 0;
+    padding: 7px;
+    border-radius: 5px;
+    font-size: 21px;
+}
+
+.container .login-box div.content .item-login .form-control button:hover {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.container .login-box div.content .item-login .form-control p {
+    color: white;
+    margin: 5px 0 0 0;
+    font-weight: bold;
+}
+
+.container .login-box div.content .item-login .form-control button i {
+    margin: 0 5px;
+}
+
+.container .login-box div.content .item-login .form-control button {
+    height: 45px;
+    /* width: 170px; */
+    width: 100%;
+    cursor: pointer;
+    outline: none;
+    background-color: black;
+    color: white;
+    border: thin;
+    font-size: 16px;
+    margin-top: 15px;
+    border-radius: 5px;
+}
+
+.container .login-box div.content .item-login .form-control .form-element:focus {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.container .login-box div.content .item-login .form-control .form-element input {
+    width: 85%;
+    margin-left: 10px;
+    font-size: 17px;
+    height: 35px;
+    border: none;
+    outline: none;
+}

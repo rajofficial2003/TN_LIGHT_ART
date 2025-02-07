@@ -1,0 +1,548 @@
+* {
+    padding: 0;
+    margin: 0;
+    transition: all 500ms cubic-bezier(0.075, 0.82, 0.165, 1);
+    user-select: none;
+    user-zoom: none;
+    -webkit-user-drag: none;
+    scrollbar-width: auto;
+    scrollbar-color: #8f54a0 #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+/* ===== Scrollbar CSS ===== */
+
+
+/* Chrome, Edge, and Safari */
+
+*::-webkit-scrollbar {
+    width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+    background: #00000000;
+    border-radius: 10px;
+    filter: blur(2);
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: grey;
+    border-radius: 5px;
+    border: 1px solid #ffffff;
+}
+
+main {
+    width: 99.2vw;
+    height: max-content;
+    padding: 0;
+}
+
+main .top-of-header {
+    height: 5vh;
+    padding: 10px;
+    background-color: black;
+}
+
+main header {
+    display: flex;
+    height: 15vh;
+    padding: 15px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: space-around;
+    align-items: center;
+    border-bottom: 1.2px solid rgba(213, 202, 202, 0.615);
+}
+
+main header .navigation-content {
+    display: flex;
+    width: 40%;
+    height: 100%;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: space-around;
+    align-items: center;
+}
+
+main header .navigation-content li {
+    list-style-type: none;
+    color: rgb(149, 143, 143);
+}
+
+main header .navigation-content li i {
+    position: absolute;
+}
+
+main header .navigation-buttons {
+    display: flex;
+    width: 20%;
+    height: 100%;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+main header .navigation-buttons i {
+    color: black;
+    background-color: white;
+    cursor: pointer;
+}
+
+main header .navigation-buttons i:hover {
+    transform: scale(1.2);
+}
+
+main section.content {
+    border-bottom: 1.2px solid rgba(213, 202, 202, 0.615);
+}
+
+main section.content h1 {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    color: blue;
+}
+
+main section.content h2 {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: rgb(255, 0, 230);
+    text-decoration: dashed;
+}
+
+main section.content .product-container {
+    margin: auto;
+    display: flex;
+    height: max-content;
+    width: 97%;
+    padding: 10px;
+    border-radius: 20px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: flex-start;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+main section.content .product-container .images-section {
+    display: flex;
+    width: 60%;
+    height: max-content;
+    margin: 10px;
+    border-radius: 5px;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: flex-start;
+    justify-content: flex-start;
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+}
+
+main section.content .product-container .preview-container {
+    position: relative;
+    display: flex;
+    width: 45%;
+    height: 70vh;
+    background-image: url(https://doshopify.com/product-personalizer/images/hardikecommerce.myshopify.com/sofa-logo.jpg?v=123);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    overflow: hidden;
+}
+
+main section.content .product-container .preview-container .text-preview {
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 80px;
+    text-align: center;
+    font-family: Butterland;
+    color: #ffd9e2;
+    text-shadow: 0 0 0 transparent, 0 0 10px #ff003c, 0 0 20px rgba(255, 0, 60, 0.5), 0 0 40px #ff003c, 0 0 100px #ff003c, 0 0 200px #ff003c, 0 0 300px #ff003c, 0 0 500px #ff003c, 0 0 1000px #ff003c;
+}
+
+.horizontal-scale span {
+    width: max-content;
+    height: max-content;
+    font-size: 12px;
+    color: black;
+    padding: 3px;
+    background: #404046 !important;
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: black;
+    border-radius: 5px;
+}
+
+.horizontal-scale {
+    display: flex;
+    position: absolute;
+    top: 57%;
+    width: 188px;
+    height: 4px;
+    background-color: red;
+    text-align: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.vertical-scale span {
+    width: max-content;
+    height: max-content;
+    font-size: 12px;
+    padding: 2px;
+    color: black;
+    background: #404046 !important;
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: black;
+    border-radius: 5px;
+}
+
+.vertical-scale {
+    display: flex;
+    position: absolute;
+    left: 67%;
+    width: 4px;
+    height: 54px;
+    background-color: red;
+    text-align: center;
+    text-align: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+main section.content .product-container .edit-container {
+    padding: 10px 15px;
+}
+
+main section.content .product-container .edit-container .name {
+    font-size: 30px;
+    font-weight: 500;
+}
+
+span {
+    -webkit-text-fill-color: transparent;
+    background: -webkit-radial-gradient(rgb(30, 39, 205), rgb(196, 17, 128));
+    -webkit-background-clip: text;
+}
+
+main section.content .product-container .edit-container p {
+    font-size: 18px;
+    margin: 10px;
+    margin-left: 0 !important;
+    color: rgb(113, 108, 108);
+}
+
+main section.content .product-container .edit-container .size-image {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.delhiveryExpected {
+    margin: 10px;
+    margin-left: 0;
+}
+
+main section.content .product-container .edit-container .price {
+    font-size: 23px;
+    margin-top: 5px;
+    font-weight: 400;
+}
+
+main section.content .product-container .edit-container .text-input textarea {
+    padding: 5px;
+    /* height: 150px; */
+    width: 90%;
+    border-radius: 5px;
+    font-size: large;
+    font-family: cursive;
+    border: 2px solid rgb(180, 171, 171);
+    resize: vertical;
+}
+
+.fluid-horizontal {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.box {
+    margin: 5px 10px;
+    width: max-content;
+    height: max-content;
+    border: 2px solid rgba(213, 202, 202, 0.995);
+    border-radius: 6px;
+    background-color: white;
+    text-align: center;
+    cursor: pointer;
+}
+
+.box.active {
+    border: 3px solid rgb(52, 223, 83);
+}
+
+.btn {
+    width: 240px;
+    margin: 15px;
+    height: 50px;
+    background-color: transparent;
+    outline: none;
+    border-radius: 5px;
+    border: 3px solid #141ae3;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    transform: scale(1.1);
+    box-shadow: rgba(34, 34, 183, 0.67) 0px 8px 24px, rgba(81, 81, 199, 0.698) 0px 16px 56px, rgba(227, 35, 138, 0.1) 0px 24px 80px;
+}
+
+.btn-sm {
+    border: 2px solid #d5caca;
+    background-color: transparent;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-sm:active {
+    background-color: #87818179;
+}
+
+main section.content .product-container .edit-container .size-container .size {
+    padding: 5px 20px;
+    font-size: 20px;
+}
+
+main section.content .product-container .edit-container .background-option .box {
+    width: 50px;
+    height: 100px;
+}
+
+main section.content .product-container .edit-container .background-option .background {
+    width: 110px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url(https://doshopify.com/product-personalizer/images/hardikecommerce.myshopify.com/sofa-logo.jpg?v=123) !important;
+}
+
+main section.content .product-container .edit-container .font-container .font {
+    padding: 5px 20px;
+}
+
+main section.content .product-container .edit-container .color-option .color {
+    padding: 15px;
+    border-radius: 50%;
+}
+
+.secureCheckout {
+    margin: auto;
+    transform: scale(0.7);
+    width: max-content;
+    border-radius: 6px;
+    justify-content: center;
+}
+
+.title {
+    list-style: none;
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+main section.productReviews {
+    display: flex;
+    border-bottom: 1.2px solid rgba(213, 202, 202, 0.615);
+    padding: 0 30px;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: flex-start;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+main section.productReviews p {
+    font-size: 25px;
+}
+
+main section.productReviews .reviewsList {
+    display: flex;
+    height: max-content;
+    margin-bottom: 50px;
+    width: 100%;
+    margin: 20px 0;
+    border-bottom: 1.5px solid rgba(188, 178, 178, 0.587);
+    flex-direction: row;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+    align-content: flex-start;
+    justify-content: space-between;
+}
+
+main section.productReviews .reviewsList .sec {
+    display: flex;
+    height: 98px;
+    margin: 10px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: flex-start;
+    justify-content: flex-start;
+    background-color: rgb(255, 255, 255);
+    align-items: flex-start;
+}
+
+main section.productReviews .reviewsList .customer.sec {
+    width: 27%;
+}
+
+main section.productReviews .reviewsList .customer.sec .image {
+    width: 50px;
+    height: 50px;
+    font-size: 30px;
+    background-color: yellow;
+    border-radius: 50%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    font-family: 'scape';
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+}
+
+main section.productReviews .reviewsList .customer.sec .name {
+    margin-left: 10px;
+}
+
+main section.productReviews .reviewsList .customer.sec .name .name_p {
+    font-size: 13px;
+}
+
+main section.productReviews .reviewsList .customer.sec .name .place {
+    font-size: 11px;
+    font-weight: 300;
+}
+
+main section.productReviews .reviewsList .customer.sec .name .place i {
+    position: relative;
+    transform: translateY(2px);
+    font-size: 15px;
+}
+
+.fluid-vertical {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: flex-start;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+main section.productReviews .reviewsList .message.sec {
+    height: max-content;
+    width: 78%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: flex-start;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+main section.productReviews .reviewsList .message.sec .title {
+    font-size: 20px;
+}
+
+main section.productReviews .reviewsList .message.sec .message_conent {
+    font-size: 16px !important;
+    color: #94959c;
+}
+
+main section.productReviews .starCorner {
+    font-size: 30px;
+}
+
+main footer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: space-around;
+    align-items: center;
+    height: 50vh;
+    border-bottom: 1.2px solid rgba(213, 202, 202, 0.615);
+}
+
+main footer .logoCont {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: flex-start;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+main footer .quickLinksCont {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: flex-start;
+    justify-content: flex-start;
+    align-items: flex-start;
+    list-style-type: none;
+}
+
+main footer .quickLinksCont li {
+    margin: 10px 5px;
+}
+
+main footer .logoCont .subscribe {
+    width: 339px;
+    height: 50px;
+    border: 2px solid #a79d9d;
+    padding: 0 5px;
+    border-radius: 7px;
+}
+
+main footer .logoCont .subscribe input {
+    width: 70%;
+    height: 85%;
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+main footer .logoCont .subscribe button {
+    width: 27%;
+    height: 90%;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    text-align: right;
+}
+
+button {
+    cursor: pointer;
+}
+
+main footer .logoCont .subscribe button:active i {
+    transform: translateX(20px);
+}

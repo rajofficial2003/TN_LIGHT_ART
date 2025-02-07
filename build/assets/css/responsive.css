@@ -1,0 +1,15 @@
+@media screen and (min-width: 350px) and (max-width: 1100px) {
+    section.main-content .product-container {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-content: flex-start;
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+    section.main-content .product-container .preview-container.images-section {
+        width: 80%;
+        height: 70vh;
+    }
+    section.main-content .product-container .edit-container.images-section {}
+}

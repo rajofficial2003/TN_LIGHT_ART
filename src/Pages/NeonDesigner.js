@@ -151,13 +151,6 @@ const colors = [
   },
 ]
 
-const sizes = [
-  { name: "Small", price: 99, length: 24, height: 12, code: "cnz1" },
-  { name: "Medium", price: 149, length: 36, height: 18, code: "cnz2" },
-  { name: "Large", price: 199, length: 48, height: 24, code: "cnz3" },
-  { name: "X-Large", price: 249, length: 60, height: 30, code: "cnz4" },
-]
-
 const backgrounds = [
   "/assets/images/background/background1.jpg",
   "/assets/images/background/background2.jpg",
@@ -167,30 +160,15 @@ const backgrounds = [
   "/assets/images/background/background6.jpg",
   "/assets/images/background/background7.jpg",
   "/assets/images/background/background8.jpg",
-  "/assets/images/background/background9.jpg",
-  "/assets/images/background/background10.jpg",
 ]
 
 const NeonDesigner = () => {
   const [text, setText] = useState("")
   const [font, setFont] = useState(fonts[0])
   const [color, setColor] = useState(colors[0])
-  const [size, setSize] = useState(sizes[0])
   const [background, setBackground] = useState(backgrounds[0])
-  const [options, setOptions] = useState({
-    powerAdapter: "UK / IRELAND 230V",
-    backboardShape: "1",
-    bumperSale: true,
-    hanging: false,
-    wallMounting: false,
-  })
-  const [totalPrice, setTotalPrice] = useState(99)
   const [isMobile, setIsMobile] = useState(false)
   const previewRef = useRef(null)
-
-  useEffect(() => {
-    updatePrice()
-  }, [size, options]) //This line remains unchanged as it is not the target of the update.
 
   useEffect(() => {
     const handleResize = () => {
@@ -203,23 +181,13 @@ const NeonDesigner = () => {
     return () => window.removeEventListener("resize", handleResize)
   }, [])
 
-  const updatePrice = () => {
-    let price = size.price
-    if (options.backboardShape === "3") price += 21
-    if (options.hanging) price += 15
-    if (options.wallMounting) price += 15
-    setTotalPrice(price)
-  }
-
   const handleAddToCart = () => {
     const message = encodeURIComponent(`I'd like to order a custom neon sign:
 Text: ${text}
 Font: ${font.name}
 Color: ${color.name}
-Size: ${size.name}
-Options: ${JSON.stringify(options)}
-Total Price: $${totalPrice}`)
-    window.open(`https://wa.me/7806844491?text=${message}`, "_blank")
+Total Price: ₹5,000`)
+    window.open(`https://wa.me/8807488021?text=${message}`, "_blank")
   }
 
   return (
@@ -239,13 +207,7 @@ Total Price: $${totalPrice}`)
                   <TextEditor text={text} setText={setText} />
                   <FontSelector fonts={fonts} setFont={setFont} />
                   <ColorSelector colors={colors} color={color} setColor={setColor} />
-                  <SizeSelector sizes={sizes} size={size} setSize={setSize} />
-                  <OptionsSelector options={options} setOptions={setOptions} />
-                  <div className="total-amount">
-                    <div>Total Amount :</div>
-                    <div>${totalPrice}</div>
-                  </div>
-                  <button className="cart-btn" >
+                  <button className="cart-btn" onClick={handleAddToCart}>
                     Add to Cart
                   </button>
                 </div>
@@ -349,95 +311,5 @@ const ColorSelector = ({ colors, color, setColor }) => {
   )
 }
 
-const SizeSelector = ({ sizes, size, setSize }) => {
-  return (
-    <div className="size-selector">
-      <h5>Select your Size</h5>
-      {sizes.map((sizeOption, index) => (
-        <div
-          key={index}
-          className={`cont size ${size.name === sizeOption.name ? "active" : ""}`}
-          onClick={() => setSize(sizeOption)}
-        >
-          <div>
-            <div className="text-lg">{sizeOption.name}</div>
-            <div className="text-lg">${sizeOption.price}</div>
-          </div>
-          <div>
-            <div className="text-sm">Length: {sizeOption.length}"</div>
-            <div className="text-sm">Height: {sizeOption.height}"</div>
-          </div>
-        </div>
-      ))}
-    </div>
-  )
-}
-
-const OptionsSelector = ({ options, setOptions }) => {
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target
-    setOptions((prevOptions) => ({
-      ...prevOptions,
-      [name]: type === "checkbox" ? checked : value,
-    }))
-  }
-
-  return (
-    <div className="options-selector">
-      <h5>Additional Options</h5>
-      <select name="powerAdapter" value={options.powerAdapter} onChange={handleChange}>
-        <option value="UK / IRELAND 230V">UK / IRELAND 230V</option>
-        <option value="EUROPE 230V">EUROPE 230V</option>
-        <option value="USA / CANADA 120V">USA / CANADA 120V</option>
-        <option value="AUSTRALIA / NZ 230V">AUSTRALIA / NZ 230V</option>
-        <option value="JAPAN 100V">JAPAN 100V</option>
-      </select>
-      <select name="backboardShape" value={options.backboardShape} onChange={handleChange}>
-        <option value="1">Cut Around Acrylic: Hang/Wall-mount</option>
-        <option value="2">Rectangle Acrylic: Hang/Wall-mount</option>
-        <option value="3">Cut To Letter: Hang/Wall-mount +21$</option>
-      </select>
-      <div className="checkboxes">
-        <div className="customcb check">
-          <input
-            type="checkbox"
-            checked={options.bumperSale}
-            id="bumper_sale"
-            name="bumperSale"
-            onChange={handleChange}
-          />
-          <label htmlFor="bumper_sale" className="inner"></label>
-        </div>
-        <label htmlFor="bumper_sale" className="outer">
-          <b>Free</b> Bumper Sale: Remote and Dimmer
-        </label>
-      </div>
-      <div className="checkboxes">
-        <div className="customcb check">
-          <input type="checkbox" checked={options.hanging} id="hanging" name="hanging" onChange={handleChange} />
-          <label htmlFor="hanging" className="inner"></label>
-        </div>
-        <label htmlFor="hanging" className="outer">
-          Sign Hanging chain Kit $15
-        </label>
-      </div>
-      <div className="checkboxes">
-        <div className="customcb check">
-          <input
-            type="checkbox"
-            checked={options.wallMounting}
-            id="wall_mounting"
-            name="wallMounting"
-            onChange={handleChange}
-          />
-          <label htmlFor="wall_mounting" className="inner"></label>
-        </div>
-        <label htmlFor="wall_mounting" className="outer">
-          Sign Wall Mounting Kit $15
-        </label>
-      </div>
-    </div>
-  )
-}
-
 export default NeonDesigner
+

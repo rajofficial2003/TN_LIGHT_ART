@@ -3,9 +3,11 @@
 import { useState, useEffect } from "react"
 import styled from "styled-components"
 import { Star, ShoppingCart, Heart, Share2, ChevronRight } from "lucide-react"
-import { Link, useParams } from "react-router-dom"
+import { Link, useParams, useNavigate } from "react-router-dom"
 import SingleFooter from "../Components/Footer"
 import Header from "../Components/Header"
+import { doc, getDoc } from "firebase/firestore"
+import { db } from "../Firebase/firebase"
 
 const PageContainer = styled.div`
   padding-top: 100px;
@@ -249,349 +251,163 @@ const RatingText = styled.span`
   color: #666;
 `
 
+const AdditionalInfo = styled.div`
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #eee;
+`
+
+const AdditionalInfoTitle = styled.h2`
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+`
+
+const AdditionalInfoText = styled.p`
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+`
+
+const LoadingMessage = styled.div`
+  text-align: center;
+  font-size: 1.2rem;
+  color: #666;
+  margin-top: 2rem;
+`
+
+const ErrorMessage = styled.div`
+  text-align: center;
+  font-size: 1.2rem;
+  color: #ff6b6b;
+  margin-top: 2rem;
+`
+
 const ProductDetails = () => {
   const { id } = useParams()
+  const navigate = useNavigate()
   const [product, setProduct] = useState(null)
   const [selectedImage, setSelectedImage] = useState("")
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [quantity, setQuantity] = useState(1)
 
   useEffect(() => {
-    // Simulated product data - replace this with actual data fetching logic
-    const products = [
-      {
-        id: 1,
-        title: "Kids Name Light",
-        category: "business",
-        price: "₹9000",
-        originalPrice: "₹1100",
-        discount: "14% OFF",
-        description:
-          "Illuminate your business with our custom neon sign. This high-quality LED neon sign is perfect for creating a unique and eye-catching display of your business logo. Energy-efficient, durable, and designed to make a lasting impression.",
-        features: [
-          "Customizable design",
-          "Energy-efficient LED technology",
-          "Durable acrylic backing",
-          "Easy to install",
-          "1-year warranty",
-        ],
-        images: [
-          "../Images/Neon-lights/alisha 1.jpeg",
-          "../Images/Neon-lights/alisha 2.jpeg",
-          "../Images/Neon-lights/alisha 4.jpeg",
-          "../Images/Neon-lights/alisha 5.jpeg",
-        ],
-        rating: 4,
-        reviews: 24,
-      },
-      {
-        id: 2,
-        title: "ஐஸ்வரியம்",
-        category: "wedding",
-        price: "₹7500",
-        originalPrice: "₹9000",
-        discount: "17% OFF",
-        description:
-          "Make your special day even more memorable with our custom wedding name sign. This elegant neon sign adds a touch of romance and personalization to your wedding venue.",
-        features: [
-          "Personalized design",
-          "Soft, warm glow",
-          "Lightweight and portable",
-          "Battery-powered option available",
-          "Perfect photo backdrop",
-        ],
-        images: [
-          "../Images/Neon-lights/ice 4.jpeg",
-          "../Images/Neon-lights/ice 2.jpeg",
-          "../Images/Neon-lights/ice 3.jpeg",
+    fetchProduct()
+  }, [])
 
-          "../Images/Neon-lights/ice 2.jpeg",
-        ],
-        rating: 5,
-        reviews: 36,
-      },
-      {
-        id: 3,
-        title: "மணிவண்ணன் இல்லம்",
-        category: "business",
-        price: "₹12000",
-        originalPrice: "₹13500",
-        discount: "11% OFF",
-        description:
-          "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
-        features: [
-          "Multiple design options",
-          "Bright, attention-grabbing display",
-          "Durable construction for long-lasting use",
-          "Easy wall mounting",
-          "Low power consumption",
-        ],
-        images: [
-          "../Images/Neon-lights/mani 2.jpeg",
-          "../Images/Neon-lights/mani 1.jpeg",
-          "../Images/Neon-lights/mani 3.jpeg",
-          "../Images/Neon-lights/mani 4.jpeg",
-        ],
-        rating: 4,
-        reviews: 18,
-      },
-      {
-        id: 4,
-        title: "VSV Sweet Home",
-        category: "business",
-        price: "₹9600",
-        originalPrice: "₹10600",
-        discount: "11% OFF",
-        description:
-          "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
-        features: [
-          "Multiple design options",
-          "Bright, attention-grabbing display",
-          "Durable construction for long-lasting use",
-          "Easy wall mounting",
-          "Low power consumption",
-        ],
-        images: [
-          "../Images/Neon-lights/vsv 1.jpeg",
-          "../Images/Neon-lights/vsv 2.jpeg",
-          "../Images/Neon-lights/vsv 3.jpeg",
-          "../Images/Neon-lights/vsv 4.jpeg",
-        ],
-        rating: 4,
-        reviews: 18,
-      },
-      {
-        id: 5,
-        title: "Sheela Dental Clinic",
-        category: "business",
-        price: "₹14400",
-        originalPrice: "₹16000",
-        discount: "11% OFF",
-        description:
-          "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
-        features: [
-          "Multiple design options",
-          "Bright, attention-grabbing display",
-          "Durable construction for long-lasting use",
-          "Easy wall mounting",
-          "Low power consumption",
-        ],
-        images: [
-          "../Images/Neon-lights/sheela 1.jpeg",
-          "../Images/Neon-lights/Sheela 2.jpeg",
-          "../Images/Neon-lights/Sheela 3.jpeg",
-          "../Images/Neon-lights/Sheela 5.jpeg",
-        ],
-        rating: 4,
-        reviews: 18,
-      },
-      {
-        id: 6,
-        title: "மாசாணி அம்மன் இல்லம்",
-        category: "business",
-        price: "₹12000",
-        originalPrice: "₹13500",
-        discount: "11% OFF",
-        description:
-          "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
-        features: [
-          "Multiple design options",
-          "Bright, attention-grabbing display",
-          "Durable construction for long-lasting use",
-          "Easy wall mounting",
-          "Low power consumption",
-        ],
-        images: [
-          "../Images/Neon-lights/maasani 1.jpeg",
-          "../Images/Neon-lights/maasani 2.jpeg",
-          "../Images/Neon-lights/maasani 3.jpeg",
-          "../Images/Neon-lights/maasani 4.jpeg",
-          "../Images/Neon-lights/maasani 5.jpeg",
-        ],
-        rating: 4,
-        reviews: 18,
-      },
-      {
-        id: 7,
-        title: "சரணாலயம்",
-        category: "business",
-        price: "₹9900",
-        originalPrice: "₹11000",
-        discount: "11% OFF",
-        description:
-          "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
-        features: [
-          "Multiple design options",
-          "Bright, attention-grabbing display",
-          "Durable construction for long-lasting use",
-          "Easy wall mounting",
-          "Low power consumption",
-        ],
-        images: [
-          "../Images/Neon-lights/sara 1.jpeg",
-          "../Images/Neon-lights/sara 2.jpeg",
-          "../Images/Neon-lights/sara 3.jpeg",
-          "../Images/Neon-lights/sara 4.jpeg",
-          "../Images/Neon-lights/sara 5.jpeg",
-        ],
-        rating: 4,
-        reviews: 18,
-      },
-      {
-        id: 50,
-        title: "Neon Light",
-        category: "business",
-        price: "₹9000",
-        originalPrice: "₹11000",
-        discount: "11% OFF",
-        description:
-          "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
-        features: [
-          "Multiple design options",
-          "Bright, attention-grabbing display",
-          "Durable construction for long-lasting use",
-          "Easy wall mounting",
-          "Low power consumption",
-        ],
-        images: [
-          "../Images/Neon-lights/alisha 1.jpeg",
-          "../Images/Neon-lights/alisha 2.jpeg",
-          "../Images/Neon-lights/alisha 4.jpeg",
-          "../Images/Neon-lights/alisha 5.jpeg",
-        ],
-        rating: 4,
-        reviews: 18,
-      },
-      {
-        id: 51,
-        title: "Neon Light",
-        category: "business",
-        price: "₹399",
-        originalPrice: "₹449",
-        discount: "11% OFF",
-        description:
-          "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
-        features: [
-          "Multiple design options",
-          "Bright, attention-grabbing display",
-          "Durable construction for long-lasting use",
-          "Easy wall mounting",
-          "Low power consumption",
-        ],
-        images: [
-          "../Images/Neon-lights/ice 4.jpeg",
-          "../Images/Neon-lights/ice 2.jpeg",
-          "../Images/Neon-lights/ice 3.jpeg",
+  const fetchProduct = async () => {
+    try {
+      const productRef = doc(db, "products", id)
+      const productSnap = await getDoc(productRef)
 
-          "../Images/Neon-lights/ice 2.jpeg",
-        ],
-        rating: 4,
-        reviews: 18,
-      },
-      {
-        id: 52,
-        title: "Neon Light",
-        category: "business",
-        price: "₹399",
-        originalPrice: "₹449",
-        discount: "11% OFF",
-        description:
-          "Create the perfect ambiance for your bar or pub with our eye-catching neon sign. This vibrant sign will attract customers and set the mood for a great night out.",
-        features: [
-          "Multiple design options",
-          "Bright, attention-grabbing display",
-          "Durable construction for long-lasting use",
-          "Easy wall mounting",
-          "Low power consumption",
-        ],
-        images: [
-          "../Images/Neon-lights/sheela 1.jpeg",
-          "../Images/Neon-lights/Sheela 2.jpeg",
-          "../Images/Neon-lights/Sheela 3.jpeg",
-          "../Images/Neon-lights/Sheela 5.jpeg",
-        ],
-        rating: 4,
-        reviews: 18,
-      },
-    ]
-
-    const foundProduct = products.find((p) => p.id === Number.parseInt(id))
-    setProduct(foundProduct)
-    if (foundProduct) {
-      setSelectedImage(foundProduct.images[0])
+      if (productSnap.exists()) {
+        const productData = productSnap.data()
+        setProduct({ id: productSnap.id, ...productData })
+        setSelectedImage(productData.images && productData.images.length > 0 ? productData.images[0] : "")
+      } else {
+        setError("Product not found")
+      }
+    } catch (error) {
+      console.error("Error fetching product:", error)
+      setError("Failed to load product")
+    } finally {
+      setLoading(false)
     }
-  }, [id])
+  }
 
   const handleThumbnailClick = (image) => {
     setSelectedImage(image)
   }
 
-  if (!product) {
-    return <div>Loading...</div>
+  const handleAddToCart = () => {
+    navigate("/add-to-cart", { state: { product, quantity } })
   }
+
+  if (loading) return <LoadingMessage>Loading...</LoadingMessage>
+  if (error) return <ErrorMessage>{error}</ErrorMessage>
+  if (!product) return <ErrorMessage>Product not found</ErrorMessage>
 
   return (
     <div>
       <Header />
-
       <PageContainer>
         <div className="container">
           <Breadcrumb>
             <BreadcrumbLink to="/gallery">Gallery</BreadcrumbLink>
             <ChevronRight size={16} />
-            <span>{product.title}</span>
+            <span>{product.name}</span>
           </Breadcrumb>
         </div>
         <ProductContainer>
           <ImageGallery>
-            <MainImage src={selectedImage || "/placeholder.svg"} alt={product.title} className="img-fluid" />
+            <MainImage src={selectedImage || "/placeholder.svg"} alt={product.name} className="img-fluid" />
             <ThumbnailContainer>
-              {product.images.map((img, index) => (
-                <Thumbnail
-                  key={index}
-                  src={img}
-                  alt={`${product.title} ${index + 1}`}
-                  onClick={() => handleThumbnailClick(img)}
-                  selected={selectedImage === img}
-                  className="img-thumbnail"
-                />
-              ))}
+              {product.images &&
+                product.images.map((img, index) => (
+                  <Thumbnail
+                    key={index}
+                    src={img}
+                    alt={`${product.name} ${index + 1}`}
+                    onClick={() => handleThumbnailClick(img)}
+                    selected={selectedImage === img}
+                    className="img-thumbnail"
+                  />
+                ))}
             </ThumbnailContainer>
           </ImageGallery>
           <ProductInfo>
-            <Title>{product.title}</Title>
+            <Title>{product.name}</Title>
             <RatingContainer>
               <StarContainer>
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
-                    fill={i < product.rating ? "#ffc107" : "none"}
-                    stroke={i < product.rating ? "#ffc107" : "#ffc107"}
+                    fill={i < Math.floor(product.rating || 0) ? "#ffc107" : "none"}
+                    stroke={i < Math.floor(product.rating || 0) ? "#ffc107" : "#ffc107"}
                     size={20}
                   />
                 ))}
               </StarContainer>
               <RatingText>
-                {product.rating}.0 ({product.reviews} reviews)
+                {product.rating || 0} ({product.reviews || 0} reviews)
               </RatingText>
             </RatingContainer>
             <PriceContainer>
-              <Price>{product.price}</Price>
-              <OriginalPrice>{product.originalPrice}</OriginalPrice>
-              <Discount>{product.discount}</Discount>
+              <Price>₹{product.price}</Price>
+              {product.originalPrice && (
+                <>
+                  <OriginalPrice>₹{product.originalPrice}</OriginalPrice>
+                  <Discount>{product.discount}</Discount>
+                </>
+              )}
             </PriceContainer>
             <Category>Category: {product.category}</Category>
             <Description>{product.description}</Description>
+
             <FeatureList>
-              {product.features.map((feature, index) => (
-                <FeatureItem key={index}>{feature}</FeatureItem>
-              ))}
+              <FeatureItem>Premium LED neon craftsmanship</FeatureItem>
+              <FeatureItem>Energy-efficient design</FeatureItem>
+              <FeatureItem>Customizable colors and sizes</FeatureItem>
+              <FeatureItem>Easy installation with included kit</FeatureItem>
+              <FeatureItem>Optional remote-controlled dimming</FeatureItem>
             </FeatureList>
+
+            <AdditionalInfo>
+              <AdditionalInfoTitle>Exclusive Offers</AdditionalInfoTitle>
+              <FeatureList>
+                <FeatureItem>Complimentary gift wrapping</FeatureItem>
+                <FeatureItem>10% off for first-time buyers</FeatureItem>
+                <FeatureItem>30-day satisfaction guarantee</FeatureItem>
+              </FeatureList>
+            </AdditionalInfo>
+
             <ButtonContainer>
-              <Link style={{ textDecoration: "none" }} to="/cart">
-                <AddToCartButton>
-                  <ShoppingCart size={16} />
-                  Add to Cart
-                </AddToCartButton>
-              </Link>
+              <AddToCartButton onClick={handleAddToCart}>
+                <ShoppingCart size={16} />
+                Add to Cart
+              </AddToCartButton>
               <WishlistButton>
                 <Heart size={16} />
                 Wishlist
@@ -601,6 +417,13 @@ const ProductDetails = () => {
                 Share
               </ShareButton>
             </ButtonContainer>
+
+            {product.additionalInfo && (
+              <AdditionalInfo>
+                <AdditionalInfoTitle>About This Neon Sign</AdditionalInfoTitle>
+                <AdditionalInfoText>{product.additionalInfo}</AdditionalInfoText>
+              </AdditionalInfo>
+            )}
           </ProductInfo>
         </ProductContainer>
       </PageContainer>

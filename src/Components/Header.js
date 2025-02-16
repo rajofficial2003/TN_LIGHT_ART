@@ -36,6 +36,9 @@ const Header = () => {
         <div className="icons-container">
           <button className="icon">♡</button>
           <button className="icon">🛒</button>
+          <Link target='blank' style={{ textDecoration: "none" }} to="/login">
+            <button className="icon d-none d-lg-block">Sign In</button>
+          </Link>
           <button className="menu-button" onClick={toggleMenu}>
             <span>☰</span>
           </button>
@@ -44,7 +47,7 @@ const Header = () => {
 
       <div className={`mobile-menu ${isOpen ? 'open' : ''}`}>
         <div className="mobile-header">
-        <img className='logo' src={logo || "/placeholder.svg"} alt="TN Light Arts Logo" />
+          <img className='logo' src={logo || "/placeholder.svg"} alt="TN Light Arts Logo" />
           <div className="mobile-icons-container d-flex">
             <button className="icon">♡</button>
             <button className="icon">🛒</button>
@@ -54,7 +57,9 @@ const Header = () => {
 
         <div className="welcome-section">
           <span>Welcome</span>
-          <button className="login-button">Login / Register</button>
+          <Link to="/login" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <button className="login-button">Login / Register</button>
+          </Link>
         </div>
 
         {navItems.map((item, index) => (
@@ -87,4 +92,3 @@ const Header = () => {
 };
 
 export default Header;
-

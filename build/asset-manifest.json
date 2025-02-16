@@ -1,29 +1,24 @@
 {
   "files": {
     "main.css": "/static/css/main.c4df5867.css",
-    "main.js": "/static/js/main.96275bc4.js",
+    "main.js": "/static/js/main.1837f44d.js",
     "static/media/WildScript.ttf": "/static/media/WildScript.8998b58a6d46b3ce2480.ttf",
     "static/media/LoveNote.ttf": "/static/media/LoveNote.5eed1f9029eec9516580.ttf",
     "static/media/Northshore.ttf": "/static/media/Northshore.c15307972a76465ff920.ttf",
     "static/media/Vintage.ttf": "/static/media/Vintage.f955553010c89a245a29.ttf",
-    "static/media/mani 2.jpeg": "/static/media/mani 2.27ca571750a33dd00ca9.jpeg",
     "static/media/Bellview.ttf": "/static/media/Bellview.c9206854d1fc0d1c96dc.ttf",
     "static/media/Melbourne.ttf": "/static/media/Melbourne.13fc1915a30542ade669.ttf",
     "static/media/Typewriter.ttf": "/static/media/Typewriter.1fa0567036c10d842042.ttf",
     "static/media/Royalty.ttf": "/static/media/Royalty.023c36c77178d049613a.ttf",
     "static/media/alisha 4.jpeg": "/static/media/alisha 4.f59990740a4fa87d840a.jpeg",
     "static/media/sheela 1.jpeg": "/static/media/sheela 1.f08379ccc2041c3e333e.jpeg",
-    "static/media/sara 1.jpeg": "/static/media/sara 1.5a4a040673a75034c233.jpeg",
     "static/media/Greenworld.ttf": "/static/media/Greenworld.0c342f06ca95fd760503.ttf",
-    "static/media/vsv 4.jpeg": "/static/media/vsv 4.1d569454a406716bc133.jpeg",
     "static/media/Venetian.ttf": "/static/media/Venetian.efa530130333e3b00e9f.ttf",
     "static/media/Signature.ttf": "/static/media/Signature.642bd7e19f07cd721c5d.ttf",
     "static/media/ice 2.jpeg": "/static/media/ice 2.1fd1e560d62be3131feb.jpeg",
     "static/media/Bayview.ttf": "/static/media/Bayview.4c5a3ae9f63886d13ff8.ttf",
     "static/media/Neontrace.ttf": "/static/media/Neontrace.af6e1e4ad20f115a199b.ttf",
-    "static/media/ice 4.jpeg": "/static/media/ice 4.103f99ef81ff485af7c8.jpeg",
     "static/media/Amsterdam.ttf": "/static/media/Amsterdam.072489dce9c1d6f04b8c.ttf",
-    "static/media/maasani 1.jpeg": "/static/media/maasani 1.8770eb294918c21ba146.jpeg",
     "static/media/Buttercup.ttf": "/static/media/Buttercup.476747e15ff5e432fb0e.ttf",
     "static/media/Alexa.ttf": "/static/media/Alexa.96a373329455295bbb3b.ttf",
     "static/media/Freehand.ttf": "/static/media/Freehand.98471d5a09389fe590ac.ttf",
@@ -46,7 +41,6 @@
     "static/media/Monaco.ttf": "/static/media/Monaco.6988d43025791a7237a8.ttf",
     "static/media/Barcelona.ttf": "/static/media/Barcelona.bd2a58ec2472a885e4d0.ttf",
     "static/media/SciFi.ttf": "/static/media/SciFi.d8264b55a45577b211e6.ttf",
-    "static/media/alisha 1.jpeg": "/static/media/alisha 1.85d4d1da46957212e282.jpeg",
     "static/media/Austin.ttf": "/static/media/Austin.f67d3f39c840f7c944b2.ttf",
     "static/media/Waikiki.ttf": "/static/media/Waikiki.81678db3b32cd6757547.ttf",
     "static/media/ClassicType.ttf": "/static/media/ClassicType.94fa1a8870e3ccb81826.ttf",
@@ -55,10 +49,10 @@
     "static/media/Amanda.ttf": "/static/media/Amanda.ad2ff5bf5d7da24ca165.ttf",
     "index.html": "/index.html",
     "main.c4df5867.css.map": "/static/css/main.c4df5867.css.map",
-    "main.96275bc4.js.map": "/static/js/main.96275bc4.js.map"
+    "main.1837f44d.js.map": "/static/js/main.1837f44d.js.map"
   },
   "entrypoints": [
     "static/css/main.c4df5867.css",
-    "static/js/main.96275bc4.js"
+    "static/js/main.1837f44d.js"
   ]
 }

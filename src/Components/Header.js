@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import logo from '../Images/Logo/1.png';
 import './header.css';
 
-const Header = () => {
+const Header = ({ toggleSidebar }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -35,7 +35,7 @@ const Header = () => {
 
         <div className="icons-container">
           <button className="icon">♡</button>
-          <button className="icon">🛒</button>
+          <button className="icon" onClick={toggleSidebar}>🛒</button>
           <Link target='blank' style={{ textDecoration: "none" }} to="/login">
             <button className="icon d-none d-lg-block">Sign In</button>
           </Link>
@@ -50,7 +50,7 @@ const Header = () => {
           <img className='logo' src={logo || "/placeholder.svg"} alt="TN Light Arts Logo" />
           <div className="mobile-icons-container d-flex">
             <button className="icon">♡</button>
-            <button className="icon">🛒</button>
+            <button className="icon" onClick={toggleSidebar}>🛒</button>
           </div>
           <button className="back-button" onClick={toggleMenu}>←</button>
         </div>

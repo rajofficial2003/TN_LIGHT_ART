@@ -1,254 +1,254 @@
 .header-container {
-    background-color: #ffffff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    height: 80px;
-    display: flex;
-    align-items: center;
-  }
-  
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: 80px;
+  display: flex;
+  align-items: center;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
   .nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 1rem;
-    max-width: 1400px;
-    margin: 0 auto;
-    width: 100%;
+    padding: 0 2rem;
   }
-  
-  @media (min-width: 768px) {
-    .nav {
-      padding: 0 2rem;
-    }
-  }
-  
-  .logo-container {
-    flex: 0 0 auto;
-  }
-  
+}
+
+.logo-container {
+  flex: 0 0 auto;
+}
+
+.logo {
+  height: 60px;
+  width: auto;
+}
+
+@media (min-width: 768px) {
   .logo {
-    height: 60px;
-    width: auto;
+    height: 70px;
   }
-  
-  @media (min-width: 768px) {
-    .logo {
-      height: 70px;
-    }
-  }
-  
+}
+
+.desktop-nav {
+  display: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
   .desktop-nav {
-    display: none;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    gap: 2.5rem;
-    align-items: center;
+    display: flex;
+    margin-left: auto;
+    padding-right: 2rem;
   }
-  
-  @media (min-width: 1024px) {
-    .desktop-nav {
-      display: flex;
-      margin-left: auto;
-      padding-right: 2rem;
-    }
-  }
-  
-  .desktop-nav-item a {
-    color: #000;
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 1rem;
-    transition: color 0.2s ease;
-    white-space: nowrap;
-  }
-  
-  .desktop-nav-item a:hover {
-    color: #40e0d0;
-  }
-  
+}
+
+.desktop-nav-item a {
+  color: #000;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: color 0.2s ease;
+  white-space: nowrap;
+}
+
+.desktop-nav-item a:hover {
+  color: #40e0d0;
+}
+
+.icons-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
   .icons-container {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+    gap: 1.5rem;
   }
-  
-  @media (min-width: 768px) {
-    .icons-container {
-      gap: 1.5rem;
-    }
-  }
-  
-  .icon {
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    cursor: pointer;
-    padding: 0.5rem;
-    display: flex;
-    align-items: center;
-    transition: color 0.2s ease;
-  }
-  
-  .icon:hover {
-    color: #40e0d0;
-  }
-  
+}
+
+.icon {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s ease;
+}
+
+.icon:hover {
+  color: #40e0d0;
+}
+
+.menu-button {
+  margin-left: auto;
+  padding: 0.5rem;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+@media (min-width: 1024px) {
   .menu-button {
-    margin-left: auto;
-    padding: 0.5rem;
-    font-size: 1.5rem;
-    background: none;
-    border: none;
-    cursor: pointer;
+    display: none;
   }
-  
-  @media (min-width: 1024px) {
-    .menu-button {
-      display: none;
-    }
-  }
-  
-  .mobile-menu {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: white;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease-in-out;
-    z-index: 1001;
-    overflow-y: auto;
-  }
-  
-  .mobile-menu.open {
-    transform: translateX(0);
-  }
-  
-  .mobile-header {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .mobile-logo {
-    max-height: 50px;
-    width: auto;
-    justify-self: center;
-  }
-  
-  .back-button {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    padding: 0.5rem;
-    margin-right: auto;
-  }
-  
-  .back-button:hover {
-    color: #40e0d0;
-  }
-  
-  .welcome-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .login-button {
-    background: #000;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.875rem;
-  }
-  
-  .login-button:hover {
-    background: #40e0d0;
-  }
-  
-  .mobile-nav-item {
-    border-bottom: 1px solid #eee;
-  }
-  
-  .mobile-nav-item:hover {
-    background-color: rgba(64, 224, 208, 0.1);
-  }
-  
-  .mobile-nav-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-    cursor: pointer;
-  }
-  
-  .nav-title {
-    font-size: 1rem;
-    font-weight: 500;
-  }
-  
-  .expand-icon {
-    font-size: 1.2rem;
-    color: #666;
-    margin-left: auto;
-    padding-left: 1rem;
-  }
-  
-  .bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: white;
-    border-top: 1px solid #eee;
-  }
-  
-  .bottom-nav-item {
-    padding: 1rem;
-    border-bottom: 1px solid #eee;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.875rem;
-    cursor: pointer;
-  }
-  
-  .bottom-nav-item:hover {
-    color: #40e0d0;
-  }
-  
-  .brand-bar {
-    background: #000;
-    color: white;
-    justify-content: center;
-    font-weight: 500;
-    padding: 1rem;
-    text-align: center;
-  }
-  
-  .brand-bar:hover {
-    background: #40e0d0;
-  }
-  
-  .mobile-icons-container {
-    justify-self: end;
-  }
-  
-  
+}
+
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: white;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
+  z-index: 1001;
+  overflow-y: auto;
+}
+
+.mobile-menu.open {
+  transform: translateX(0);
+}
+
+.mobile-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.mobile-logo {
+  max-height: 50px;
+  width: auto;
+  justify-self: center;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  margin-right: auto;
+}
+
+.back-button:hover {
+  color: #40e0d0;
+}
+
+.welcome-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.login-button {
+  background: #000;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.login-button:hover {
+  background: #40e0d0;
+}
+
+.mobile-nav-item {
+  border-bottom: 1px solid #eee;
+}
+
+.mobile-nav-item:hover {
+  background-color: rgba(64, 224, 208, 0.1);
+}
+
+.mobile-nav-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  cursor: pointer;
+}
+
+.nav-title {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.expand-icon {
+  font-size: 1.2rem;
+  color: #666;
+  margin-left: auto;
+
+  padding-left: 1rem;
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-top: 1px solid #eee;
+}
+
+.bottom-nav-item {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.bottom-nav-item:hover {
+  color: #40e0d0;
+}
+
+.brand-bar {
+  background: #000;
+  color: white;
+  justify-content: center;
+  font-weight: 500;
+  padding: 1rem;
+  text-align: center;
+}
+
+.brand-bar:hover {
+  background: #40e0d0;
+}
+
+.mobile-icons-container {
+  justify-self: end;
+}
+

@@ -1,13 +1,15 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useParams, Link, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import { Star, ShoppingCart, Heart, Share2, ChevronRight } from "lucide-react"
-import { Link, useParams, useNavigate } from "react-router-dom"
-import SingleFooter from "../Components/Footer"
-import Header from "../Components/Header"
-import { doc, getDoc } from "firebase/firestore"
+import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "firebase/auth"
+import { doc, getDoc, setDoc, collection, onSnapshot, deleteDoc } from "firebase/firestore"
 import { db } from "../Firebase/firebase"
+import Header from "../Components/Header"
+import RightSidebar from "../Components/RightSidebar"
+import SingleFooter from "../Components/Footer"
 
 const PageContainer = styled.div`
   padding-top: 100px;
@@ -291,11 +293,28 @@ const ProductDetails = () => {
   const [selectedImage, setSelectedImage] = useState("")
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [quantity, setQuantity] = useState(1)
+  const [user, setUser] = useState(null)
+  const [cartItems, setCartItems] = useState([])
+  const [orders, setOrders] = useState([])
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [recentlyAddedProduct, setRecentlyAddedProduct] = useState(null)
+  const auth = getAuth()
 
   useEffect(() => {
     fetchProduct()
-  }, [])
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser)
+      if (currentUser) {
+        fetchCartItems(currentUser.uid)
+        fetchOrders(currentUser.uid)
+      } else {
+        setCartItems([])
+        setOrders([])
+      }
+    })
+
+    return () => unsubscribe()
+  }, [auth])
 
   const fetchProduct = async () => {
     try {
@@ -317,12 +336,91 @@ const ProductDetails = () => {
     }
   }
 
+  const fetchCartItems = (userId) => {
+    const cartRef = collection(db, `users/${userId}/cart`)
+    const unsubscribe = onSnapshot(cartRef, (snapshot) => {
+      const items = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+      setCartItems(items)
+    })
+    return unsubscribe
+  }
+
+  const fetchOrders = (userId) => {
+    const ordersRef = collection(db, `users/${userId}/orders`)
+    const unsubscribe = onSnapshot(ordersRef, (snapshot) => {
+      const ordersList = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+      setOrders(ordersList)
+    })
+    return unsubscribe
+  }
+
   const handleThumbnailClick = (image) => {
     setSelectedImage(image)
   }
 
-  const handleAddToCart = () => {
-    navigate("/add-to-cart", { state: { product, quantity } })
+  const handleAddToCart = async () => {
+    if (!user) {
+      setSidebarOpen(true)
+      return
+    }
+
+    try {
+      const cartRef = doc(db, `users/${user.uid}/cart`, product.id)
+      await setDoc(
+        cartRef,
+        {
+          productId: product.id,
+          productName: product.name,
+          productPrice: product.price,
+          quantity: 1,
+          image: product.images[0],
+          timestamp: new Date(),
+        },
+        { merge: true },
+      )
+      setRecentlyAddedProduct(product)
+      setSidebarOpen(true)
+    } catch (error) {
+      console.error("Error adding to cart:", error)
+      setError("Failed to add product to cart")
+    }
+  }
+
+  const handleRemoveFromCart = async (productId) => {
+    try {
+      const cartItemRef = doc(db, `users/${user.uid}/cart`, productId)
+      await deleteDoc(cartItemRef)
+    } catch (error) {
+      console.error("Error removing from cart:", error)
+      setError("Failed to remove product from cart")
+    }
+  }
+
+  const handleSignIn = async () => {
+    const provider = new GoogleAuthProvider()
+    try {
+      const result = await signInWithPopup(auth, provider)
+      setSidebarOpen(false)
+      await handleAddToCart()
+      setSidebarOpen(true)
+    } catch (error) {
+      console.error("Error signing in with Google:", error)
+    }
+  }
+
+  const handleSignOut = async () => {
+    try {
+      await auth.signOut()
+      setUser(null)
+      setCartItems([])
+      setOrders([])
+    } catch (error) {
+      console.error("Error signing out:", error)
+    }
+  }
+
+  const handleProceedToCheckout = (productToCheckout) => {
+    navigate("/add-to-cart", { state: { product: productToCheckout, quantity: 1 } })
   }
 
   if (loading) return <LoadingMessage>Loading...</LoadingMessage>
@@ -331,7 +429,7 @@ const ProductDetails = () => {
 
   return (
     <div>
-      <Header />
+      <Header toggleSidebar={() => setSidebarOpen(true)} />
       <PageContainer>
         <div className="container">
           <Breadcrumb>
@@ -342,7 +440,7 @@ const ProductDetails = () => {
         </div>
         <ProductContainer>
           <ImageGallery>
-            <MainImage src={selectedImage || "/placeholder.svg"} alt={product.name} className="img-fluid" />
+            <MainImage src={selectedImage || "/placeholder.svg"} alt={product.name} />
             <ThumbnailContainer>
               {product.images &&
                 product.images.map((img, index) => (
@@ -352,7 +450,6 @@ const ProductDetails = () => {
                     alt={`${product.name} ${index + 1}`}
                     onClick={() => handleThumbnailClick(img)}
                     selected={selectedImage === img}
-                    className="img-thumbnail"
                   />
                 ))}
             </ThumbnailContainer>
@@ -394,15 +491,6 @@ const ProductDetails = () => {
               <FeatureItem>Optional remote-controlled dimming</FeatureItem>
             </FeatureList>
 
-            <AdditionalInfo>
-              <AdditionalInfoTitle>Exclusive Offers</AdditionalInfoTitle>
-              <FeatureList>
-                <FeatureItem>Complimentary gift wrapping</FeatureItem>
-                <FeatureItem>10% off for first-time buyers</FeatureItem>
-                <FeatureItem>30-day satisfaction guarantee</FeatureItem>
-              </FeatureList>
-            </AdditionalInfo>
-
             <ButtonContainer>
               <AddToCartButton onClick={handleAddToCart}>
                 <ShoppingCart size={16} />
@@ -427,6 +515,20 @@ const ProductDetails = () => {
           </ProductInfo>
         </ProductContainer>
       </PageContainer>
+
+      <RightSidebar
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        user={user}
+        cartItems={cartItems}
+        orders={orders}
+        onSignOut={handleSignOut}
+        onRemoveFromCart={handleRemoveFromCart}
+        onSignIn={handleSignIn}
+        onProceedToCheckout={handleProceedToCheckout}
+        recentlyAddedProduct={recentlyAddedProduct}
+      />
+
       <SingleFooter />
     </div>
   )

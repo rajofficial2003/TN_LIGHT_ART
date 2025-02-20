@@ -19,6 +19,8 @@ import { Settings } from 'lucide-react';
 import Products from './Admin/Products';
 import AddToCart from './Pages/AddToCart';
 import OrderConfirmation from './Pages/OrderConfirmation';
+import Cart from './Admin/Cart';
+import CustomNeonOrders from './Admin/CustomNeonOrders';
 
 const PrivateRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = React.useState(null);
@@ -65,6 +67,8 @@ function App() {
                     <Route path="orders" element={<Orders />} />
                     <Route path="settings" element={<Settings />} />
                     <Route path="products" element={<Products />} />
+                    <Route path="cart" element={<Cart />} />
+                    <Route path="custom-orders" element={<CustomNeonOrders />} />
                     
                   </Routes>
                 </AdminPanel>

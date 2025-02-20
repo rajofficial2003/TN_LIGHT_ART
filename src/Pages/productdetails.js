@@ -5,7 +5,7 @@ import { useParams, Link, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import { Star, ShoppingCart, Heart, Share2, ChevronRight } from "lucide-react"
 import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "firebase/auth"
-import { doc, getDoc, setDoc, collection, onSnapshot, deleteDoc } from "firebase/firestore"
+import { doc, getDoc, collection, onSnapshot, deleteDoc, addDoc, query, where, getDocs } from "firebase/firestore"
 import { db } from "../Firebase/firebase"
 import Header from "../Components/Header"
 import RightSidebar from "../Components/RightSidebar"
@@ -337,8 +337,9 @@ const ProductDetails = () => {
   }
 
   const fetchCartItems = (userId) => {
-    const cartRef = collection(db, `users/${userId}/cart`)
-    const unsubscribe = onSnapshot(cartRef, (snapshot) => {
+    const cartRef = collection(db, "cart")
+    const userCartQuery = query(cartRef, where("userId", "==", userId))
+    const unsubscribe = onSnapshot(userCartQuery, (snapshot) => {
       const items = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
       setCartItems(items)
     })
@@ -346,8 +347,9 @@ const ProductDetails = () => {
   }
 
   const fetchOrders = (userId) => {
-    const ordersRef = collection(db, `users/${userId}/orders`)
-    const unsubscribe = onSnapshot(ordersRef, (snapshot) => {
+    const ordersRef = collection(db, "orders")
+    const userOrdersQuery = query(ordersRef, where("userId", "==", userId))
+    const unsubscribe = onSnapshot(userOrdersQuery, (snapshot) => {
       const ordersList = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
       setOrders(ordersList)
     })
@@ -365,19 +367,25 @@ const ProductDetails = () => {
     }
 
     try {
-      const cartRef = doc(db, `users/${user.uid}/cart`, product.id)
-      await setDoc(
-        cartRef,
-        {
-          productId: product.id,
-          productName: product.name,
-          productPrice: product.price,
-          quantity: 1,
-          image: product.images[0],
-          timestamp: new Date(),
-        },
-        { merge: true },
-      )
+      const cartRef = collection(db, "cart")
+      const existingItemQuery = query(cartRef, where("userId", "==", user.uid), where("productId", "==", product.id))
+      const existingItemSnapshot = await getDocs(existingItemQuery)
+
+      if (!existingItemSnapshot.empty) {
+        setRecentlyAddedProduct({ ...product, alreadyInCart: true })
+        setSidebarOpen(true)
+        return
+      }
+
+      await addDoc(cartRef, {
+        userId: user.uid,
+        productId: product.id,
+        productName: product.name,
+        productPrice: product.price,
+        quantity: 1,
+        image: product.images[0],
+        timestamp: new Date(),
+      })
       setRecentlyAddedProduct(product)
       setSidebarOpen(true)
     } catch (error) {
@@ -388,7 +396,7 @@ const ProductDetails = () => {
 
   const handleRemoveFromCart = async (productId) => {
     try {
-      const cartItemRef = doc(db, `users/${user.uid}/cart`, productId)
+      const cartItemRef = doc(db, "cart", productId)
       await deleteDoc(cartItemRef)
     } catch (error) {
       console.error("Error removing from cart:", error)
@@ -420,7 +428,33 @@ const ProductDetails = () => {
   }
 
   const handleProceedToCheckout = (productToCheckout) => {
-    navigate("/add-to-cart", { state: { product: productToCheckout, quantity: 1 } })
+    if (productToCheckout) {
+      const serializableProduct = {
+        id: productToCheckout.id,
+        name: productToCheckout.name,
+        price: productToCheckout.price,
+        originalPrice: productToCheckout.originalPrice,
+        images: productToCheckout.images,
+        // Add any other necessary fields, but ensure they are serializable
+      }
+
+      const serializableUser = user
+        ? {
+            uid: user.uid,
+            email: user.email,
+            displayName: user.displayName,
+            // Add any other necessary fields, but ensure they are serializable
+          }
+        : null
+
+      navigate("/add-to-cart", {
+        state: {
+          product: serializableProduct,
+          quantity: 1,
+          user: serializableUser,
+        },
+      })
+    }
   }
 
   if (loading) return <LoadingMessage>Loading...</LoadingMessage>
@@ -433,7 +467,7 @@ const ProductDetails = () => {
       <PageContainer>
         <div className="container">
           <Breadcrumb>
-            <BreadcrumbLink to="/gallery">Gallery</BreadcrumbLink>
+            <BreadcrumbLink to="/gallery">Products</BreadcrumbLink>
             <ChevronRight size={16} />
             <span>{product.name}</span>
           </Breadcrumb>

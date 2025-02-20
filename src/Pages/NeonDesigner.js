@@ -1,9 +1,14 @@
+"use client"
+
 import { useState, useEffect, useRef } from "react"
 import Draggable from "react-draggable"
+import { Minus, Plus } from "lucide-react"
 import Header from "../Components/Header"
 import SingleFooter from "../Components/Footer"
 import "./NeonDesigner.css"
 import styled, { keyframes } from "styled-components"
+import { collection, addDoc, serverTimestamp, getDocs } from "firebase/firestore"
+import { db } from "../Firebase/firebase"
 
 const fonts = [
   { name: "Alexa", size: "80px", lineHeight: "94%", image: "/assets/images/fonts/alexa.svg" },
@@ -138,12 +143,6 @@ const colors = [
     neon: "rgb(255 255 255) 0px 0px 5px, rgb(255 255 255) 0px 0px 10px, rgb(0 255 128) 0px 0px 20px, rgb(0 255 128) 0px 0px 30px, rgb(0 255 128) 0px 0px 40px, rgb(0 255 128) 0px 0px 55px, rgb(0 255 128) 0px 0px 75px",
   },
   {
-    name: "Lime Green",
-    color: "rgb(255, 255, 255)",
-    iconColor: "rgb(0, 255, 0)",
-    neon: "rgb(255 255 255) 0px 0px 5px, rgb(255 255 255) 0px 10px, rgb(0 255 0) 0px 0px 20px, rgb(0 255 0) 0px 0px 30px, rgb(0 255 0) 0px 0px 40px, rgb(0 255 0) 0px 0px 55px, rgb(0 255 0) 0px 0px 75px",
-  },
-  {
     name: "Purple",
     color: "rgb(255, 255, 255)",
     iconColor: "rgb(255, 0, 255)",
@@ -162,13 +161,250 @@ const backgrounds = [
   "/assets/images/background/background8.jpg",
 ]
 
+const sizes = [
+  { id: "regular", name: "Regular", description: 'H ~6" x W (as per letters)' },
+  { id: "medium", name: "Medium", description: 'H ~9" x W (as per letters)' },
+  { id: "large", name: "Large", description: 'H ~12" x W (as per letters)' },
+]
+
+const dimmers = [
+  { id: "no-dimmer", name: "No Dimmer", image: "../dimmer-images/No-Dimmer.jpg", price: 0 },
+  { id: "smart-dimmer", name: "Dimmer-Knob", image: "../dimmer-images/Dimmer-Knob.jpg", price: 1000 },
+  { id: "remote-dimmer", name: "Remote Dimmer", image: "../dimmer-images/Mini-IR-Dimmer.jpg", price: 500 },
+]
+
+const ProductOptions = styled.div`
+  margin: 2rem 0;
+`
+
+const SizeSelector = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+`
+
+const SizeOption = styled.button`
+  padding: 1rem;
+  border: 2px solid ${(props) => (props.selected ? "#40E0D0" : "#ddd")};
+  border-radius: 8px;
+  background: ${(props) => (props.selected ? "rgba(64, 224, 208, 0.1)" : "transparent")};
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: #40E0D0;
+  }
+
+  h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    font-size: 0.875rem;
+    color: #666;
+  }
+`
+
+const DimmerSelector = styled.div`
+  margin: 2rem 0;
+
+  h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+
+  .dimmer-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+`
+
+const DimmerOption = styled.button`
+  padding: 1rem;
+  border: 2px solid ${(props) => (props.selected ? "#40E0D0" : "#ddd")};
+  border-radius: 8px;
+  background: ${(props) => (props.selected ? "rgba(64, 224, 208, 0.1)" : "white")};
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: #40E0D0;
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+  }
+
+  .dimmer-name {
+    font-size: 0.875rem;
+    color: #333;
+    margin-bottom: 0.25rem;
+  }
+
+  .dimmer-price {
+    font-size: 0.75rem;
+    color: #666;
+  }
+`
+
+const QuantitySelector = styled.div`
+  margin: 2rem 0;
+
+  h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+
+  .quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    max-width: 200px;
+  }
+
+  button {
+    width: 36px;
+    height: 36px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    background: white;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover:not(:disabled) {
+      border-color: #40E0D0;
+      color: #40E0D0;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  input {
+    width: 60px;
+    height: 36px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 1rem;
+    color: #333;
+
+    &:focus {
+      border-color: #40E0D0;
+      outline: none;
+    }
+  }
+`
+
+const TrustIndicators = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin: 2rem 0;
+  padding: 2rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    img {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 1rem;
+    }
+
+    h3 {
+      font-size: 1rem;
+      color: #333;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 0.875rem;
+      color: #666;
+    }
+  }
+`
+
+const InfoSection = styled.div`
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+
+  button {
+    width: 100%;
+    padding: 1rem;
+    background: white;
+    border: none;
+    border-bottom: ${(props) => (props.isOpen ? "1px solid #ddd" : "none")};
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: #f8f9fa;
+    }
+
+    h2 {
+      font-size: 1.25rem;
+      margin: 0;
+      color: #333;
+    }
+
+    span {
+      font-size: 1.5rem;
+      color: #666;
+    }
+  }
+
+  .content {
+    padding: ${(props) => (props.isOpen ? "1rem" : "0")};
+    max-height: ${(props) => (props.isOpen ? "500px" : "0")};
+    opacity: ${(props) => (props.isOpen ? "1" : "0")};
+    transition: all 0.3s ease;
+    background: white;
+  }
+`
+
 const NeonDesigner = () => {
   const [text, setText] = useState("")
   const [font, setFont] = useState(fonts[0])
   const [color, setColor] = useState(colors[0])
   const [background, setBackground] = useState(backgrounds[0])
+  const [selectedSize, setSelectedSize] = useState(sizes[0])
+  const [selectedDimmer, setSelectedDimmer] = useState(dimmers[0])
+  const [quantity, setQuantity] = useState(1)
   const [isMobile, setIsMobile] = useState(false)
+  const [openSection, setOpenSection] = useState(null)
   const previewRef = useRef(null)
+  const [letterPrice, setLetterPrice] = useState(100)
 
   useEffect(() => {
     const handleResize = () => {
@@ -178,16 +414,72 @@ const NeonDesigner = () => {
     window.addEventListener("resize", handleResize)
     handleResize()
 
+    fetchLetterPrice()
+
     return () => window.removeEventListener("resize", handleResize)
   }, [])
 
-  const handleAddToCart = () => {
-    const message = encodeURIComponent(`I'd like to order a custom neon sign:
+  const fetchLetterPrice = async () => {
+    try {
+      const settingsCollection = collection(db, "settings")
+      const settingsSnapshot = await getDocs(settingsCollection)
+      const settingsDoc = settingsSnapshot.docs.find((doc) => doc.id === "global")
+      if (settingsDoc) {
+        const settingsData = settingsDoc.data()
+        if (settingsData && settingsData.letterPrice) {
+          setLetterPrice(settingsData.letterPrice)
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching letter price:", error)
+    }
+  }
+
+  const handleQuantityChange = (value) => {
+    const newQuantity = Math.max(1, Math.min(10, value))
+    setQuantity(newQuantity)
+  }
+
+  const toggleSection = (section) => {
+    setOpenSection(openSection === section ? null : section)
+  }
+
+  const calculatePrice = () => {
+    const basePrice = letterPrice * text.length
+    const sizeMultiplier = selectedSize.id === "medium" ? 1.5 : selectedSize.id === "large" ? 2 : 1
+    const dimmerPrice = selectedDimmer.price
+    return (basePrice * sizeMultiplier + dimmerPrice) * quantity
+  }
+
+  const handleAddToCart = async () => {
+    const totalPrice = calculatePrice()
+    const orderData = {
+      text,
+      font: font.name,
+      color: color.name,
+      size: selectedSize.name,
+      dimmer: selectedDimmer.name,
+      quantity,
+      totalPrice,
+      timestamp: serverTimestamp(),
+    }
+
+    try {
+      const docRef = await addDoc(collection(db, "custom-neon-orders"), orderData)
+      console.log("Order added with ID: ", docRef.id)
+
+      const message = encodeURIComponent(`I'd like to order a custom neon sign:
 Text: ${text}
 Font: ${font.name}
 Color: ${color.name}
-Total Price: ₹5,000`)
-    window.open(`https://wa.me/8807488021?text=${message}`, "_blank")
+Size: ${selectedSize.name}
+Dimmer: ${selectedDimmer.name}
+Quantity: ${quantity}
+Total Price: ₹${totalPrice.toLocaleString()}`)
+      window.open(`https://wa.me/9894924809?text=${message}`, "_blank")
+    } catch (error) {
+      console.error("Error adding order: ", error)
+    }
   }
 
   return (
@@ -207,9 +499,138 @@ Total Price: ₹5,000`)
                   <TextEditor text={text} setText={setText} />
                   <FontSelector fonts={fonts} setFont={setFont} />
                   <ColorSelector colors={colors} color={color} setColor={setColor} />
+
+                  <ProductOptions>
+                    <h2>Size</h2>
+                    <SizeSelector>
+                      {sizes.map((size) => (
+                        <SizeOption
+                          key={size.id}
+                          selected={selectedSize.id === size.id}
+                          onClick={() => setSelectedSize(size)}
+                        >
+                          <h3>{size.name}</h3>
+                          <p>{size.description}</p>
+                        </SizeOption>
+                      ))}
+                    </SizeSelector>
+
+                    <DimmerSelector>
+                      <h2>Choose your Dimmer</h2>
+                      <div className="dimmer-options">
+                        {dimmers.map((dimmer) => (
+                          <DimmerOption
+                            key={dimmer.id}
+                            selected={selectedDimmer.id === dimmer.id}
+                            onClick={() => setSelectedDimmer(dimmer)}
+                          >
+                            <img src={dimmer.image || "/placeholder.svg"} alt={dimmer.name} />
+                            <div className="dimmer-name">{dimmer.name}</div>
+                            <div className="dimmer-price">
+                              {dimmer.price === 0 ? "Included" : `+₹${dimmer.price.toLocaleString()}`}
+                            </div>
+                          </DimmerOption>
+                        ))}
+                      </div>
+                    </DimmerSelector>
+
+                    <QuantitySelector>
+                      <h2>Quantity</h2>
+                      <div className="quantity-controls">
+                        <button onClick={() => handleQuantityChange(quantity - 1)} disabled={quantity <= 1}>
+                          <Minus size={16} />
+                        </button>
+                        <input
+                          type="number"
+                          value={quantity}
+                          onChange={(e) => handleQuantityChange(Number.parseInt(e.target.value) || 1)}
+                          min="1"
+                          max="10"
+                        />
+                        <button onClick={() => handleQuantityChange(quantity + 1)} disabled={quantity >= 10}>
+                          <Plus size={16} />
+                        </button>
+                      </div>
+                    </QuantitySelector>
+
+                    <div className="total-price">
+                      <h2>Total Price</h2>
+                      <p>₹{calculatePrice().toLocaleString()}</p>
+                    </div>
+                  </ProductOptions>
+
                   <button className="cart-btn" onClick={handleAddToCart}>
                     Add to Cart
                   </button>
+
+                  <TrustIndicators>
+                    <div className="indicator">
+                      <img src="../dimmer-images/free shipping (2).png" alt="Free Shipping" />
+                      <h3>FREE SHIPPING</h3>
+                      <p>On 999/- & above</p>
+                    </div>
+                    <div className="indicator">
+                      <img src="../dimmer-images/trusted.png" alt="Trusted" />
+                      <h3>TRUSTED BY 50,000+</h3>
+                      <p>Happy Customers</p>
+                    </div>
+                    <div className="indicator">
+                      <img src="../dimmer-images/secure payment.png" alt="Secure Payment" />
+                      <h3>SECURE PAYMENT</h3>
+                      <p>100% Safe & Secure</p>
+                    </div>
+                  </TrustIndicators>
+
+                  <InfoSection isOpen={openSection === "description"}>
+                    <button onClick={() => toggleSection("description")}>
+                      <h2>Description</h2>
+                      <span>{openSection === "description" ? "−" : "+"}</span>
+                    </button>
+                    <div className="content">
+                      <p>Our custom neon signs are crafted with premium LED technology, offering:</p>
+                      <ul>
+                        <li>Energy-efficient LED neon</li>
+                        <li>Customizable colors and sizes</li>
+                        <li>Easy installation kit included</li>
+                        <li>1-year warranty</li>
+                        <li>Indoor & outdoor use</li>
+                      </ul>
+                    </div>
+                  </InfoSection>
+
+                  <InfoSection isOpen={openSection === "shipping"}>
+                    <button onClick={() => toggleSection("shipping")}>
+                      <h2>Shipping & Delivery</h2>
+                      <span>{openSection === "shipping" ? "−" : "+"}</span>
+                    </button>
+                    <div className="content">
+                      <p>Free shipping on orders above ₹999</p>
+                      <ul>
+                        <li>Standard delivery: 5-7 business days</li>
+                        <li>Express delivery: 2-3 business days (additional charges)</li>
+                        <li>Secure packaging guaranteed</li>
+                        <li>Track your order 24/7</li>
+                      </ul>
+                    </div>
+                  </InfoSection>
+
+                  <InfoSection isOpen={openSection === "bulk"}>
+                    <button onClick={() => toggleSection("bulk")}>
+                      <h2>Bulk B2B & Corporate Gifting</h2>
+                      <span>{openSection === "bulk" ? "−" : "+"}</span>
+                    </button>
+                    <div className="content">
+                      <p>Special pricing for bulk orders:</p>
+                      <ul>
+                        <li>Minimum order quantity: 5 pieces</li>
+                        <li>Customized packaging available</li>
+                        <li>Corporate branding options</li>
+                        <li>Dedicated account manager</li>
+                        <li>Volume discounts available</li>
+                      </ul>
+                      <p>Contact our B2B team for quotes and details.</p>
+                    </div>
+                  </InfoSection>
                 </div>
               </div>
             </div>

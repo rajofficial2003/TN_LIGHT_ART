@@ -1,24 +1,22 @@
-// components/Sidebar.jsx
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import styled from 'styled-components';
-import { Layout, Home, Package, ShoppingCart, Settings, LogOut } from 'lucide-react';
+import { NavLink } from "react-router-dom"
+import styled from "styled-components"
+import { Layout, Home, Package, ShoppingCart, ShoppingBag, Settings, LogOut } from "lucide-react"
 
 const SidebarContainer = styled.div`
   width: 250px;
-  background: black;
+  background: #00308F;
   color: white;
   position: fixed;
   height: 100vh;
   padding: 20px 0;
   transition: left 0.3s;
   z-index: 1000;
-  left: ${props => props.isOpen ? '0' : '-250px'};
+  left: ${(props) => (props.isOpen ? "0" : "-250px")};
 
   @media (max-width: 768px) {
-    left: ${props => props.isOpen ? '0' : '-250px'};
+    left: ${(props) => (props.isOpen ? "0" : "-250px")};
   }
-`;
+`
 
 const Logo = styled.div`
   padding: 20px;
@@ -27,11 +25,11 @@ const Logo = styled.div`
   font-weight: bold;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   margin-bottom: 20px;
-`;
+`
 
 const MenuItems = styled.div`
   padding: 0 20px;
-`;
+`
 
 const MenuItem = styled(NavLink)`
   display: flex;
@@ -50,14 +48,14 @@ const MenuItem = styled(NavLink)`
   svg {
     margin-right: 10px;
   }
-`;
+`
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
   const closeSidebar = () => {
     if (window.innerWidth <= 768) {
-      setIsOpen(false);
+      setIsOpen(false)
     }
-  };
+  }
 
   return (
     <SidebarContainer isOpen={isOpen}>
@@ -74,8 +72,14 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         <MenuItem to="/admin/products" onClick={closeSidebar}>
           <ShoppingCart size={20} /> Products
         </MenuItem>
+        <MenuItem to="/admin/cart" onClick={closeSidebar}>
+          <ShoppingBag size={20} /> Cart
+        </MenuItem>
         <MenuItem to="/admin/orders" onClick={closeSidebar}>
           <ShoppingCart size={20} /> Orders
+        </MenuItem>
+        <MenuItem to="/admin/custom-orders" onClick={closeSidebar}>
+          <ShoppingCart size={20} /> Custom Neon
         </MenuItem>
         <MenuItem to="/admin/settings" onClick={closeSidebar}>
           <Settings size={20} /> Settings
@@ -85,7 +89,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         </MenuItem>
       </MenuItems>
     </SidebarContainer>
-  );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar
+

@@ -13,7 +13,7 @@ const Header = ({ toggleSidebar }) => {
   const navItems = [
     { title: 'Home', link: '/' },
     { title: 'Upload Your Logo', link: '/upload-logo' },
-    { title: 'Gallery', link: '/gallery' },
+    { title: 'Products', link: '/gallery' },
     { title: 'Custom Neon', link: '/custom-neon' },
     { title: 'Contact', link: '/contact' }
   ];

@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import { Form, Button, Row, Col } from "react-bootstrap"
 import html2canvas from "html2canvas"
-import { collection, addDoc, serverTimestamp } from "firebase/firestore"
+import { collection, addDoc, serverTimestamp, query, where, getDocs, deleteDoc } from "firebase/firestore"
 import { db } from "../Firebase/firebase"
 import Header from "../Components/Header"
 import Footer from "../Components/Footer"
@@ -78,6 +78,7 @@ const StyledPlaceOrder = styled.div`
     border-radius: 8px;
     padding: 0.75rem;
     margin-bottom: 1rem;
+    
     font-size: 1rem;
     background-color: white;
 
@@ -356,7 +357,7 @@ const OrderTemplate = ({ formData, product, quantity }) => {
 const AddToCart = () => {
   const location = useLocation()
   const navigate = useNavigate()
-  const { product, quantity } = location.state || {}
+  const { product, quantity, user } = location.state || {}
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -394,6 +395,22 @@ const AddToCart = () => {
     return null
   }
 
+  const removeFromCart = async (userId, productId) => {
+    try {
+      const cartRef = collection(db, "cart")
+      const q = query(cartRef, where("userId", "==", userId), where("productId", "==", productId))
+      const querySnapshot = await getDocs(q)
+
+      querySnapshot.forEach(async (doc) => {
+        await deleteDoc(doc.ref)
+      })
+
+      console.log("Product removed from cart successfully")
+    } catch (error) {
+      console.error("Error removing product from cart:", error)
+    }
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsLoading(true)
@@ -425,10 +442,16 @@ const AddToCart = () => {
         paymentMethod,
         date: serverTimestamp(),
         status: "Pending",
+        userId: user ? user.uid : null,
       }
 
       const docRef = await addDoc(collection(db, "orders"), orderData)
       console.log("Order added with ID: ", docRef.id)
+
+      // Remove the product from the cart
+      if (user) {
+        await removeFromCart(user.uid, product.id)
+      }
 
       // Construct WhatsApp message with order details
       const whatsappNumber = "9894924809"
@@ -483,7 +506,7 @@ ${formData.notes || "None"}
           <div className="breadcrumb">
             <a href="/">Home</a> » Checkout
           </div>
-          <h1 className="mt-5" >Checkout</h1>
+          <h1 className="mt-5">Checkout</h1>
         </div>
 
         <form onSubmit={handleSubmit}>

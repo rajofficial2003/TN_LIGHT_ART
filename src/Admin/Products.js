@@ -15,7 +15,7 @@ const formatPrice = (price) => {
 
 const StyledProductManagement = styled.div`
   h3 {
-    color: black;
+    color: #00308F;
     font-weight: bold;
     margin-bottom: 1.5rem;
   }
@@ -27,13 +27,13 @@ const StyledProductManagement = styled.div`
   .form-select {
     border-color: #ced4da;
     &:focus {
-      border-color: black;
+      border-color: #00308F;
       box-shadow: 0 0 0 0.2rem rgba(164, 30, 25, 0.25);
     }
   }
   .btn-primary {
-    background-color: black;
-    border-color: black;
+    background-color: #00308F;
+    border-color: #00308F;
     font-weight: 600;
     padding: 0.5rem 1.5rem;
     &:hover,
@@ -45,7 +45,7 @@ const StyledProductManagement = styled.div`
   .table {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
     th {
-      background-color: black;
+      background-color: #00308F;
       color: #ffffff;
     }
     td {
@@ -59,8 +59,8 @@ const StyledProductManagement = styled.div`
     margin-right: 5px;
   }
   .btn-edit {
-    background-color: black;
-    border-color: black;
+    background-color: #00308F;
+    border-color: #00308F;
     color: #ffffff;
     &:hover,
     &:focus {
@@ -121,7 +121,7 @@ const StyledProductManagement = styled.div`
     border-radius: 5px;
     cursor: pointer;
     &:hover {
-      border-color: black;
+      border-color: #00308F;
     }
   }
 

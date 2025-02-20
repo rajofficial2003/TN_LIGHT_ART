@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import styled from "styled-components"
 import { X, Trash2, ShoppingCart } from "lucide-react"
 
@@ -178,15 +178,28 @@ const ModalButton = styled.button`
 `
 
 const RecentlyAddedProduct = styled.div`
-  background-color: #f0f0f0;
+  background-color: ${(props) => (props.alreadyInCart ? "#fff3cd" : "#f0f0f0")};
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 20px;
+  position: relative;
 `
 
 const RecentlyAddedTitle = styled.h4`
   margin: 0 0 10px 0;
   font-size: 1rem;
+  color: ${(props) => (props.alreadyInCart ? "#856404" : "inherit")};
+`
+
+const AlertCloseButton = styled.button`
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: ${(props) => (props.alreadyInCart ? "#856404" : "inherit")};
 `
 
 const RightSidebar = ({
@@ -203,6 +216,15 @@ const RightSidebar = ({
 }) => {
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [itemToDelete, setItemToDelete] = useState(null)
+  const [showRecentlyAdded, setShowRecentlyAdded] = useState(false)
+  const [showProceedToCheckout, setShowProceedToCheckout] = useState(false)
+
+  useEffect(() => {
+    if (recentlyAddedProduct) {
+      setShowRecentlyAdded(true)
+      setShowProceedToCheckout(true)
+    }
+  }, [recentlyAddedProduct])
 
   const handleDeleteClick = (item) => {
     setItemToDelete(item)
@@ -220,6 +242,11 @@ const RightSidebar = ({
   const handleCancelDelete = () => {
     setShowConfirmation(false)
     setItemToDelete(null)
+  }
+
+  const handleCloseRecentlyAdded = () => {
+    setShowRecentlyAdded(false)
+    setShowProceedToCheckout(false)
   }
 
   return (
@@ -251,9 +278,14 @@ const RightSidebar = ({
               </CartItem>
             ))}
           </CartInfo>
-          {recentlyAddedProduct && (
-            <RecentlyAddedProduct>
-              <RecentlyAddedTitle>Recently Added to Cart</RecentlyAddedTitle>
+          {recentlyAddedProduct && showRecentlyAdded && (
+            <RecentlyAddedProduct alreadyInCart={recentlyAddedProduct.alreadyInCart}>
+              <AlertCloseButton onClick={handleCloseRecentlyAdded} alreadyInCart={recentlyAddedProduct.alreadyInCart}>
+                <X size={16} />
+              </AlertCloseButton>
+              <RecentlyAddedTitle alreadyInCart={recentlyAddedProduct.alreadyInCart}>
+                {recentlyAddedProduct.alreadyInCart ? "Product Already in Cart" : "Recently Added to Cart"}
+              </RecentlyAddedTitle>
               <CartItem>
                 <CartItemImage src={recentlyAddedProduct.images[0]} alt={recentlyAddedProduct.name} />
                 <CartItemInfo>
@@ -261,18 +293,28 @@ const RightSidebar = ({
                   <CartItemPrice>₹{recentlyAddedProduct.price}</CartItemPrice>
                 </CartItemInfo>
               </CartItem>
-              <Button onClick={() => onProceedToCheckout(recentlyAddedProduct)}>
-                <ShoppingCart size={16} />
-                Proceed to Checkout
-              </Button>
+              {recentlyAddedProduct.alreadyInCart && (
+                <p style={{ color: "#856404", marginTop: "10px" }}>
+                  This product is already in your cart. You can adjust the quantity during checkout.
+                </p>
+              )}
             </RecentlyAddedProduct>
+          )}
+          {showProceedToCheckout && (
+            <Button onClick={() => onProceedToCheckout(recentlyAddedProduct)}>
+              <ShoppingCart size={16} />
+              Proceed to Checkout
+            </Button>
           )}
           <OrderInfo>
             <h3>My Orders</h3>
             {orders.map((order) => (
               <div key={order.id}>
                 <p>
-                  {order.productName} - Ordered on: {order.timestamp.toDate().toLocaleDateString()}
+                  {order.productName} - Ordered on:{" "}
+                  {order.timestamp && order.timestamp.toDate
+                    ? order.timestamp.toDate().toLocaleDateString()
+                    : "Date not available"}
                 </p>
               </div>
             ))}

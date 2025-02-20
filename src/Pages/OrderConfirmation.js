@@ -341,7 +341,7 @@ const OrderConfirmation = () => {
                 Continue Shopping
               </Button>
               <Button as={Link} to="/gallery" className="action-button">
-                View Gallery
+                View Products
               </Button>
             </div>
           </div>

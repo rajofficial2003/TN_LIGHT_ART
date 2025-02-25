@@ -64,7 +64,6 @@ function App() {
                     <Route path="dashboard" element={<Dashboard />} />
                     <Route path="categories" element={<Categories />} />
                     <Route path="orders" element={<Orders />} />
-                    <Route path="settings" element={<Settings />} />
                     <Route path="products" element={<Products />} />
                     <Route path="custom-orders" element={<CustomNeonOrders />} />
                     

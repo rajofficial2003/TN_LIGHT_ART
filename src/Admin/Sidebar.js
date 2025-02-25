@@ -79,9 +79,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         <MenuItem to="/admin/custom-orders" onClick={closeSidebar}>
           <ShoppingCart size={20} /> Custom Neon
         </MenuItem>
-        <MenuItem to="/admin/settings" onClick={closeSidebar}>
-          <Settings size={20} /> Settings
-        </MenuItem>
+       
         <MenuItem to="/logout" onClick={closeSidebar}>
           <LogOut size={20} /> Logout
         </MenuItem>

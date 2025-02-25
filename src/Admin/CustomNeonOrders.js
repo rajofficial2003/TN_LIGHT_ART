@@ -15,6 +15,7 @@ const Header = styled.header`
   color: white;
   padding: 20px;
   margin-bottom: 20px;
+  border-radius: 8px;
 `
 
 const Title = styled.h1`
@@ -26,7 +27,9 @@ const OrdersTable = styled.table`
   width: 100%;
   border-collapse: collapse;
   background-color: white;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
 `
 
 const TableHeader = styled.th`
@@ -46,20 +49,22 @@ const StatusSelect = styled.select`
   padding: 5px;
   border-radius: 4px;
   border: 1px solid #ced4da;
+  width: 100%;
 `
 
 const Input = styled.input`
-  padding: 5px;
+  padding: 8px;
   border-radius: 4px;
   border: 1px solid #ced4da;
   margin-right: 10px;
+  width: 100px;
 `
 
 const Button = styled.button`
   background-color: #00308F;
   color: white;
   border: none;
-  padding: 10px 15px;
+  padding: 8px 15px;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -71,14 +76,30 @@ const Button = styled.button`
 
 const PriceSettingsSection = styled.div`
   margin-bottom: 20px;
-  padding: 15px;
+  padding: 20px;
   background-color: white;
   border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 `
 
 const PriceSettingGroup = styled.div`
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+`
+
+const PriceSettingTitle = styled.h3`
+  margin-bottom: 10px;
+  color: #00308F;
+`
+
+const PriceSettingRow = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+`
+
+const PriceSettingLabel = styled.label`
+  width: 150px;
+  margin-right: 10px;
 `
 
 const CustomNeonOrders = () => {
@@ -131,33 +152,10 @@ const CustomNeonOrders = () => {
         const settingsData = settingsDoc.data()
         if (settingsData) {
           setLetterPrice(settingsData.letterPrice || 100)
-          setBackboardColorPrices(
-            settingsData.backboardColorPrices || {
-              clear: 0,
-              white: 0,
-              black: 0,
-              silver: 0,
-              gold: 0,
-            },
-          )
-          setBackboardStylePrices(
-            settingsData.backboardStylePrices || {
-              "cut-around": 0,
-              rectangle: 0,
-              "cut-to-letter": 0,
-              "naked-neon": 0,
-              "acrylic-stand": 0,
-              "open-box": 0,
-            },
-          )
+          setBackboardColorPrices(settingsData.backboardColorPrices || backboardColorPrices)
+          setBackboardStylePrices(settingsData.backboardStylePrices || backboardStylePrices)
           setPowerAdapterPrice(settingsData.powerAdapterPrice || 0)
-          setSizePrices(
-            settingsData.sizePrices || {
-              regular: 0,
-              medium: 0,
-              large: 0,
-            },
-          )
+          setSizePrices(settingsData.sizePrices || sizePrices)
         }
       }
     } catch (error) {
@@ -169,7 +167,7 @@ const CustomNeonOrders = () => {
     try {
       const orderRef = doc(db, "custom-neon-orders", orderId)
       await updateDoc(orderRef, { status: newStatus })
-      fetchOrders() // Refresh the orders list
+      fetchOrders()
     } catch (error) {
       console.error("Error updating order status:", error)
     }
@@ -182,6 +180,7 @@ const CustomNeonOrders = () => {
 
       if (priceType === "letterPrice") {
         updateData = { letterPrice: Number(value) }
+        setLetterPrice(Number(value))
       } else if (priceType === "backboardColorPrices") {
         updateData = {
           backboardColorPrices: {
@@ -189,6 +188,7 @@ const CustomNeonOrders = () => {
             [key]: Number(value),
           },
         }
+        setBackboardColorPrices((prevPrices) => ({ ...prevPrices, [key]: Number(value) }))
       } else if (priceType === "backboardStylePrices") {
         updateData = {
           backboardStylePrices: {
@@ -196,8 +196,10 @@ const CustomNeonOrders = () => {
             [key]: Number(value),
           },
         }
+        setBackboardStylePrices((prevPrices) => ({ ...prevPrices, [key]: Number(value) }))
       } else if (priceType === "powerAdapterPrice") {
         updateData = { powerAdapterPrice: Number(value) }
+        setPowerAdapterPrice(Number(value))
       } else if (priceType === "sizePrices") {
         updateData = {
           sizePrices: {
@@ -205,11 +207,11 @@ const CustomNeonOrders = () => {
             [key]: Number(value),
           },
         }
+        setSizePrices((prevPrices) => ({ ...prevPrices, [key]: Number(value) }))
       }
 
       await setDoc(settingsRef, updateData, { merge: true })
       alert("Price updated successfully!")
-      fetchPrices() // Refresh the prices
     } catch (error) {
       console.error("Error updating price:", error)
       alert("Failed to update price. Please try again.")
@@ -224,15 +226,18 @@ const CustomNeonOrders = () => {
       <PriceSettingsSection>
         <h2>Price Settings</h2>
         <PriceSettingGroup>
-          <label>Letter Price: </label>
-          <Input type="number" value={letterPrice} onChange={(e) => setLetterPrice(e.target.value)} min="1" />
-          <Button onClick={() => handlePriceChange("letterPrice", letterPrice)}>Update Letter Price</Button>
+          <PriceSettingTitle>Letter Price</PriceSettingTitle>
+          <PriceSettingRow>
+            <PriceSettingLabel>Letter Price: </PriceSettingLabel>
+            <Input type="number" value={letterPrice} onChange={(e) => setLetterPrice(e.target.value)} min="1" />
+            <Button onClick={() => handlePriceChange("letterPrice", letterPrice)}>Update</Button>
+          </PriceSettingRow>
         </PriceSettingGroup>
         <PriceSettingGroup>
-          <h3>Backboard Color Prices:</h3>
+          <PriceSettingTitle>Backboard Color Prices</PriceSettingTitle>
           {Object.entries(backboardColorPrices).map(([color, price]) => (
-            <div key={color}>
-              <label>{color}: </label>
+            <PriceSettingRow key={color}>
+              <PriceSettingLabel>{color}: </PriceSettingLabel>
               <Input
                 type="number"
                 value={price}
@@ -240,14 +245,14 @@ const CustomNeonOrders = () => {
                 min="0"
               />
               <Button onClick={() => handlePriceChange("backboardColorPrices", price, color)}>Update</Button>
-            </div>
+            </PriceSettingRow>
           ))}
         </PriceSettingGroup>
         <PriceSettingGroup>
-          <h3>Backboard Style Prices:</h3>
+          <PriceSettingTitle>Backboard Style Prices</PriceSettingTitle>
           {Object.entries(backboardStylePrices).map(([style, price]) => (
-            <div key={style}>
-              <label>{style}: </label>
+            <PriceSettingRow key={style}>
+              <PriceSettingLabel>{style}: </PriceSettingLabel>
               <Input
                 type="number"
                 value={price}
@@ -255,26 +260,27 @@ const CustomNeonOrders = () => {
                 min="0"
               />
               <Button onClick={() => handlePriceChange("backboardStylePrices", price, style)}>Update</Button>
-            </div>
+            </PriceSettingRow>
           ))}
         </PriceSettingGroup>
         <PriceSettingGroup>
-          <label>Power Adapter Price: </label>
-          <Input
-            type="number"
-            value={powerAdapterPrice}
-            onChange={(e) => setPowerAdapterPrice(e.target.value)}
-            min="0"
-          />
-          <Button onClick={() => handlePriceChange("powerAdapterPrice", powerAdapterPrice)}>
-            Update Power Adapter Price
-          </Button>
+          <PriceSettingTitle>Power Adapter Price</PriceSettingTitle>
+          <PriceSettingRow>
+            <PriceSettingLabel>Power Adapter: </PriceSettingLabel>
+            <Input
+              type="number"
+              value={powerAdapterPrice}
+              onChange={(e) => setPowerAdapterPrice(e.target.value)}
+              min="0"
+            />
+            <Button onClick={() => handlePriceChange("powerAdapterPrice", powerAdapterPrice)}>Update</Button>
+          </PriceSettingRow>
         </PriceSettingGroup>
         <PriceSettingGroup>
-          <h3>Size Prices:</h3>
+          <PriceSettingTitle>Size Prices</PriceSettingTitle>
           {Object.entries(sizePrices).map(([size, price]) => (
-            <div key={size}>
-              <label>{size}: </label>
+            <PriceSettingRow key={size}>
+              <PriceSettingLabel>{size}: </PriceSettingLabel>
               <Input
                 type="number"
                 value={price}
@@ -282,7 +288,7 @@ const CustomNeonOrders = () => {
                 min="0"
               />
               <Button onClick={() => handlePriceChange("sizePrices", price, size)}>Update</Button>
-            </div>
+            </PriceSettingRow>
           ))}
         </PriceSettingGroup>
       </PriceSettingsSection>

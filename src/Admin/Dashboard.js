@@ -1,11 +1,10 @@
-"use client"
-
-import React, { useState, useEffect } from 'react'
-import { Card, Row, Col, Table } from 'react-bootstrap'
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
-import { collection, getDocs, query, where, orderBy, limit } from 'firebase/firestore'
-import { db } from '../Firebase/firebase'
-import styled from 'styled-components'
+import React, { useState, useEffect } from 'react';
+import { Card, Row, Col, Table } from 'react-bootstrap';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
+import { db } from '../Firebase/firebase';
+import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const StyledDashboard = styled.div`
   .dashboard-title {
@@ -19,6 +18,12 @@ const StyledDashboard = styled.div`
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     border-radius: 8px;
     margin-bottom: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
   }
 
   .card-title {
@@ -49,56 +54,61 @@ const StyledDashboard = styled.div`
       font-size: 1.2rem;
     }
   }
-`
+`;
 
 const Dashboard = () => {
-  const [totalProducts, setTotalProducts] = useState(0)
-  const [totalCategories, setTotalCategories] = useState(0)
-  const [totalOrders, setTotalOrders] = useState(0)
-  const [recentOrders, setRecentOrders] = useState([])
-  const [salesData, setSalesData] = useState([])
+  const [totalProducts, setTotalProducts] = useState(0);
+  const [totalCategories, setTotalCategories] = useState(0);
+  const [totalOrders, setTotalOrders] = useState(0);
+  const [recentOrders, setRecentOrders] = useState([]);
+  const [salesData, setSalesData] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetchDashboardData()
-  }, [])
+    fetchDashboardData();
+  }, []);
 
   const fetchDashboardData = async () => {
     try {
       // Fetch total products
-      const productsSnapshot = await getDocs(collection(db, 'products'))
-      setTotalProducts(productsSnapshot.size)
+      const productsSnapshot = await getDocs(collection(db, 'products'));
+      setTotalProducts(productsSnapshot.size);
 
       // Fetch total categories
-      const categoriesSnapshot = await getDocs(collection(db, 'categories'))
-      setTotalCategories(categoriesSnapshot.size)
+      const categoriesSnapshot = await getDocs(collection(db, 'categories'));
+      setTotalCategories(categoriesSnapshot.size);
 
       // Fetch total orders and recent orders
-      const ordersSnapshot = await getDocs(query(collection(db, 'orders'), orderBy('date', 'desc')))
-      setTotalOrders(ordersSnapshot.size)
-      setRecentOrders(ordersSnapshot.docs.slice(0, 5).map(doc => ({ id: doc.id, ...doc.data() })))
+      const ordersSnapshot = await getDocs(query(collection(db, 'orders'), orderBy('date', 'desc')));
+      setTotalOrders(ordersSnapshot.size);
+      setRecentOrders(ordersSnapshot.docs.slice(0, 5).map(doc => ({ id: doc.id, ...doc.data() })));
 
       // Fetch sales data for the chart (last 6 months)
-      const sixMonthsAgo = new Date()
-      sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6)
+      const sixMonthsAgo = new Date();
+      sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
       const salesSnapshot = await getDocs(query(
         collection(db, 'orders'),
         where('date', '>=', sixMonthsAgo),
         orderBy('date', 'asc')
-      ))
+      ));
       const salesByMonth = salesSnapshot.docs.reduce((acc, doc) => {
-        const date = doc.data().date.toDate()
-        const monthYear = `${date.getMonth() + 1}/${date.getFullYear()}`
+        const date = doc.data().date.toDate();
+        const monthYear = `${date.getMonth() + 1}/${date.getFullYear()}`;
         if (!acc[monthYear]) {
-          acc[monthYear] = 0
+          acc[monthYear] = 0;
         }
-        acc[monthYear] += doc.data().price
-        return acc
-      }, {})
-      setSalesData(Object.entries(salesByMonth).map(([name, sales]) => ({ name, sales })))
+        acc[monthYear] += doc.data().price;
+        return acc;
+      }, {});
+      setSalesData(Object.entries(salesByMonth).map(([name, sales]) => ({ name, sales })));
     } catch (error) {
-      console.error('Error fetching dashboard data:', error)
+      console.error('Error fetching dashboard data:', error);
     }
-  }
+  };
+
+  const handleRedirect = (path) => {
+    navigate(path);
+  };
 
   return (
     <StyledDashboard>
@@ -106,7 +116,7 @@ const Dashboard = () => {
       
       <Row className="mb-4">
         <Col md={4}>
-          <Card>
+          <Card onClick={() => handleRedirect('/admin/products')}>
             <Card.Body>
               <Card.Title>Total Products</Card.Title>
               <Card.Text>{totalProducts}</Card.Text>
@@ -114,7 +124,7 @@ const Dashboard = () => {
           </Card>
         </Col>
         <Col md={4}>
-          <Card>
+          <Card onClick={() => handleRedirect('/admin/categories')}>
             <Card.Body>
               <Card.Title>Total Categories</Card.Title>
               <Card.Text>{totalCategories}</Card.Text>
@@ -122,7 +132,7 @@ const Dashboard = () => {
           </Card>
         </Col>
         <Col md={4}>
-          <Card>
+          <Card onClick={() => handleRedirect('/admin/orders')}>
             <Card.Body>
               <Card.Title>Total Orders</Card.Title>
               <Card.Text>{totalOrders}</Card.Text>
@@ -176,7 +186,7 @@ const Dashboard = () => {
         </Col>
       </Row>
     </StyledDashboard>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

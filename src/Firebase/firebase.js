@@ -27,14 +27,13 @@ import {
 } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCh-Dq07x2LhQQckEE-QCf7RPKlqs4DV6w",
-  authDomain: "fir-login-9c872.firebaseapp.com",
-  databaseURL: "https://fir-login-9c872-default-rtdb.firebaseio.com",
-  projectId: "fir-login-9c872",
-  storageBucket: "fir-login-9c872.appspot.com",
-  messagingSenderId: "411249060600",
-  appId: "1:411249060600:web:3d5007178a5a446ddb290d",
-  measurementId: "G-94BJ0XSHDS"
+  apiKey: "AIzaSyBOZihPHMWzQTwKyzbjbryJkndKOArxdHM",
+  authDomain: "super-admin-salenutpam.firebaseapp.com",
+  projectId: "super-admin-salenutpam",
+  storageBucket: "super-admin-salenutpam.appspot.com",
+  messagingSenderId: "652064989942",
+  appId: "1:652064989942:web:80dacea08bfaf0bf9b82d7",
+  measurementId: "G-SJ93XGFTMF"
 };
 
 const app = initializeApp(firebaseConfig);

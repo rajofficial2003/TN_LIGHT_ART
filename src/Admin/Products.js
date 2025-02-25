@@ -1,9 +1,9 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Form, Button, Table, Image, Modal, InputGroup } from "react-bootstrap"
+import { Form, Button, Table, Image, Modal, InputGroup, Spinner } from "react-bootstrap"
 import { db, storage } from "../Firebase/firebase"
-import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore"
+import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, where } from "firebase/firestore"
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage"
 import styled from "styled-components"
 import { Edit, Trash, Search, X } from "lucide-react"
@@ -206,6 +206,9 @@ const ProductManagement = () => {
   const [productPage, setProductPage] = useState("")
   const [editingProduct, setEditingProduct] = useState(null)
 
+  const [isLoading, setIsLoading] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState(0)
+
   const pages = ["Home", "Products"]
 
   useEffect(() => {
@@ -281,14 +284,36 @@ const ProductManagement = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setIsLoading(true)
+    setUploadProgress(0)
     try {
+      // Check if the product already exists
+      const productsRef = collection(db, "products")
+      const q = query(productsRef, where("name", "==", productName), where("category", "==", productCategory))
+      const querySnapshot = await getDocs(q)
+
+      if (!querySnapshot.empty && !editingProduct) {
+        alert("This product already exists!")
+        setIsLoading(false)
+        return
+      }
+
       let imageUrls = editingProduct ? editingProduct.images || [] : []
 
       if (productImages.length > 0) {
-        const uploadPromises = productImages.map(async (image) => {
-          const storageRef = ref(storage, `product_images/${image.name}`)
-          await uploadBytes(storageRef, image)
-          return getDownloadURL(storageRef)
+        const uploadPromises = productImages.map(async (image, index) => {
+          const storageRef = ref(storage, `product_images/${Date.now()}_${image.name}`)
+          try {
+            const snapshot = await uploadBytes(storageRef, image)
+            console.log("Uploaded a blob or file!", snapshot)
+            const downloadURL = await getDownloadURL(snapshot.ref)
+            console.log("File available at", downloadURL)
+            setUploadProgress(((index + 1) / productImages.length) * 100)
+            return downloadURL
+          } catch (error) {
+            console.error("Error uploading image:", error)
+            throw error
+          }
         })
 
         const newImageUrls = await Promise.all(uploadPromises)
@@ -307,10 +332,11 @@ const ProductManagement = () => {
       if (editingProduct) {
         const productRef = doc(db, "products", editingProduct.id)
         await updateDoc(productRef, productData)
+        console.log("Product updated successfully")
         alert("Product updated successfully!")
       } else {
-        const productsRef = collection(db, "products")
-        await addDoc(productsRef, productData)
+        const docRef = await addDoc(productsRef, productData)
+        console.log("Product added with ID: ", docRef.id)
         alert("Product added successfully!")
       }
 
@@ -320,6 +346,9 @@ const ProductManagement = () => {
     } catch (error) {
       console.error("Error adding/updating product:", error)
       alert("Error adding/updating product. Please try again.")
+    } finally {
+      setIsLoading(false)
+      setUploadProgress(0)
     }
   }
 
@@ -545,7 +574,13 @@ const ProductManagement = () => {
                 ))}
               </Form.Select>
             </Form.Group>
-            <Button variant="primary" type="submit">
+            {isLoading && (
+              <div className="mt-3">
+                <Spinner animation="border" size="sm" className="me-2" />
+                Uploading... {uploadProgress}%
+              </div>
+            )}
+            <Button variant="primary" type="submit" disabled={isLoading}>
               {editingProduct ? "Update Product" : "Add Product"}
             </Button>
           </Form>

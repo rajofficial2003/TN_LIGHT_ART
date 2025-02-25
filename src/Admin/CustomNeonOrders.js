@@ -69,13 +69,46 @@ const Button = styled.button`
   }
 `
 
+const PriceSettingsSection = styled.div`
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+`
+
+const PriceSettingGroup = styled.div`
+  margin-bottom: 15px;
+`
+
 const CustomNeonOrders = () => {
   const [orders, setOrders] = useState([])
   const [letterPrice, setLetterPrice] = useState(100)
+  const [backboardColorPrices, setBackboardColorPrices] = useState({
+    clear: 0,
+    white: 0,
+    black: 0,
+    silver: 0,
+    gold: 0,
+  })
+  const [backboardStylePrices, setBackboardStylePrices] = useState({
+    "cut-around": 0,
+    rectangle: 0,
+    "cut-to-letter": 0,
+    "naked-neon": 0,
+    "acrylic-stand": 0,
+    "open-box": 0,
+  })
+  const [powerAdapterPrice, setPowerAdapterPrice] = useState(0)
+  const [sizePrices, setSizePrices] = useState({
+    regular: 0,
+    medium: 0,
+    large: 0,
+  })
 
   useEffect(() => {
     fetchOrders()
-    fetchLetterPrice()
+    fetchPrices()
   }, [])
 
   const fetchOrders = async () => {
@@ -89,19 +122,46 @@ const CustomNeonOrders = () => {
     }
   }
 
-  const fetchLetterPrice = async () => {
+  const fetchPrices = async () => {
     try {
       const settingsCollection = collection(db, "settings")
       const settingsSnapshot = await getDocs(settingsCollection)
       const settingsDoc = settingsSnapshot.docs.find((doc) => doc.id === "global")
       if (settingsDoc) {
         const settingsData = settingsDoc.data()
-        if (settingsData && settingsData.letterPrice) {
-          setLetterPrice(settingsData.letterPrice)
+        if (settingsData) {
+          setLetterPrice(settingsData.letterPrice || 100)
+          setBackboardColorPrices(
+            settingsData.backboardColorPrices || {
+              clear: 0,
+              white: 0,
+              black: 0,
+              silver: 0,
+              gold: 0,
+            },
+          )
+          setBackboardStylePrices(
+            settingsData.backboardStylePrices || {
+              "cut-around": 0,
+              rectangle: 0,
+              "cut-to-letter": 0,
+              "naked-neon": 0,
+              "acrylic-stand": 0,
+              "open-box": 0,
+            },
+          )
+          setPowerAdapterPrice(settingsData.powerAdapterPrice || 0)
+          setSizePrices(
+            settingsData.sizePrices || {
+              regular: 0,
+              medium: 0,
+              large: 0,
+            },
+          )
         }
       }
     } catch (error) {
-      console.error("Error fetching letter price:", error)
+      console.error("Error fetching prices:", error)
     }
   }
 
@@ -115,14 +175,44 @@ const CustomNeonOrders = () => {
     }
   }
 
-  const handleLetterPriceChange = async () => {
+  const handlePriceChange = async (priceType, value, key = null) => {
     try {
       const settingsRef = doc(db, "settings", "global")
-      await setDoc(settingsRef, { letterPrice: Number(letterPrice) }, { merge: true })
-      alert("Letter price updated successfully!")
+      let updateData = {}
+
+      if (priceType === "letterPrice") {
+        updateData = { letterPrice: Number(value) }
+      } else if (priceType === "backboardColorPrices") {
+        updateData = {
+          backboardColorPrices: {
+            ...backboardColorPrices,
+            [key]: Number(value),
+          },
+        }
+      } else if (priceType === "backboardStylePrices") {
+        updateData = {
+          backboardStylePrices: {
+            ...backboardStylePrices,
+            [key]: Number(value),
+          },
+        }
+      } else if (priceType === "powerAdapterPrice") {
+        updateData = { powerAdapterPrice: Number(value) }
+      } else if (priceType === "sizePrices") {
+        updateData = {
+          sizePrices: {
+            ...sizePrices,
+            [key]: Number(value),
+          },
+        }
+      }
+
+      await setDoc(settingsRef, updateData, { merge: true })
+      alert("Price updated successfully!")
+      fetchPrices() // Refresh the prices
     } catch (error) {
-      console.error("Error updating letter price:", error)
-      alert("Failed to update letter price. Please try again.")
+      console.error("Error updating price:", error)
+      alert("Failed to update price. Please try again.")
     }
   }
 
@@ -131,10 +221,71 @@ const CustomNeonOrders = () => {
       <Header>
         <Title>Custom Neon Orders</Title>
       </Header>
-      <div className="mb-3">
-        <Input type="number" value={letterPrice} onChange={(e) => setLetterPrice(e.target.value)} min="1" />
-        <Button onClick={handleLetterPriceChange}>Update Letter Price</Button>
-      </div>
+      <PriceSettingsSection>
+        <h2>Price Settings</h2>
+        <PriceSettingGroup>
+          <label>Letter Price: </label>
+          <Input type="number" value={letterPrice} onChange={(e) => setLetterPrice(e.target.value)} min="1" />
+          <Button onClick={() => handlePriceChange("letterPrice", letterPrice)}>Update Letter Price</Button>
+        </PriceSettingGroup>
+        <PriceSettingGroup>
+          <h3>Backboard Color Prices:</h3>
+          {Object.entries(backboardColorPrices).map(([color, price]) => (
+            <div key={color}>
+              <label>{color}: </label>
+              <Input
+                type="number"
+                value={price}
+                onChange={(e) => setBackboardColorPrices({ ...backboardColorPrices, [color]: e.target.value })}
+                min="0"
+              />
+              <Button onClick={() => handlePriceChange("backboardColorPrices", price, color)}>Update</Button>
+            </div>
+          ))}
+        </PriceSettingGroup>
+        <PriceSettingGroup>
+          <h3>Backboard Style Prices:</h3>
+          {Object.entries(backboardStylePrices).map(([style, price]) => (
+            <div key={style}>
+              <label>{style}: </label>
+              <Input
+                type="number"
+                value={price}
+                onChange={(e) => setBackboardStylePrices({ ...backboardStylePrices, [style]: e.target.value })}
+                min="0"
+              />
+              <Button onClick={() => handlePriceChange("backboardStylePrices", price, style)}>Update</Button>
+            </div>
+          ))}
+        </PriceSettingGroup>
+        <PriceSettingGroup>
+          <label>Power Adapter Price: </label>
+          <Input
+            type="number"
+            value={powerAdapterPrice}
+            onChange={(e) => setPowerAdapterPrice(e.target.value)}
+            min="0"
+          />
+          <Button onClick={() => handlePriceChange("powerAdapterPrice", powerAdapterPrice)}>
+            Update Power Adapter Price
+          </Button>
+        </PriceSettingGroup>
+        <PriceSettingGroup>
+          <h3>Size Prices:</h3>
+          {Object.entries(sizePrices).map(([size, price]) => (
+            <div key={size}>
+              <label>{size}: </label>
+              <Input
+                type="number"
+                value={price}
+                onChange={(e) => setSizePrices({ ...sizePrices, [size]: e.target.value })}
+                min="0"
+              />
+              <Button onClick={() => handlePriceChange("sizePrices", price, size)}>Update</Button>
+            </div>
+          ))}
+        </PriceSettingGroup>
+      </PriceSettingsSection>
       <OrdersTable>
         <thead>
           <tr>
@@ -144,6 +295,9 @@ const CustomNeonOrders = () => {
             <TableHeader>Color</TableHeader>
             <TableHeader>Size</TableHeader>
             <TableHeader>Dimmer</TableHeader>
+            <TableHeader>Backboard Color</TableHeader>
+            <TableHeader>Backboard Style</TableHeader>
+            <TableHeader>Power Adapter</TableHeader>
             <TableHeader>Quantity</TableHeader>
             <TableHeader>Total Price</TableHeader>
             <TableHeader>Date</TableHeader>
@@ -159,6 +313,9 @@ const CustomNeonOrders = () => {
               <TableCell>{order.color}</TableCell>
               <TableCell>{order.size}</TableCell>
               <TableCell>{order.dimmer}</TableCell>
+              <TableCell>{order.backboardColor}</TableCell>
+              <TableCell>{order.backboardStyle}</TableCell>
+              <TableCell>{order.powerAdapter}</TableCell>
               <TableCell>{order.quantity}</TableCell>
               <TableCell>₹{order.totalPrice.toLocaleString()}</TableCell>
               <TableCell>{order.timestamp?.toDate().toLocaleString()}</TableCell>

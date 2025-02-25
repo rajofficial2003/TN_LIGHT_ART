@@ -127,7 +127,7 @@ const colors = [
   {
     name: "Electric Blue",
     color: "rgb(255, 255, 255)",
-    iconColor: "blue",
+    iconColor: "rgb(99, 170, 255)",
     neon: "rgb(255 255 255) 0px 0px 5px, rgb(255 255 255) 0px 0px 10px, rgb(99 170 255) 0px 0px 20px, rgb(99 170 255) 0px 0px 30px, rgb(99 170 255) 0px 0px 40px, rgb(99 170 255) 0px 0px 55px, rgb(99 170 255) 0px 0px 75px",
   },
   {
@@ -171,6 +171,30 @@ const dimmers = [
   { id: "no-dimmer", name: "No Dimmer", image: "../dimmer-images/No-Dimmer.jpg", price: 0 },
   { id: "smart-dimmer", name: "Dimmer-Knob", image: "../dimmer-images/Dimmer-Knob.jpg", price: 1000 },
   { id: "remote-dimmer", name: "Remote Dimmer", image: "../dimmer-images/Mini-IR-Dimmer.jpg", price: 500 },
+]
+
+const backboardColors = [
+  { id: "clear", name: "Standard clear acrylic backboard", color: "transparent" },
+  { id: "white", name: "Glossy White acrylic backboard", color: "#FFFFFF" },
+  { id: "black", name: "Glossy Black acrylic backboard", color: "#000000" },
+  { id: "silver", name: "Silver acrylic backboard", color: "#C0C0C0" },
+  { id: "gold", name: "Gold acrylic backboard", color: "#FFD700" },
+]
+
+const backboardStyles = [
+  { id: "cut-around", name: "Cut Around" },
+  { id: "rectangle", name: "Rectangle" },
+  { id: "cut-to-letter", name: "Cut-To-Letter" },
+  { id: "naked-neon", name: "Naked Neon" },
+  { id: "acrylic-stand", name: "Acrylic Stand" },
+  { id: "open-box", name: "Open Box" },
+]
+
+const powerAdapters = [
+  { id: "usa-canada", name: "USA / CANADA 120V" },
+  { id: "eu", name: "EU 230V" },
+  { id: "uk", name: "UK 230V" },
+  { id: "au", name: "AU 230V" },
 ]
 
 const ProductOptions = styled.div`
@@ -393,6 +417,94 @@ const InfoSection = styled.div`
   }
 `
 
+const RGBButton = styled.button`
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  margin: 20px auto;
+  display: block;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.3s ease;
+
+  &::after {
+    content: "RGB COLOR CHANGING";
+    position: absolute;
+    width: 200px;
+    text-align: center;
+    left: 50%;
+    transform: translateX(-50%);
+    top: calc(100% + 5px);
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  &::before {
+    content: "Multiple colors with static and dynamic modes";
+    position: absolute;
+    width: 200px;
+    text-align: center;
+    left: 50%;
+    transform: translateX(-50%);
+    top: calc(100% + 25px);
+    font-size: 12px;
+    color: #666;
+  }
+`
+
+const BackboardSection = styled.div`
+  margin: 2rem 0;
+
+  h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+
+  .color-options, .style-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .backboard-option, .style-option {
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    &.selected {
+      border-color: #40E0D0;
+      background: rgba(64, 224, 208, 0.1);
+    }
+
+    .color-preview {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid #ddd;
+    }
+
+    .option-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .price {
+      color: #666;
+      font-size: 0.875rem;
+    }
+  }
+`
+
 const NeonDesigner = () => {
   const [text, setText] = useState("")
   const [font, setFont] = useState(fonts[0])
@@ -405,6 +517,16 @@ const NeonDesigner = () => {
   const [openSection, setOpenSection] = useState(null)
   const previewRef = useRef(null)
   const [letterPrice, setLetterPrice] = useState(100)
+  const [rgbColor, setRgbColor] = useState(colors[0].iconColor)
+  const [currentColorIndex, setCurrentColorIndex] = useState(0)
+  const [isColorCycling, setIsColorCycling] = useState(false)
+  const [selectedBackboardColor, setSelectedBackboardColor] = useState(backboardColors[0])
+  const [selectedBackboardStyle, setSelectedBackboardStyle] = useState(backboardStyles[0])
+  const [selectedPowerAdapter, setSelectedPowerAdapter] = useState(powerAdapters[0])
+  const [backboardColorPrices, setBackboardColorPrices] = useState({})
+  const [backboardStylePrices, setBackboardStylePrices] = useState({})
+  const [powerAdapterPrice, setPowerAdapterPrice] = useState(0)
+  const [sizePrices, setSizePrices] = useState({})
 
   useEffect(() => {
     const handleResize = () => {
@@ -414,24 +536,42 @@ const NeonDesigner = () => {
     window.addEventListener("resize", handleResize)
     handleResize()
 
-    fetchLetterPrice()
+    fetchPrices()
 
     return () => window.removeEventListener("resize", handleResize)
   }, [])
 
-  const fetchLetterPrice = async () => {
+  useEffect(() => {
+    let intervalId
+    if (isColorCycling) {
+      intervalId = setInterval(() => {
+        setCurrentColorIndex((prevIndex) => {
+          const nextIndex = (prevIndex + 1) % colors.length
+          setRgbColor(colors[nextIndex].iconColor)
+          return nextIndex
+        })
+      }, 1000) // Change color every second
+    }
+    return () => clearInterval(intervalId)
+  }, [isColorCycling])
+
+  const fetchPrices = async () => {
     try {
       const settingsCollection = collection(db, "settings")
       const settingsSnapshot = await getDocs(settingsCollection)
       const settingsDoc = settingsSnapshot.docs.find((doc) => doc.id === "global")
       if (settingsDoc) {
         const settingsData = settingsDoc.data()
-        if (settingsData && settingsData.letterPrice) {
-          setLetterPrice(settingsData.letterPrice)
+        if (settingsData) {
+          setLetterPrice(settingsData.letterPrice || 100)
+          setBackboardColorPrices(settingsData.backboardColorPrices || {})
+          setBackboardStylePrices(settingsData.backboardStylePrices || {})
+          setPowerAdapterPrice(settingsData.powerAdapterPrice || 0)
+          setSizePrices(settingsData.sizePrices || {})
         }
       }
     } catch (error) {
-      console.error("Error fetching letter price:", error)
+      console.error("Error fetching prices:", error)
     }
   }
 
@@ -446,9 +586,15 @@ const NeonDesigner = () => {
 
   const calculatePrice = () => {
     const basePrice = letterPrice * text.length
-    const sizeMultiplier = selectedSize.id === "medium" ? 1.5 : selectedSize.id === "large" ? 2 : 1
+    const sizeMultiplier = sizePrices[selectedSize.id] || 1
     const dimmerPrice = selectedDimmer.price
-    return (basePrice * sizeMultiplier + dimmerPrice) * quantity
+    const backboardColorPrice = backboardColorPrices[selectedBackboardColor.id] || 0
+    const backboardStylePrice = backboardStylePrices[selectedBackboardStyle.id] || 0
+    const adapterPrice = powerAdapterPrice
+    const subtotal =
+      (basePrice * sizeMultiplier + dimmerPrice + backboardColorPrice + backboardStylePrice + adapterPrice) * quantity
+
+    return subtotal
   }
 
   const handleAddToCart = async () => {
@@ -456,12 +602,16 @@ const NeonDesigner = () => {
     const orderData = {
       text,
       font: font.name,
-      color: color.name,
+      color: isColorCycling ? "RGB" : color.name,
+      rgbColor: rgbColor,
       size: selectedSize.name,
       dimmer: selectedDimmer.name,
       quantity,
       totalPrice,
       timestamp: serverTimestamp(),
+      backboardColor: selectedBackboardColor.name,
+      backboardStyle: selectedBackboardStyle.name,
+      powerAdapter: selectedPowerAdapter.name,
     }
 
     try {
@@ -471,14 +621,25 @@ const NeonDesigner = () => {
       const message = encodeURIComponent(`I'd like to order a custom neon sign:
 Text: ${text}
 Font: ${font.name}
-Color: ${color.name}
+Color: ${isColorCycling ? "RGB" : color.name}
 Size: ${selectedSize.name}
 Dimmer: ${selectedDimmer.name}
+Backboard Color: ${selectedBackboardColor.name}
+Backboard Style: ${selectedBackboardStyle.name}
+Power Adapter: ${selectedPowerAdapter.name}
 Quantity: ${quantity}
 Total Price: ₹${totalPrice.toLocaleString()}`)
       window.open(`https://wa.me/9894924809?text=${message}`, "_blank")
     } catch (error) {
       console.error("Error adding order: ", error)
+    }
+  }
+
+  const toggleColorCycling = () => {
+    setIsColorCycling(!isColorCycling)
+    if (!isColorCycling) {
+      setRgbColor(colors[0].iconColor)
+      setCurrentColorIndex(0)
     }
   }
 
@@ -490,7 +651,12 @@ Total Price: ₹${totalPrice.toLocaleString()}`)
           <MainTitle className="text-center mt-5">Design your slang!</MainTitle>
           <div className={`editing ${isMobile ? "mobile-view" : ""}`}>
             <div className={`preview-column ${isMobile ? "mobile-preview" : ""}`} ref={previewRef}>
-              <NeonPreview text={text} font={font} color={color} background={background} />
+              <NeonPreview
+                text={text}
+                font={font}
+                background={background}
+                color={isColorCycling ? { color: rgbColor, neon: colors[currentColorIndex].neon } : color}
+              />
               <BackgroundSelector background={background} setBackground={setBackground} />
             </div>
             <div className="editor-column">
@@ -498,7 +664,17 @@ Total Price: ₹${totalPrice.toLocaleString()}`)
                 <div className="content-editor">
                   <TextEditor text={text} setText={setText} />
                   <FontSelector fonts={fonts} setFont={setFont} />
-                  <ColorSelector colors={colors} color={color} setColor={setColor} />
+                  <ColorSelector
+                    colors={colors}
+                    color={color}
+                    setColor={setColor}
+                    rgbColor={rgbColor}
+                    isColorCycling={isColorCycling}
+                    setIsColorCycling={setIsColorCycling}
+                    toggleColorCycling={toggleColorCycling}
+                    currentColorIndex={currentColorIndex}
+                    setRgbColor={setRgbColor}
+                  />
 
                   <ProductOptions>
                     <h2>Size</h2>
@@ -511,6 +687,7 @@ Total Price: ₹${totalPrice.toLocaleString()}`)
                         >
                           <h3>{size.name}</h3>
                           <p>{size.description}</p>
+                          <p>Price: ₹{sizePrices[size.id] || 0}</p>
                         </SizeOption>
                       ))}
                     </SizeSelector>
@@ -533,6 +710,68 @@ Total Price: ₹${totalPrice.toLocaleString()}`)
                         ))}
                       </div>
                     </DimmerSelector>
+
+                    <BackboardSection>
+                      <h2>Backboard Color</h2>
+                      <div className="color-options">
+                        {backboardColors.map((backboard) => (
+                          <div
+                            key={backboard.id}
+                            className={`backboard-option ${selectedBackboardColor.id === backboard.id ? "selected" : ""}`}
+                            onClick={() => setSelectedBackboardColor(backboard)}
+                          >
+                            <div className="color-preview" style={{ backgroundColor: backboard.color }} />
+                            <div className="option-details">
+                              <span>{backboard.name}</span>
+                              <span className="price">
+                                {backboardColorPrices[backboard.id] === 0
+                                  ? "FREE"
+                                  : `+₹${backboardColorPrices[backboard.id] || 0}`}
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </BackboardSection>
+
+                    <BackboardSection>
+                      <h2>Backboard Style</h2>
+                      <div className="style-options">
+                        {backboardStyles.map((style) => (
+                          <div
+                            key={style.id}
+                            className={`style-option ${selectedBackboardStyle.id === style.id ? "selected" : ""}`}
+                            onClick={() => setSelectedBackboardStyle(style)}
+                          >
+                            <div className="option-details">
+                              <span>{style.name}</span>
+                              <span className="price">
+                                {backboardStylePrices[style.id] === 0
+                                  ? "FREE"
+                                  : `+₹${backboardStylePrices[style.id] || 0}`}
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </BackboardSection>
+
+                    <div className="power-adapter">
+                      <h3>Power Adapter</h3>
+                      <select
+                        value={selectedPowerAdapter.id}
+                        onChange={(e) =>
+                          setSelectedPowerAdapter(powerAdapters.find((adapter) => adapter.id === e.target.value))
+                        }
+                      >
+                        {powerAdapters.map((adapter) => (
+                          <option key={adapter.id} value={adapter.id}>
+                            {adapter.name}
+                          </option>
+                        ))}
+                      </select>
+                      <p>Price: ₹{powerAdapterPrice}</p>
+                    </div>
 
                     <QuantitySelector>
                       <h2>Quantity</h2>
@@ -642,7 +881,52 @@ Total Price: ₹${totalPrice.toLocaleString()}`)
   )
 }
 
-const NeonPreview = ({ text, font, color, background }) => {
+const ColorSelector = ({
+  colors,
+  color,
+  setColor,
+  rgbColor,
+  isColorCycling,
+  setIsColorCycling,
+  toggleColorCycling,
+  currentColorIndex,
+  setRgbColor,
+}) => {
+  return (
+    <div className="color-container">
+      <h5>Select your Color</h5>
+      <div className="color-grid">
+        {colors.map((c, index) => (
+          <div
+            key={index}
+            className={`color cont ${c.name === color.name && !isColorCycling ? "active" : ""} ${isColorCycling && index === currentColorIndex ? "active" : ""}`}
+            style={{ backgroundColor: c.iconColor }}
+            onClick={() => {
+              setColor(c)
+              setIsColorCycling(false)
+              setRgbColor(c.iconColor)
+            }}
+          >
+            <i className="material-icons"></i>
+          </div>
+        ))}
+      </div>
+      <RGBButton
+        onClick={toggleColorCycling}
+        style={{
+          backgroundColor: isColorCycling ? rgbColor : "transparent",
+          backgroundImage: isColorCycling
+            ? "none"
+            : "linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet)",
+        }}
+      >
+        {isColorCycling ? "Stop RGB" : "Start RGB"}
+      </RGBButton>
+    </div>
+  )
+}
+
+const NeonPreview = ({ text, font, background, color }) => {
   const nodeRef = useRef(null)
 
   return (
@@ -705,26 +989,6 @@ const FontSelector = ({ fonts, setFont }) => {
         {fonts.map((font, index) => (
           <div key={index} className="cont font" onClick={() => setFont(font)}>
             <img src={font.image || "/placeholder.svg"} alt={font.name} />
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-const ColorSelector = ({ colors, color, setColor }) => {
-  return (
-    <div className="color-container">
-      <h5>Select your Color</h5>
-      <div className="color-grid">
-        {colors.map((c, index) => (
-          <div
-            key={index}
-            className={`color cont ${c.name === color.name ? "active" : ""}`}
-            style={{ backgroundColor: c.iconColor }}
-            onClick={() => setColor(c)}
-          >
-            <i className="material-icons"></i>
           </div>
         ))}
       </div>

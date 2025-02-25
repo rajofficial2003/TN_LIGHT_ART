@@ -1,21 +1,20 @@
-"use client"
+import React, { useState, useEffect } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { Star, ShoppingCart, Heart, Share2, ChevronRight } from 'lucide-react';
+import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { doc, getDoc, collection, onSnapshot, deleteDoc, addDoc, query, where, getDocs } from "firebase/firestore";
+import { db } from "../Firebase/firebase";
+import Header from "../Components/Header";
+import RightSidebar from "../Components/RightSidebar";
+import SingleFooter from "../Components/Footer";
 
-import { useState, useEffect } from "react"
-import { useParams, Link, useNavigate } from "react-router-dom"
-import styled from "styled-components"
-import { Star, ShoppingCart, Heart, Share2, ChevronRight } from "lucide-react"
-import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "firebase/auth"
-import { doc, getDoc, collection, onSnapshot, deleteDoc, addDoc, query, where, getDocs } from "firebase/firestore"
-import { db } from "../Firebase/firebase"
-import Header from "../Components/Header"
-import RightSidebar from "../Components/RightSidebar"
-import SingleFooter from "../Components/Footer"
-
+// Styled components
 const PageContainer = styled.div`
   padding-top: 100px;
   min-height: 100vh;
   background: #f8f9fa;
-`
+`;
 
 const ProductContainer = styled.div`
   max-width: 1200px;
@@ -32,7 +31,7 @@ const ProductContainer = styled.div`
     padding: 1rem;
     gap: 1rem;
   }
-`
+`;
 
 const Breadcrumb = styled.div`
   display: flex;
@@ -40,7 +39,7 @@ const Breadcrumb = styled.div`
   font-size: 0.9rem;
   color: #666;
   margin-bottom: 1rem;
-`
+`;
 
 const BreadcrumbLink = styled(Link)`
   color: #40E0D0;
@@ -48,7 +47,7 @@ const BreadcrumbLink = styled(Link)`
   &:hover {
     text-decoration: underline;
   }
-`
+`;
 
 const ImageGallery = styled.div`
   flex: 1;
@@ -57,7 +56,7 @@ const ImageGallery = styled.div`
   @media (max-width: 768px) {
     min-width: 100%;
   }
-`
+`;
 
 const MainImage = styled.img`
   width: 100%;
@@ -69,14 +68,14 @@ const MainImage = styled.img`
   @media (max-width: 768px) {
     height: 300px;
   }
-`
+`;
 
 const ThumbnailContainer = styled.div`
   display: flex;
   gap: 1rem;
   overflow-x: auto;
   padding-bottom: 1rem;
-`
+`;
 
 const Thumbnail = styled.img`
   width: 80px;
@@ -95,7 +94,7 @@ const Thumbnail = styled.img`
     width: 60px;
     height: 60px;
   }
-`
+`;
 
 const ProductInfo = styled.div`
   flex: 1;
@@ -104,7 +103,7 @@ const ProductInfo = styled.div`
   @media (max-width: 768px) {
     min-width: 100%;
   }
-`
+`;
 
 const Title = styled.h1`
   font-size: 2.5rem;
@@ -114,45 +113,45 @@ const Title = styled.h1`
   @media (max-width: 768px) {
     font-size: 2rem;
   }
-`
+`;
 
 const PriceContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
   margin-bottom: 1rem;
-`
+`;
 
 const Price = styled.p`
   font-size: 1.5rem;
   color: #40E0D0;
   font-weight: 500;
-`
+`;
 
 const OriginalPrice = styled.p`
   font-size: 1.2rem;
   color: #999;
   text-decoration: line-through;
-`
+`;
 
 const Discount = styled.span`
   font-size: 1rem;
   color: #ff6b6b;
   font-weight: 500;
-`
+`;
 
 const Category = styled.p`
   font-size: 1rem;
   color: #666;
   margin-bottom: 1rem;
-`
+`;
 
 const Description = styled.p`
   font-size: 1rem;
   color: #333;
   line-height: 1.6;
   margin-bottom: 2rem;
-`
+`;
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -163,7 +162,7 @@ const ButtonContainer = styled.div`
   @media (max-width: 768px) {
     flex-direction: column;
   }
-`
+`;
 
 const Button = styled.button`
   padding: 0.75rem 1.5rem;
@@ -181,7 +180,7 @@ const Button = styled.button`
   @media (max-width: 768px) {
     width: 100%;
   }
-`
+`;
 
 const AddToCartButton = styled(Button)`
   background: #40E0D0;
@@ -191,7 +190,7 @@ const AddToCartButton = styled(Button)`
   &:hover {
     background: #2CC1B1;
   }
-`
+`;
 
 const WishlistButton = styled(Button)`
   background: white;
@@ -202,7 +201,7 @@ const WishlistButton = styled(Button)`
   &:hover {
     background: #f8f9fa;
   }
-`
+`;
 
 const ShareButton = styled(Button)`
   background: white;
@@ -213,13 +212,13 @@ const ShareButton = styled(Button)`
   &:hover {
     background: #f8f9fa;
   }
-`
+`;
 
 const FeatureList = styled.ul`
   list-style-type: none;
   padding: 0;
   margin-bottom: 2rem;
-`
+`;
 
 const FeatureItem = styled.li`
   font-size: 1rem;
@@ -234,147 +233,147 @@ const FeatureItem = styled.li`
     color: #40E0D0;
     font-weight: bold;
   }
-`
+`;
 
 const RatingContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 1rem;
-`
+`;
 
 const StarContainer = styled.div`
   display: flex;
   color: #ffc107;
-`
+`;
 
 const RatingText = styled.span`
   font-size: 1rem;
   color: #666;
-`
+`;
 
 const AdditionalInfo = styled.div`
   margin-top: 2rem;
   padding-top: 2rem;
   border-top: 1px solid #eee;
-`
+`;
 
 const AdditionalInfoTitle = styled.h2`
   font-size: 1.5rem;
   color: #333;
   margin-bottom: 1rem;
-`
+`;
 
 const AdditionalInfoText = styled.p`
   font-size: 1rem;
   color: #666;
   line-height: 1.6;
   margin-bottom: 1rem;
-`
+`;
 
 const LoadingMessage = styled.div`
   text-align: center;
   font-size: 1.2rem;
   color: #666;
   margin-top: 2rem;
-`
+`;
 
 const ErrorMessage = styled.div`
   text-align: center;
   font-size: 1.2rem;
   color: #ff6b6b;
   margin-top: 2rem;
-`
+`;
 
 const ProductDetails = () => {
-  const { id } = useParams()
-  const navigate = useNavigate()
-  const [product, setProduct] = useState(null)
-  const [selectedImage, setSelectedImage] = useState("")
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const [user, setUser] = useState(null)
-  const [cartItems, setCartItems] = useState([])
-  const [orders, setOrders] = useState([])
-  const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [recentlyAddedProduct, setRecentlyAddedProduct] = useState(null)
-  const auth = getAuth()
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [product, setProduct] = useState(null);
+  const [selectedImage, setSelectedImage] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [user, setUser] = useState(null);
+  const [cartItems, setCartItems] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [recentlyAddedProduct, setRecentlyAddedProduct] = useState(null);
+  const auth = getAuth();
 
   useEffect(() => {
-    fetchProduct()
+    fetchProduct();
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser)
+      setUser(currentUser);
       if (currentUser) {
-        fetchCartItems(currentUser.uid)
-        fetchOrders(currentUser.uid)
+        fetchCartItems(currentUser.uid);
+        fetchOrders(currentUser.uid);
       } else {
-        setCartItems([])
-        setOrders([])
+        setCartItems([]);
+        setOrders([]);
       }
-    })
+    });
 
-    return () => unsubscribe()
-  }, [auth])
+    return () => unsubscribe();
+  }, [auth, id]);
 
   const fetchProduct = async () => {
     try {
-      const productRef = doc(db, "products", id)
-      const productSnap = await getDoc(productRef)
+      const productRef = doc(db, "products", id);
+      const productSnap = await getDoc(productRef);
 
       if (productSnap.exists()) {
-        const productData = productSnap.data()
-        setProduct({ id: productSnap.id, ...productData })
-        setSelectedImage(productData.images && productData.images.length > 0 ? productData.images[0] : "")
+        const productData = productSnap.data();
+        setProduct({ id: productSnap.id, ...productData });
+        setSelectedImage(productData.images && productData.images.length > 0 ? productData.images[0] : "");
       } else {
-        setError("Product not found")
+        setError("Product not found");
       }
     } catch (error) {
-      console.error("Error fetching product:", error)
-      setError("Failed to load product")
+      console.error("Error fetching product:", error);
+      setError("Failed to load product");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const fetchCartItems = (userId) => {
-    const cartRef = collection(db, "cart")
-    const userCartQuery = query(cartRef, where("userId", "==", userId))
+    const cartRef = collection(db, "cart");
+    const userCartQuery = query(cartRef, where("userId", "==", userId));
     const unsubscribe = onSnapshot(userCartQuery, (snapshot) => {
-      const items = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-      setCartItems(items)
-    })
-    return unsubscribe
-  }
+      const items = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setCartItems(items);
+    });
+    return unsubscribe;
+  };
 
   const fetchOrders = (userId) => {
-    const ordersRef = collection(db, "orders")
-    const userOrdersQuery = query(ordersRef, where("userId", "==", userId))
+    const ordersRef = collection(db, "orders");
+    const userOrdersQuery = query(ordersRef, where("userId", "==", userId));
     const unsubscribe = onSnapshot(userOrdersQuery, (snapshot) => {
-      const ordersList = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-      setOrders(ordersList)
-    })
-    return unsubscribe
-  }
+      const ordersList = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setOrders(ordersList);
+    });
+    return unsubscribe;
+  };
 
   const handleThumbnailClick = (image) => {
-    setSelectedImage(image)
-  }
+    setSelectedImage(image);
+  };
 
   const handleAddToCart = async () => {
     if (!user) {
-      setSidebarOpen(true)
-      return
+      setSidebarOpen(true);
+      return;
     }
 
     try {
-      const cartRef = collection(db, "cart")
-      const existingItemQuery = query(cartRef, where("userId", "==", user.uid), where("productId", "==", product.id))
-      const existingItemSnapshot = await getDocs(existingItemQuery)
+      const cartRef = collection(db, "cart");
+      const existingItemQuery = query(cartRef, where("userId", "==", user.uid), where("productId", "==", product.id));
+      const existingItemSnapshot = await getDocs(existingItemQuery);
 
       if (!existingItemSnapshot.empty) {
-        setRecentlyAddedProduct({ ...product, alreadyInCart: true })
-        setSidebarOpen(true)
-        return
+        setRecentlyAddedProduct({ ...product, alreadyInCart: true });
+        setSidebarOpen(true);
+        return;
       }
 
       await addDoc(cartRef, {
@@ -385,47 +384,47 @@ const ProductDetails = () => {
         quantity: 1,
         image: product.images[0],
         timestamp: new Date(),
-      })
-      setRecentlyAddedProduct(product)
-      setSidebarOpen(true)
+      });
+      setRecentlyAddedProduct(product);
+      setSidebarOpen(true);
     } catch (error) {
-      console.error("Error adding to cart:", error)
-      setError("Failed to add product to cart")
+      console.error("Error adding to cart:", error);
+      setError("Failed to add product to cart");
     }
-  }
+  };
 
   const handleRemoveFromCart = async (productId) => {
     try {
-      const cartItemRef = doc(db, "cart", productId)
-      await deleteDoc(cartItemRef)
+      const cartItemRef = doc(db, "cart", productId);
+      await deleteDoc(cartItemRef);
     } catch (error) {
-      console.error("Error removing from cart:", error)
-      setError("Failed to remove product from cart")
+      console.error("Error removing from cart:", error);
+      setError("Failed to remove product from cart");
     }
-  }
+  };
 
   const handleSignIn = async () => {
-    const provider = new GoogleAuthProvider()
+    const provider = new GoogleAuthProvider();
     try {
-      const result = await signInWithPopup(auth, provider)
-      setSidebarOpen(false)
-      await handleAddToCart()
-      setSidebarOpen(true)
+      const result = await signInWithPopup(auth, provider);
+      setSidebarOpen(false);
+      await handleAddToCart();
+      setSidebarOpen(true);
     } catch (error) {
-      console.error("Error signing in with Google:", error)
+      console.error("Error signing in with Google:", error);
     }
-  }
+  };
 
   const handleSignOut = async () => {
     try {
-      await auth.signOut()
-      setUser(null)
-      setCartItems([])
-      setOrders([])
+      await auth.signOut();
+      setUser(null);
+      setCartItems([]);
+      setOrders([]);
     } catch (error) {
-      console.error("Error signing out:", error)
+      console.error("Error signing out:", error);
     }
-  }
+  };
 
   const handleProceedToCheckout = (productToCheckout) => {
     if (productToCheckout) {
@@ -435,17 +434,15 @@ const ProductDetails = () => {
         price: productToCheckout.price,
         originalPrice: productToCheckout.originalPrice,
         images: productToCheckout.images,
-        // Add any other necessary fields, but ensure they are serializable
-      }
+      };
 
       const serializableUser = user
         ? {
             uid: user.uid,
             email: user.email,
             displayName: user.displayName,
-            // Add any other necessary fields, but ensure they are serializable
           }
-        : null
+        : null;
 
       navigate("/add-to-cart", {
         state: {
@@ -453,13 +450,13 @@ const ProductDetails = () => {
           quantity: 1,
           user: serializableUser,
         },
-      })
+      });
     }
-  }
+  };
 
-  if (loading) return <LoadingMessage>Loading...</LoadingMessage>
-  if (error) return <ErrorMessage>{error}</ErrorMessage>
-  if (!product) return <ErrorMessage>Product not found</ErrorMessage>
+  if (loading) return <LoadingMessage>Loading...</LoadingMessage>;
+  if (error) return <ErrorMessage>{error}</ErrorMessage>;
+  if (!product) return <ErrorMessage>Product not found</ErrorMessage>;
 
   return (
     <div>
@@ -565,8 +562,7 @@ const ProductDetails = () => {
 
       <SingleFooter />
     </div>
-  )
-}
+  );
+};
 
-export default ProductDetails
-
+export default ProductDetails;

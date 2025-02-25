@@ -72,9 +72,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         <MenuItem to="/admin/products" onClick={closeSidebar}>
           <ShoppingCart size={20} /> Products
         </MenuItem>
-        <MenuItem to="/admin/cart" onClick={closeSidebar}>
-          <ShoppingBag size={20} /> Cart
-        </MenuItem>
+      
         <MenuItem to="/admin/orders" onClick={closeSidebar}>
           <ShoppingCart size={20} /> Orders
         </MenuItem>

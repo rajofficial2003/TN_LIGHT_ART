@@ -1,8 +1,6 @@
-"use client"
-
-import { useState, useEffect } from "react"
-import styled from "styled-components"
-import { X, Trash2, ShoppingCart } from "lucide-react"
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { X, Trash2, ShoppingCart } from 'lucide-react';
 
 const SidebarContainer = styled.div`
   position: fixed;
@@ -18,7 +16,7 @@ const SidebarContainer = styled.div`
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-`
+`;
 
 const CloseButton = styled.button`
   position: absolute;
@@ -28,41 +26,41 @@ const CloseButton = styled.button`
   border: none;
   font-size: 24px;
   cursor: pointer;
-`
+`;
 
 const UserInfo = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 20px;
-`
+`;
 
 const UserAvatar = styled.img`
   width: 40px;
   height: 40px;
   border-radius: 50%;
   margin-right: 10px;
-`
+`;
 
 const UserDetails = styled.div`
   display: flex;
   flex-direction: column;
-`
+`;
 
 const UserName = styled.span`
   font-size: 0.9rem;
   font-weight: bold;
-`
+`;
 
 const UserEmail = styled.span`
   font-size: 0.8rem;
   color: #666;
-`
+`;
 
 const CartInfo = styled.div`
   margin-bottom: 20px;
   flex-grow: 1;
   overflow-y: auto;
-`
+`;
 
 const CartItem = styled.div`
   display: flex;
@@ -71,7 +69,7 @@ const CartItem = styled.div`
   padding: 10px;
   border: 1px solid #eee;
   border-radius: 5px;
-`
+`;
 
 const CartItemImage = styled.img`
   width: 50px;
@@ -79,33 +77,33 @@ const CartItemImage = styled.img`
   object-fit: cover;
   margin-right: 10px;
   border-radius: 5px;
-`
+`;
 
 const CartItemInfo = styled.div`
   flex: 1;
-`
+`;
 
 const CartItemName = styled.p`
   font-size: 0.9rem;
   margin: 0;
-`
+`;
 
 const CartItemPrice = styled.p`
   font-size: 0.8rem;
   color: #40E0D0;
   margin: 0;
-`
+`;
 
 const DeleteButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
   color: #ff6b6b;
-`
+`;
 
 const OrderInfo = styled.div`
   margin-bottom: 20px;
-`
+`;
 
 const SignInButton = styled.button`
   background-color: #4285F4;
@@ -119,13 +117,13 @@ const SignInButton = styled.button`
   justify-content: center;
   width: 100%;
   margin-top: 20px;
-`
+`;
 
 const GoogleIcon = styled.img`
   width: 20px;
   height: 20px;
   margin-right: 10px;
-`
+`;
 
 const Button = styled.button`
   padding: 0.75rem 1.5rem;
@@ -147,7 +145,7 @@ const Button = styled.button`
   &:hover {
     background: #2CC1B1;
   }
-`
+`;
 
 const ConfirmationModal = styled.div`
   position: fixed;
@@ -160,14 +158,14 @@ const ConfirmationModal = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 1100;
-`
+`;
 
 const ModalContent = styled.div`
   background-color: white;
   padding: 20px;
   border-radius: 5px;
   text-align: center;
-`
+`;
 
 const ModalButton = styled.button`
   margin: 10px;
@@ -175,7 +173,7 @@ const ModalButton = styled.button`
   border: none;
   border-radius: 3px;
   cursor: pointer;
-`
+`;
 
 const RecentlyAddedProduct = styled.div`
   background-color: ${(props) => (props.alreadyInCart ? "#fff3cd" : "#f0f0f0")};
@@ -183,13 +181,13 @@ const RecentlyAddedProduct = styled.div`
   border-radius: 5px;
   margin-bottom: 20px;
   position: relative;
-`
+`;
 
 const RecentlyAddedTitle = styled.h4`
   margin: 0 0 10px 0;
   font-size: 1rem;
   color: ${(props) => (props.alreadyInCart ? "#856404" : "inherit")};
-`
+`;
 
 const AlertCloseButton = styled.button`
   position: absolute;
@@ -200,7 +198,7 @@ const AlertCloseButton = styled.button`
   font-size: 16px;
   cursor: pointer;
   color: ${(props) => (props.alreadyInCart ? "#856404" : "inherit")};
-`
+`;
 
 const RightSidebar = ({
   isOpen,
@@ -214,40 +212,40 @@ const RightSidebar = ({
   onProceedToCheckout,
   recentlyAddedProduct,
 }) => {
-  const [showConfirmation, setShowConfirmation] = useState(false)
-  const [itemToDelete, setItemToDelete] = useState(null)
-  const [showRecentlyAdded, setShowRecentlyAdded] = useState(false)
-  const [showProceedToCheckout, setShowProceedToCheckout] = useState(false)
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
+  const [showRecentlyAdded, setShowRecentlyAdded] = useState(false);
+  const [showProceedToCheckout, setShowProceedToCheckout] = useState(false);
 
   useEffect(() => {
     if (recentlyAddedProduct) {
-      setShowRecentlyAdded(true)
-      setShowProceedToCheckout(true)
+      setShowRecentlyAdded(true);
+      setShowProceedToCheckout(true);
     }
-  }, [recentlyAddedProduct])
+  }, [recentlyAddedProduct]);
 
   const handleDeleteClick = (item) => {
-    setItemToDelete(item)
-    setShowConfirmation(true)
-  }
+    setItemToDelete(item);
+    setShowConfirmation(true);
+  };
 
   const handleConfirmDelete = () => {
     if (itemToDelete) {
-      onRemoveFromCart(itemToDelete.id)
+      onRemoveFromCart(itemToDelete.id);
     }
-    setShowConfirmation(false)
-    setItemToDelete(null)
-  }
+    setShowConfirmation(false);
+    setItemToDelete(null);
+  };
 
   const handleCancelDelete = () => {
-    setShowConfirmation(false)
-    setItemToDelete(null)
-  }
+    setShowConfirmation(false);
+    setItemToDelete(null);
+  };
 
   const handleCloseRecentlyAdded = () => {
-    setShowRecentlyAdded(false)
-    setShowProceedToCheckout(false)
-  }
+    setShowRecentlyAdded(false);
+    setShowProceedToCheckout(false);
+  };
 
   return (
     <SidebarContainer isOpen={isOpen}>
@@ -337,8 +335,7 @@ const RightSidebar = ({
         </ConfirmationModal>
       )}
     </SidebarContainer>
-  )
-}
+  );
+};
 
-export default RightSidebar
-
+export default RightSidebar;

@@ -190,13 +190,6 @@ const backboardStyles = [
   { id: "open-box", name: "Open Box" },
 ]
 
-const powerAdapters = [
-  { id: "usa-canada", name: "USA / CANADA 120V" },
-  { id: "eu", name: "EU 230V" },
-  { id: "uk", name: "UK 230V" },
-  { id: "au", name: "AU 230V" },
-]
-
 const ProductOptions = styled.div`
   margin: 2rem 0;
 `
@@ -206,6 +199,11 @@ const SizeSelector = styled.div`
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   margin-bottom: 2rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
 `
 
 const SizeOption = styled.button`
@@ -229,6 +227,19 @@ const SizeOption = styled.button`
     font-size: 0.875rem;
     color: #666;
   }
+
+  @media (max-width: 768px) {
+    padding: 0.5rem;
+
+    h3 {
+      font-size: 0.8rem;
+      margin-bottom: 0.25rem;
+    }
+
+    p {
+      font-size: 0.7rem;
+    }
+  }
 `
 
 const DimmerSelector = styled.div`
@@ -244,16 +255,25 @@ const DimmerSelector = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
+    
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+    }
   }
 `
 
 const DimmerOption = styled.button`
-  padding: 1rem;
   border: 2px solid ${(props) => (props.selected ? "#40E0D0" : "#ddd")};
   border-radius: 8px;
   background: ${(props) => (props.selected ? "rgba(64, 224, 208, 0.1)" : "white")};
   cursor: pointer;
   transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
 
   &:hover {
     border-color: #40E0D0;
@@ -267,14 +287,28 @@ const DimmerOption = styled.button`
   }
 
   .dimmer-name {
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     color: #333;
     margin-bottom: 0.25rem;
+    text-align: center;
   }
 
   .dimmer-price {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: #666;
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.25rem;
+
+    .dimmer-name {
+      font-size: 0.7rem;
+    }
+
+    .dimmer-price {
+      font-size: 0.6rem;
+    }
   }
 `
 
@@ -468,6 +502,11 @@ const BackboardSection = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
+    
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+    }
   }
 
   .backboard-option, .style-option {
@@ -477,8 +516,9 @@ const BackboardSection = styled.div`
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: 0.5rem;
 
     &.selected {
       border-color: #40E0D0;
@@ -496,11 +536,29 @@ const BackboardSection = styled.div`
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
+      text-align: center;
     }
 
     .price {
       color: #666;
       font-size: 0.875rem;
+    }
+
+    @media (max-width: 768px) {
+      padding: 0.5rem;
+
+      .color-preview {
+        width: 30px;
+        height: 30px;
+      }
+
+      .option-details {
+        font-size: 0.7rem;
+      }
+
+      .price {
+        font-size: 0.6rem;
+      }
     }
   }
 `
@@ -522,10 +580,8 @@ const NeonDesigner = () => {
   const [isColorCycling, setIsColorCycling] = useState(false)
   const [selectedBackboardColor, setSelectedBackboardColor] = useState(backboardColors[0])
   const [selectedBackboardStyle, setSelectedBackboardStyle] = useState(backboardStyles[0])
-  const [selectedPowerAdapter, setSelectedPowerAdapter] = useState(powerAdapters[0])
   const [backboardColorPrices, setBackboardColorPrices] = useState({})
   const [backboardStylePrices, setBackboardStylePrices] = useState({})
-  const [powerAdapterPrice, setPowerAdapterPrice] = useState(0)
   const [sizePrices, setSizePrices] = useState({})
 
   useEffect(() => {
@@ -566,7 +622,6 @@ const NeonDesigner = () => {
           setLetterPrice(settingsData.letterPrice || 100)
           setBackboardColorPrices(settingsData.backboardColorPrices || {})
           setBackboardStylePrices(settingsData.backboardStylePrices || {})
-          setPowerAdapterPrice(settingsData.powerAdapterPrice || 0)
           setSizePrices(settingsData.sizePrices || {})
         }
       }
@@ -590,9 +645,7 @@ const NeonDesigner = () => {
     const dimmerPrice = selectedDimmer.price
     const backboardColorPrice = backboardColorPrices[selectedBackboardColor.id] || 0
     const backboardStylePrice = backboardStylePrices[selectedBackboardStyle.id] || 0
-    const adapterPrice = powerAdapterPrice
-    const subtotal =
-      (basePrice * sizeMultiplier + dimmerPrice + backboardColorPrice + backboardStylePrice + adapterPrice) * quantity
+    const subtotal = (basePrice * sizeMultiplier + dimmerPrice + backboardColorPrice + backboardStylePrice) * quantity
 
     return subtotal
   }
@@ -611,7 +664,6 @@ const NeonDesigner = () => {
       timestamp: serverTimestamp(),
       backboardColor: selectedBackboardColor.name,
       backboardStyle: selectedBackboardStyle.name,
-      powerAdapter: selectedPowerAdapter.name,
     }
 
     try {
@@ -626,7 +678,6 @@ Size: ${selectedSize.name}
 Dimmer: ${selectedDimmer.name}
 Backboard Color: ${selectedBackboardColor.name}
 Backboard Style: ${selectedBackboardStyle.name}
-Power Adapter: ${selectedPowerAdapter.name}
 Quantity: ${quantity}
 Total Price: ₹${totalPrice.toLocaleString()}`)
       window.open(`https://wa.me/9894924809?text=${message}`, "_blank")
@@ -755,23 +806,6 @@ Total Price: ₹${totalPrice.toLocaleString()}`)
                         ))}
                       </div>
                     </BackboardSection>
-
-                    <div className="power-adapter">
-                      <h3>Power Adapter</h3>
-                      <select
-                        value={selectedPowerAdapter.id}
-                        onChange={(e) =>
-                          setSelectedPowerAdapter(powerAdapters.find((adapter) => adapter.id === e.target.value))
-                        }
-                      >
-                        {powerAdapters.map((adapter) => (
-                          <option key={adapter.id} value={adapter.id}>
-                            {adapter.name}
-                          </option>
-                        ))}
-                      </select>
-                      <p>Price: ₹{powerAdapterPrice}</p>
-                    </div>
 
                     <QuantitySelector>
                       <h2>Quantity</h2>

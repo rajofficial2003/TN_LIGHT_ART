@@ -563,6 +563,72 @@ const BackboardSection = styled.div`
   }
 `
 
+const CustomerRightsSection = styled.div`
+  max-width: 1200px;
+  margin: 3rem auto;
+  padding: 2rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #40E0D0;
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+    position: relative;
+    padding-bottom: 0.5rem;
+    
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: #40E0D0;
+    }
+  }
+
+  .rights-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  .right-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    
+    h3 {
+      font-size: 1.25rem;
+      color: #333;
+      margin-bottom: 0.5rem;
+    }
+    
+    p {
+      font-size: 0.95rem;
+      color: #555;
+      line-height: 1.6;
+    }
+    
+    ul {
+      padding-left: 1.5rem;
+      
+      li {
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+        color: #555;
+      }
+    }
+  }
+`
+
 const NeonDesigner = () => {
   const [text, setText] = useState("")
   const [font, setFont] = useState(fonts[0])
@@ -910,6 +976,58 @@ Total Price: ₹${totalPrice.toLocaleString()}`)
           </div>
         </div>
       </div>
+
+      {/* Customer Rights Section - Outside the main UI box */}
+      <CustomerRightsSection>
+        <h2>Your Rights as a Customer</h2>
+        <div className="rights-grid">
+          <div className="right-item">
+            <h3>Warranty Rights</h3>
+            <p>All our neon signs come with a comprehensive warranty that protects your purchase:</p>
+            <ul>
+              <li>1-year manufacturer warranty against defects</li>
+              <li>Free repair or replacement for manufacturing defects</li>
+              <li>Extended warranty options available for purchase</li>
+              <li>Warranty covers LED failures, power adapter issues, and dimmer malfunctions</li>
+              <li>Warranty card included with every purchase</li>
+            </ul>
+          </div>
+          <div className="right-item">
+            <h3>Return & Refund Policy</h3>
+            <p>We want you to be completely satisfied with your purchase:</p>
+            <ul>
+              <li>30-day return policy for unused items in original packaging</li>
+              <li>Full refund for damaged items reported within 48 hours of delivery</li>
+              <li>Exchange option available for size or color preferences</li>
+              <li>Refunds processed within 5-7 business days after inspection</li>
+              <li>Return shipping costs covered for defective products</li>
+            </ul>
+          </div>
+          <div className="right-item">
+            <h3>Privacy Rights</h3>
+            <p>We respect and protect your personal information:</p>
+            <ul>
+              <li>Your data is encrypted and securely stored</li>
+              <li>We never share your information with third parties without consent</li>
+              <li>You can request deletion of your personal data at any time</li>
+              <li>Transparent privacy policy available on our website</li>
+              <li>Option to opt out of marketing communications</li>
+            </ul>
+          </div>
+          <div className="right-item">
+            <h3>Quality Assurance</h3>
+            <p>Every neon sign undergoes rigorous quality checks:</p>
+            <ul>
+              <li>Each product is individually tested before shipping</li>
+              <li>CE and RoHS certified components</li>
+              <li>Energy-efficient LEDs with 50,000+ hours lifespan</li>
+              <li>Quality inspection certificate included</li>
+              <li>Satisfaction guarantee or money back</li>
+            </ul>
+          </div>
+        </div>
+      </CustomerRightsSection>
+
       <SingleFooter />
     </div>
   )

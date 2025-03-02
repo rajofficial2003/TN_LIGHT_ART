@@ -182,12 +182,21 @@ const backboardColors = [
 ]
 
 const backboardStyles = [
-  { id: "cut-around", name: "Cut Around" },
-  { id: "rectangle", name: "Rectangle" },
-  { id: "cut-to-letter", name: "Cut-To-Letter" },
-  { id: "naked-neon", name: "Naked Neon" },
-  { id: "acrylic-stand", name: "Acrylic Stand" },
-  { id: "open-box", name: "Open Box" },
+  {
+    id: "wavy-outline",
+    name: "Wavy Outline",
+    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1-sVbkOydkle8W9qv7WM73fx9N91p5Tv.png",
+  },
+  {
+    id: "rectangle",
+    name: "Rectangle",
+    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/2-RadoUXZoVyKxdIQtBP480jIDzruCV8.png",
+  },
+  {
+    id: "cut-to-letter",
+    name: "Cut-To-Letter",
+    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/3-7tvqiQqPSC4TBaw80brgfTeifqyBV3.png",
+  },
 ]
 
 const ProductOptions = styled.div`
@@ -525,6 +534,11 @@ const BackboardSection = styled.div`
       background: rgba(64, 224, 208, 0.1);
     }
 
+    img {
+      max-width: 100%;
+      border-radius: 4px;
+    }
+
     .color-preview {
       width: 40px;
       height: 40px;
@@ -860,6 +874,11 @@ Total Price: ₹${totalPrice.toLocaleString()}`)
                             className={`style-option ${selectedBackboardStyle.id === style.id ? "selected" : ""}`}
                             onClick={() => setSelectedBackboardStyle(style)}
                           >
+                            <img
+                              src={style.image || "/placeholder.svg"}
+                              alt={style.name}
+                              style={{ width: "100%", height: "auto", marginBottom: "8px" }}
+                            />
                             <div className="option-details">
                               <span>{style.name}</span>
                               <span className="price">
